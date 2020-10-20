@@ -1,2 +1,2 @@
 # Capsa
-Logiciel de facturation pour Windows 64 bits, réalisé avec Electron
+Logiciel de facturation pour Windows, réalisé avec Electron
