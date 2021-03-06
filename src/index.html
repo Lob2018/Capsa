@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'none'; 
+  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc'; 
+  connect-src 'self'; 
+  img-src 'self'; 
+  style-src 'self';
+  font-src 'self';">
+    <title>Capsa</title>
+    <link rel="icon" href="img/CAPSA.ico" />
+    <link rel="stylesheet" href="./awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./index.css">
+
+    <script nonce="inlJquery" charset="utf-8" src="./jquery/jquery-3.6.0.min.js"></script>
+    <script nonce="inlChrg" charset="utf-8">
+        window.api.send('debut-chrg');
+    </script>
+</head>
+<header>
+    <nav class="navbar navbar-expand-md navbar-light p-0 h-100">
+
+        <p class="nav-item text-center ylMenu ml-2 mr-2 mb-0" id="BtnNouveau" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="YlBtn0 fa fa-bars fa-3x" data-toggle="tooltip" title="Agrandir ou réduire le menu"></i><br>Menu </p>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav m-auto">
+                <!-- MENU -->
+                <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-file-o fa-3x" id="nouveau" data-toggle="tooltip" title="Éditer un nouveau document,<br>en vidant tous les champs"></i><br>Nouveau </li>
+                <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-save fa-3x" id="enregistrer" data-toggle="tooltip" title="Enregistrer ce document,<br>et le sauvegarder au format PDF"></i><br>Enregistrer </li>
+                <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-socCl-gest"><i class="YlBtn0 fa fa-address-book-o fa-3x" data-toggle="tooltip" id="societes-clients" title="Gestion des sociétés et clients"></i><br>Sociétés & clients </li>
+                <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-articles-gest"><i class="YlBtn0 fa fa-tags fa-3x" id="tous-articles" data-toggle="tooltip" title="Gestion des articles"></i><br>Articles </li>
+                <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-book fa-3x" data-toggle="tooltip" id="ttes-factures" title="Gestion des factures et devis"></i><br>Factures & devis </li>
+                <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-database fa-3x" data-toggle="tooltip" id="sauvegarde-bdd" title="Gestion des données de l'application"></i><br>Données </li>
+                <li class="nav-item text-center ylMenu" id="pMaj"><i class="YlBtn0 fa fa-refresh fa-3x" id="maj" data-toggle="tooltip" title="Une nouvelle version est<br>disponible au téléchargement"></i><br>Mise à jour </li>
+            </ul>
+        </div>
+    </nav>
+    <script nonce="inlNouveau" src="./gestionnaire/vueNouveau.js" charset="utf-8"></script>
+    <script nonce="inlEnregistrer" src="./gestionnaire/vueEnregistrer.js" charset="utf-8"></script>
+    <script nonce="inlSauvegarder" src="./gestionnaire/vueSauvegarderBdd.js" charset="utf-8"></script>
+</header>
+
+<body class="body-margin-top">
+    <div class="container-fluid mt-1 ml-0 ">
+        <div class="row h-0">
+            <div class="col-md-8">
+                <div class="col-md-12 p-0 btn-perso btn-perso-sm" data-toggle="tooltip" title="Choisir votre société">
+                    <h3 class="wdW" id="doc-soc-denom" data-toggle="modal" data-target=".modale-societe"></h3>
+                </div>
+                <p class="wdW" id="doc-soc-descript"></p>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-12 p-0 btn-perso" data-toggle="tooltip" title="Choisir le type de document :&nbsp;&nbsp;<br><li>Facture</li><li>Devis</li><li>Facture rectificative</li>">
+                    <h5 class="ylNb" id="doc-facDev-type"></h5>
+                </div>
+                <p class="col-md-12 p-0 ylNb wdW" id="doc-facDev-type-rectif"></p>
+            </div>
+        </div>
+        <div class="row h-0">
+            <div class="col-md-7">
+                <p class="wdW" id="doc-soc-siret"></p>
+            </div>
+            <div class="col-md-5">
+                <p class="ylNb">
+                    <span id="doc-facDev-date"></span><br>
+                    <span class="wdW" id="doc-facDev-num"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container ml-0">
+        <div class="row">
+            <div class="col-md-5">
+                <p>
+                    <span class="wdW" id="doc-soc-adr-l1"></span><br>
+                    <span class="wdW" id="doc-soc-adr-l2"></span><br>
+                    <span class="wdW" id="doc-soc-adr-l3"></span><br>
+                    <span id="doc-soc-tel2"></span><br>
+                    <span id="doc-soc-tel1"></span><br>
+                    <span id="doc-soc-fax"></span>
+                </p>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-5">
+                <div class="col-md-12 p-0 btn-perso btn-perso-sm" data-toggle="tooltip" title="Choisir votre client">
+                    <h6 class="wdW" id="doc-cl-denom" data-toggle="modal" data-target=".modale-client"></h6>
+                </div>
+                <p>
+                    <span class="wdW" id="doc-cl-adr-l1"></span><br>
+                    <span class="wdW" id="doc-cl-adr-l2"></span><br>
+                    <span class="wdW" id="doc-cl-adr-l3"></span><br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-borderless table-sm reglement mt-3">
+            <tbody>
+                <tr>
+                    <th scope="row" class="MmLigne totauxTxt">Mode de règlement</th>
+                    <td class="MmLigne totauxTxt" id="doc-facDev-type-regl"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive" id="factures-devis-articles">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" class="MmLigne">Code article</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" class="MmLigne"><span class="ylNb">Qté</span></th>
+                    <th scope="col" class="MmLigne"><span class="ylNb">PU HT</span></th>
+                    <th scope="col" class="MmLigne"><span class="ylNb">Montant HT</span></th>
+                    <th scope="col"><span class="ylNb">TVA</span></th>
+                </tr>
+            </thead>
+            <tbody id="table-articles">
+                <tr data-toggle="tooltip" title="Choisir les articles à ajouter" id="tableLigne">
+                    <td colspan="6" class="text-center btn-perso" id="ajoutArticle" data-toggle="modal" data-target=".modale-articles"><i class="YlBtn1 YlBtn3 fa fa-pencil fa-3x"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="printTotaux">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm totaux mt-4">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="MmLigne totauxTxt border-D">Total HT</th>
+                        <td colspan="2" class="border-G"><span class="ylNb" id="doc-facDev-HT"></span></td>
+                    </tr>
+                    <tr id="detailTva">
+                        <th scope="row" class="MmLigne totauxTxt border-D">Total TVA</th>
+                        <td colspan="2" class="border-G"><span class="ylNb" id="doc-facDev-TVA"></span></td>
+                    </tr>
+                    <tr id="leTTC">
+                        <th scope="row" class="MmLigne totauxTxt border-D">Total TTC</th>
+                        <td colspan="2" class="border-G"><span class="font-weight-bold ylNb" id="doc-facDev-TTC"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-borderless table-sm totaux mt-1">
+                <tbody id="table-ssTva">
+                    <tr>
+                        <th scope="row" class="MmLigne totauxTxt">
+                            <span>Mention du client "lu et approuvé"</span><br><span>Date et signature :</span><br><br><br>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- DEBUT MODALE ARTICLES -->
+    <div class="modal fade modale-articles" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Article existant</h4>
+                                    <form id="article-existant">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12" id="bloc-rech-art">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input required type="search" id="rechArt" class="form-control must-rounded-right" placeholder="Recherchez l'article existant" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
+                                                    <div class="invalid-feedback text-right" id="invalid-artRech"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-4 text-right">
+                                                <label for="quantite-ex" class="font-weight-bold">Quantité *</label>
+                                                <input type="number" class="form-control text-right " id="quantite-ex" step="1" min="1" max="99999" placeholder="La quantité d'articles" required data-toggle="tooltip" title="La quantité d'articles fournis au client">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la quantité.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="quantite-ex">Stock restant</label>
+                                                <input type="number" class="form-control text-right " id="stock-ex" step="1" min="0" max="99999" placeholder="La quantité en stock" data-toggle="tooltip" title="La quantité d'articles restants en stock (après le retrait du stock)">
+                                                <div class="invalid-feedback">
+                                                    La quantité restante en stock.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="remise-ex">Remise</label>
+                                                <input type="number" class="form-control text-right" id="remise-ex" step="0.01" min="0.01" max="100" placeholder="Taux de réduction" data-toggle="tooltip" title="Le pourcentage de remise sur cet article, pour cette commande">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la remise.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit">Ajouter l'article</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="jumbotron jumbotronFin">
+                                <div class="container">
+                                    <h4 class="display-6">Nouvel article</h4>
+                                    <form id="nouvel-article">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="descript-nouv" class="font-weight-bold">Description de l'article *</label>
+                                                <input type="text" class="form-control " id="descript-nouv" pattern="^.{1,40}$" placeholder="Décrivez l'article" required data-toggle="tooltip" title="La description de l'article est unique, et ne doit pas dépasser 40 caractères">
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="code-nouv" class="font-weight-bold">Code de l'article *</label>
+                                                <input type="text" class="form-control text-right " id="code-nouv" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
+                                                <div class="invalid-feedback" id="invalid-code">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouv" class="font-weight-bold">Prix unitaire *</label>
+                                                <input type="number" class="form-control text-right" step="0.01" min="0.01" max="99999.99" id="prix-nouv" pattern="^\d{1,5}(,\d{1,2})?$" placeholder="Prix unitaire" required data-toggle="tooltip" title="Prix unitaire de l'article">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir le prix unitaire de l'article.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouv">TVA spéciale</label>
+                                                <input type="number" class="form-control text-right" id="tva-nouv" step="0.01" min="0.00" max="100" placeholder="Taux applicable" data-toggle="tooltip" title="Le taux spécial pour cet article, sinon le taux de l'entreprise sera appliqué">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-4 text-right">
+                                                <label for="quantite-nouv" class="font-weight-bold">Quantité *</label>
+                                                <input type="number" class="form-control text-right " id="quantite-nouv" step="1" min="1" max="99999" placeholder="La quantité d'articles" required data-toggle="tooltip" title="La quantité d'articles fournis au client">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la quantité.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="quantite-nouv">Stock restant</label>
+                                                <input type="number" class="form-control text-right " id="stock-nouv" step="1" min="0" max="99999" placeholder="La quantité en stock" data-toggle="tooltip" title="La quantité d'articles restants en stock (après le retrait du stock)">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la quantité en stock.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="remise-nouv">Remise</label>
+                                                <input type="number" class="form-control text-right" id="remise-nouv" step="0.01" min="0.01" max="100" placeholder="Taux de réduction" data-toggle="tooltip" title="Le pourcentage de remise, sur cet article, pour cette commande">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la remise.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <p class="mb-0">Groupe d'articles</label>
+                                            </div>
+                                            <div class="col-md-6" data-toggle="tooltip" title="Ajouter l'article à un groupe existant">
+                                                <select class="custom-select" id="groupe">                                                                                                                                                             
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="groupe-nouv" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit">Créer et ajouter l'article</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlArticle" src="./gestionnaire/vueArticle.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE ARTICLES -->
+    <!-- DEBUT MODALE SOCIETE -->
+    <div class="modal fade modale-societe" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabelII" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid sticky-top">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron jumbotron-rech">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Société existante</h4>
+                                    <form id="societe-existante">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12" id="bloc-rech-soc">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input type="search" id="rechSoc" class="form-control must-rounded-right" placeholder="Recherchez la société existante" aria-label="Recherche de la société" data-toggle="tooltip" title='Saisissez le nom de la<br>société recherchée'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="jumbotron jumbotronFin">
+                                <div class="container">
+                                    <h4 class="display-6">Nouvelle société</h4>
+                                    <form id="nouvelle-societe">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="denom-nouv-soc" class="font-weight-bold">Nom de votre société *</label>
+                                                <textarea rows="1" class="form-control " id="denom-nouv-soc" minlength="1" maxlength="100" placeholder="Saisissez le nom de votre société" required data-toggle="tooltip" title="Le nom de votre société est unique, il ne doit pas dépasser 100 caractères"></textarea>
+                                                <div class="invalid-feedback" id="invalid-nom">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="descript-nouv-soc">L'activité exercée dans votre société</label>
+                                                <textarea rows="1" class="form-control " id="descript-nouv-soc" minlength="1" maxlength="150" placeholder="Ex. : Salon de coiffure" data-toggle="tooltip" title="L'activité exercée dans votre société (qui apparaîtra sous le nom)."></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="adrl1-nouv-soc" class="font-weight-bold">Numéro et libellé de la voie *</label>
+                                                <textarea rows="1" class="form-control " id="adrl1-nouv-soc" minlength="3" maxlength="200" placeholder="Ex. : 31 avenue du général Leclerc" required data-toggle="tooltip" title="Le numéro et le libellé<br>de la voie de votre société"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="adrl2-nouv-soc">Mentions spéciales de distribution</label>
+                                                <textarea rows="1" class="form-control " id="adrl2-nouv-soc" maxlength="200" placeholder="Ex. : BP 14" data-toggle="tooltip" title="Les mentions spéciales de distribution pour votre société<br>(Boite Postale, Tri Spécial)"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="adrl3-nouv-soc" class="font-weight-bold">Code postal et bureau distributeur, ou code cedex et bureau distributeur *</label>
+                                                <textarea rows="1" class="form-control " id="adrl3-nouv-soc" minlength="3" maxlength="200" placeholder="Ex. : 92340 BOURG LA REINE" required data-toggle="tooltip" title="Le code postal et le bureau distributeur de votre société"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="jur-nouv-soc">Forme juridique et capital social de votre société</label>
+                                                <textarea rows="1" class="form-control " id="jur-nouv-soc" maxlength="50" placeholder="Ex. : SARL au capital de 10000€" data-toggle="tooltip" title="La forme juridique, et le<br>capital social de votre société"></textarea>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="siret-nouv-soc">SIRET</label>
+                                                <input type="number" class="form-control text-right " id="siret-nouv-soc" step="1" min="1" max="99999999999999" placeholder="Ex. : 36252187900034" data-toggle="tooltip" title="Le SIRET de votre société.<br>Par défaut la valeur sera :<br><b>En cours d'attribution</b>">
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-right">
+                                                <label for="tva-nouv-soc">TVA</label>
+                                                <input type="number" class="form-control text-right" id="tva-nouv-soc" step="0.01" min="0.01" max="100" placeholder="Ex. : 20" data-toggle="tooltip" title="Le taux de TVA pour l'entreprise.<br>Par défaut la valeur sera :<br><b>Pas de TVA</b>">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="courriel-nouv-soc">Adresse courriel</label>
+                                                <textarea rows="1" class="form-control " id="courriel-nouv-soc" maxlength="320" placeholder="Ex. : marcel.dupont@exemple.fr" data-toggle="tooltip" title="L'adresse courriel de votre société"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="fax-nouv-soc">Numéro de fax</label>
+                                                <input type="text" class="form-control text-right " id="fax-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre société">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel1-nouv-soc">Numéro de téléphone principal</label>
+                                                <input type="text" class="form-control text-right " id="tel1-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre société">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel2-nouv-soc">Numéro de téléphone secondaire</label>
+                                                <input type="text" class="form-control text-right " id="tel2-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre société">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit">Créer et ajouter la société</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlSociete" src="./gestionnaire/vueSociete.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE SOCIETE -->
+
+    <!-- DEBUT MODALE TYPE DOC -->
+    <div class="modal fade modale-docs" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabelIII" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Facture à annuler</h4>
+                                    <form id="docs-existant">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="docs" class="font-weight-bold">Choix de la facture à annuler *</label>
+                                                <div class="input-group" data-toggle="tooltip" title="La facture à annuler">
+                                                    <select class="custom-select" id="lstDocs" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" id="annulFact" type="submit">Annuler cette facture</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlClient" src="./gestionnaire/vueTypeDoc.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE TYPE DOC -->
+
+    <!-- DEBUT MODALE CLIENT -->
+    <div class="modal fade modale-client" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabelII" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron  jumbotron-rech">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Client existant</h4>
+                                    <form id="client-existant">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12" id="bloc-rech-cl">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input type="search" id="rechCl" class="form-control must-rounded-right" placeholder="Recherchez le client existant" aria-label="Recherche du client" data-toggle="tooltip" title='Saisissez le nom du<br>client recherché'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="jumbotron jumbotronFin">
+                                <div class="container">
+                                    <h4 class="display-6">Nouveau client</h4>
+                                    <form id="nouveau-client">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="denom-nouv-cl" class="font-weight-bold">Nom de votre client *</label>
+                                                <textarea rows="1" class="form-control " id="denom-nouv-cl" minlength="1" maxlength="100" placeholder="Saisissez le nom de votre client" required data-toggle="tooltip" title="Le nom de votre client est unique, il ne doit pas dépasser 100 caractères"></textarea>
+                                                <div class="invalid-feedback" id="invalid-nom-cl">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="descript-nouv-cl">L'activité exercée par votre client</label>
+                                                <textarea rows="1" class="form-control " id="descript-nouv-cl" minlength="1" maxlength="150" placeholder="Ex. : Salon de coiffure" data-toggle="tooltip" title="L'activité exercée par votre client"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="adrl1-nouv-cl" class="font-weight-bold">Numéro et libellé de la voie *</label>
+                                                <textarea rows="1" class="form-control " id="adrl1-nouv-cl" minlength="3" maxlength="200" placeholder="Ex. : 31 avenue du général Leclerc" required data-toggle="tooltip" title="Le numéro et le libellé<br>de la voie de votre client"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="adrl2-nouv-cl">Mentions spéciales de distribution</label>
+                                                <textarea rows="1" class="form-control " id="adrl2-nouv-cl" maxlength="200" placeholder="Ex. : BP 14" data-toggle="tooltip" title="Les mentions spéciales de distribution pour votre client<br>(Boite Postale, Tri Spécial)"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="adrl3-nouv-cl" class="font-weight-bold">Code postal et bureau distributeur, ou code cedex et bureau distributeur *</label>
+                                                <textarea rows="1" class="form-control " id="adrl3-nouv-cl" minlength="3" maxlength="200" placeholder="Ex. : 92340 BOURG LA REINE" required data-toggle="tooltip" title="Le code postal et le bureau distributeur de votre client"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="jur-nouv-cl">Forme juridique et capital social de votre client</label>
+                                                <textarea rows="1" class="form-control " id="jur-nouv-cl" maxlength="50" placeholder="Ex. : SARL au capital de 10000€" data-toggle="tooltip" title="La forme juridique, et le<br>capital social de votre client"></textarea>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="siret-nouv-cl">SIRET</label>
+                                                <input type="number" class="form-control text-right " id="siret-nouv-cl" step="1" min="1" max="99999999999999" placeholder="Ex. : 36252187900034" data-toggle="tooltip" title="Le SIRET de votre client.<br>Par défaut la valeur sera :<br><b>En cours d'attribution</b>">
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-2 text-right">
+                                                <label for="tva-nouv-cl">TVA</label>
+                                                <input disabled type="number" class="form-control text-right" id="tva-nouv-cl" step="0.01" min="0.01" max="100" placeholder="">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="courriel-nouv-cl">Adresse courriel</label>
+                                                <textarea rows="1" class="form-control " id="courriel-nouv-cl" maxlength="320" placeholder="Ex. : marcel.dupont@exemple.fr" data-toggle="tooltip" title="L'adresse courriel de votre client"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="fax-nouv-cl">Numéro de fax</label>
+                                                <input type="text" class="form-control text-right " id="fax-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre client">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel1-nouv-cl">Numéro de téléphone principal</label>
+                                                <input type="text" class="form-control text-right " id="tel1-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre client">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel2-nouv-cl">Numéro de téléphone secondaire</label>
+                                                <input type="text" class="form-control text-right " id="tel2-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre client">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit">Créer et ajouter le client</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlClient" src="./gestionnaire/vueClient.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE CLIENT -->
+
+    <!-- MODALES DE GESTION -->
+
+    <!-- DEBUT MODALE GESTION ARTICLES -->
+    <div class="modal fade modale-articles-gest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron jumbotronx2">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Gestion des articles</h4>
+                                    <form id="article-existant-gest">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12" id="bloc-rech-art-gest">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input required type="search" id="rechArtGest" class="form-control must-rounded-right" placeholder="Recherchez l'article *" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
+                                                    <div class="invalid-feedback text-right" id="invalid-artRech-gest"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-art-supprimer">Supprimer  cet article</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="jumbotron jumbotronFin jumbo-rounded-b">
+                                <div class="container">
+                                    <h5 class="display-6">Modifier l'article</h5>
+                                    <form id="nouvel-article-gest">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-9">
+                                                <label for="descript-nouvArt-gest" class="font-weight-bold">Description de l'article *</label>
+                                                <input type="text" class="form-control " id="descript-nouvArt-gest" pattern="^.{1,40}$" placeholder="Décrivez l'article" required data-toggle="tooltip" title="La description de l'article est unique, et ne doit pas dépasser 40 caractères">
+                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="stock-nouvArt-gest">Stock</label>
+                                                <input type="number" class="form-control text-right " id="stock-nouvArt-gest" step="1" min="0" max="99999" placeholder="Quantité stockée" data-toggle="tooltip" title="La quantité d'articles<br>restants en stock">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la quantité en stock.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="code-nouvArt-gest" class="font-weight-bold">Code de l'article *</label>
+                                                <input type="text" class="form-control text-right " id="code-nouvArt-gest" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
+                                                <div class="invalid-feedback" id="invalid-code-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouvArt-gest" class="font-weight-bold">Prix unitaire *</label>
+                                                <input type="number" class="form-control text-right" step="0.01" min="0.01" max="99999.99" id="prix-nouvArt-gest" pattern="^\d{1,5}(,\d{1,2})?$" placeholder="Prix unitaire" required data-toggle="tooltip" title="Prix unitaire de l'article">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir le prix unitaire de l'article.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouvArt-gest">TVA spéciale</label>
+                                                <input type="number" class="form-control text-right" id="tva-nouvArt-gest" step="0.01" min="0.00" max="100" placeholder="Taux applicable" data-toggle="tooltip" title="Le taux spécial pour cet article, sinon le taux de l'entreprise sera appliqué">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <p class="mb-0">Groupe d'articles</label>
+                                            </div>
+                                            <div class="col-md-6" data-toggle="tooltip" title="Ajouter l'article à un groupe existant">
+                                                <select class="custom-select" id="groupe-art-gest" name="gest-grp-article">                                                                                                                                                             
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="groupes-nouvArt-gest" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-art-modifier">Modifier cet article</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlArticleGest" src="./gestionnaire/vueGestArticles.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE GESTION ARTICLES -->
+
+    <!-- DEBUT MODALE GESTION SOCIETES ET CLIENTS -->
+    <div class="modal fade modale-socCl-gest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron jumbotronx2">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Gestion des sociétés et clients</h4>
+                                    <form id="socCl-existant-gest">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12" id="bloc-rech-socCl-gest">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input required type="search" id="rechSocClGest" class="form-control must-rounded-right" placeholder="Recherchez la société ou le client *" aria-label="Recherche du client ou de la société" data-toggle="tooltip" title="Saisissez la description de la société<br> ou du client recherché">
+                                                    <div class="invalid-feedback text-right" id="invalid-socClRech-gest"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-supprimer">Supprimer ce client ou cette société</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="jumbotron jumbotronFin jumbo-rounded-b">
+                                <div class="container">
+                                    <h5 class="display-6">Modifier la société ou le client</h5>
+                                    <form id="nouvel-socCl-gest">
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-9">
+                                                <label for="descript-nouvSocCl-gest" class="font-weight-bold">Description de l'article *</label>
+                                                <input type="text" class="form-control " id="descript-nouvSocCl-gest" pattern="^.{1,40}$" placeholder="Décrivez l'article" required data-toggle="tooltip" title="La description de l'article est unique, et ne doit pas dépasser 40 caractères">
+                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="stock-nouvSocCl-gest">Stock</label>
+                                                <input type="number" class="form-control text-right " id="stock-nouvSocCl-gest" step="1" min="0" max="99999" placeholder="Quantité stockée" data-toggle="tooltip" title="La quantité d'articles<br>restants en stock">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir la quantité en stock.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="code-nouvSocCl-gest" class="font-weight-bold">Code de l'article *</label>
+                                                <input type="text" class="form-control text-right " id="code-nouvSocCl-gest" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
+                                                <div class="invalid-feedback" id="invalid-code-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouvSocCl-gest" class="font-weight-bold">Prix unitaire *</label>
+                                                <input type="number" class="form-control text-right" step="0.01" min="0.01" max="99999.99" id="prix-nouvSocCl-gest" pattern="^\d{1,5}(,\d{1,2})?$" placeholder="Prix unitaire" required data-toggle="tooltip" title="Prix unitaire de l'article">
+                                                <div class="invalid-feedback">
+                                                    Veuillez saisir le prix unitaire de l'article.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <label for="prix-nouvSocCl-gest">TVA spéciale</label>
+                                                <input type="number" class="form-control text-right" id="tva-nouvSocCl-gest" step="0.01" min="0.00" max="100" placeholder="Taux applicable" data-toggle="tooltip" title="Le taux spécial pour cet article, sinon le taux de l'entreprise sera appliqué">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <p class="mb-0">CLient ou société</label>
+                                            </div>
+                                            <div class="col-md-6" data-toggle="tooltip" title="Ajouter l'article à un groupe existant">
+                                                <select class="custom-select" id="groupe-socCl-gest" name="gest-grp-socCl">                                                                                                                                                             
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="groupe-nouvSocCl-gest" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-modifier">Modifier cette société ou ce client</button>
+                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlSocClGest" src="./gestionnaire/vueGestionSocCl.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE GESTION SOCIETES ET CLIENTS -->
+
+
+</body>
+
+
+
+<script nonce="inlPop" src="./bootstrap/js/popper.min.js" charset="utf-8"></script>
+<script nonce="inlBootBund" src="./bootstrap/js/bootstrap.bundle.min.js" charset="utf-8"></script>
+<script nonce="inlBoot" src="./bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+<script nonce="inlMaj" src="./gestionnaire/vueMaj.js" charset="utf-8"></script>
+<!-- Stockage des données dans docEdite et màj du document -->
+<script nonce="inlEditDoc">
+    // l'objet en cours
+    let docEdite = {
+        societe: {},
+        client: {},
+        document: {}
+    };
+    // les totaux des TVA
+    ttTva = new Map();
+
+    function afficher() {
+        let complet = 0;
+
+        // console.log('docEdit :\n' + JSON.stringify(docEdite) + '\n')
+
+        // retirer toutes les lignes de commande (màj tooltip)
+        $('#table-articles tr:not(:last-child)').tooltip('hide');
+        $('#table-articles tr:not(:last-child)').remove();
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                delay: {
+                    show: 999,
+                    hide: 0
+                },
+                animation: true,
+                html: true,
+                trigger: 'hover',
+            });
+        });
+
+        // retirer les totaux de TVA
+        $('.supTtTva').remove();
+
+        // mettre les totaux à 0
+        $('#doc-facDev-HT').text('0,00 EUR')
+        $('#doc-facDev-TVA').text('0,00 EUR')
+        $('#doc-facDev-TTC').text('0,00 EUR');
+
+        // société ?
+        if (docEdite.societe == undefined || (Object.keys(docEdite.societe).length === 0 && docEdite.societe.constructor === Object)) {
+            $('#doc-soc-denom').html('Votre société<i class="YlBtn1 fa fa-pencil fa-3x" id="societe"></i>');
+            $('#doc-soc-descript').text('');
+            $('#doc-soc-siret').text('');
+            $('#doc-soc-adr-l1').text('');
+            $('#doc-soc-adr-l2').text('');
+            $('#doc-soc-adr-l3').text('');
+            $('#doc-soc-tel2').text('');
+            $('#doc-soc-tel1').text('');
+            $('#doc-soc-fax').text('');
+        } else {
+            $('#doc-soc-denom').html(docEdite.societe.soc_denom + '<i class="YlBtn1 fa fa-pencil fa-3x" id="societe"></i>')
+            docEdite.societe.soc_descript == null ? $('#doc-soc-descript').text('') : $('#doc-soc-descript').text(docEdite.societe.soc_descript)
+            $('#doc-soc-siret').text('SIRET : ' + docEdite.societe.soc_siret)
+            $('#doc-soc-adr-l1').text(docEdite.societe.soc_adr_l1)
+            if (docEdite.societe.soc_adr_l2 == null) {
+                $('#doc-soc-adr-l2').text(docEdite.societe.soc_adr_l3)
+            } else {
+                $('#doc-soc-adr-l2').text(docEdite.societe.soc_adr_l2)
+                $('#doc-soc-adr-l3').text(docEdite.societe.soc_adr_l3)
+            }
+            docEdite.societe.soc_tel2 == null ? $('#doc-soc-tel2').text('') : $('#doc-soc-tel2').text('Tél : ' + docEdite.societe.soc_tel2)
+            docEdite.societe.soc_tel1 == null ? $('#doc-soc-tel1').text('') : $('#doc-soc-tel1').text('Tél : ' + docEdite.societe.soc_tel1)
+            docEdite.societe.soc_fax == null ? $('#doc-soc-fax').text('') : $('#doc-soc-fax').text('Fax : ' + docEdite.societe.soc_fax);
+            // mention spéciale TVA
+            if ($('#table-ssTva')[0].childNodes[0].innerText == 'TVA non applicable, article 293B du CGI') {} else if (docEdite.societe.soc_tva == null) {
+                $('#table-ssTva').prepend(`<tr><td>TVA non applicable, article 293B du CGI</td></tr>`);
+            }
+            complet += 1;
+        }
+        // client ?
+        if (docEdite.client == undefined || (Object.keys(docEdite.client).length === 0 && docEdite.client.constructor === Object)) {
+            $('#doc-cl-denom').html('Votre client<i class="YlBtn1 fa fa-pencil fa-3x" id="client"></i>');
+            $('#doc-cl-adr-l1').text('');
+            $('#doc-cl-adr-l2').text('');
+            $('#doc-cl-adr-l3').text('');
+        } else {
+            $('#doc-cl-denom').html(docEdite.client.soc_denom + '<i class="YlBtn1 fa fa-pencil fa-3x" id="client"></i>')
+            $('#doc-cl-adr-l1').text(docEdite.client.soc_adr_l1)
+            if (docEdite.client.soc_adr_l2 == null) {
+                $('#doc-cl-adr-l2').text(docEdite.client.soc_adr_l3)
+            } else {
+                $('#doc-cl-adr-l2').text(docEdite.client.soc_adr_l2)
+                $('#doc-cl-adr-l3').text(docEdite.client.soc_adr_l3)
+            }
+            complet += 1;
+        }
+        // document ?
+        if (docEdite.document == undefined || (Object.keys(docEdite.document).length === 0 && docEdite.document.constructor === Object)) {
+            // numéro de facture
+            $('#doc-facDev-num').text('')
+            $('#doc-facDev-type').html('Facture<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
+            $('#doc-facDev-type-regl').text('Comptant')
+        } else {
+            // type + mode de réglement
+            if (docEdite.document.facDev_type == 0) {
+                $('#doc-facDev-type-rectif').text('') // facture par défaut
+                $('#doc-facDev-type').html('Facture<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
+                $('#doc-facDev-type-regl').text('Comptant')
+            } else if (docEdite.document.facDev_type == 1) {
+                $('#doc-facDev-type').html('Devis<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
+                $('#doc-facDev-type-regl').text('À réception de la facture');
+            } else {
+                $('#doc-facDev-type').html('Facture<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
+                $('#doc-facDev-type-rectif').html('Annule et remplace la facture<br>N°' + docEdite.document.facDev_FR_num)
+                $('#doc-facDev-type-regl').text('Comptant')
+
+                setTimeout(function() {
+                    let elFR = document.getElementById('doc-facDev-type-rectif');
+                    let elT = document.getElementById('doc-facDev-type');
+                    elFR.classList.remove("clic-min");
+                    elFR.offsetWidth;
+                    elFR.classList.add("clic-min");
+                }, 250);
+            }
+            // articles ?
+            if (Array.isArray(docEdite.document.facDev_lignes) && docEdite.document.facDev_lignes.length > 0) {
+                let ht = tva = ttc = 0;
+                // vider MAP ttTva  => taux (clé) base (valeur);
+                ttTva.clear();
+                for (let i = 0; i < docEdite.document.facDev_lignes.length; i++) {
+                    let ob = docEdite.document.facDev_lignes[i];
+                    let p = strToFloat(ob.fD_art_prix);
+                    let q = strToFloat(ob.fD_art_qte);
+                    let montHt = multiplier(p, q);
+                    let montHtRemise = 0;
+
+                    //let montHtLigne = ;
+                    let laTva;
+                    ob.fD_art_tva == null ? laTva = (docEdite.societe.soc_tva == null ? '0,00' : docEdite.societe.soc_tva) : laTva = ob.fD_art_tva;
+
+                    $('#tableLigne').before(`<tr class="suppLignArt" id="lArt${i}" data-toggle="tooltip" title="Supprimer cette ligne">' +
+                        '<td>${ob.fD_art_code}</td>' +
+                        '<td>${ob.fD_art_descript}</td>' +
+                        '<td><span class="ylNb">${ob.fD_art_qte}</span></td>' +
+                        '<td><span class="ylNb">${ob.fD_art_prix}</span></td>' +
+                        '<td><span class="ylNb">${floToStr(montHt)}</span></td>' +
+                        '<td><span class="ylNb">${laTva}</span><i class="YlBtn2 YlBtn1 fa fa-times fa-3x suppArticle"></i></td>' +
+                        '</tr>`)
+                        // créer la strucutre HTML (avec la remise)
+                    if (ob.fD_art_remise == null) {} else {
+                        montHtRemise = diviser(multiplier(montHt, strToFloat(ob.fD_art_remise)), 100);
+                        $('#tableLigne').before(`<tr>' +
+                        '<td>${ob.fD_art_code}</td>' +
+                        '<td>Remise de ${ob.fD_art_remise}%</td>' +
+                        '<td><span class="ylNb">${ob.fD_art_qte}</span></td>' +
+                        '<td><span class="ylNb">${ob.fD_art_prix}</span></td>' +
+                        '<td><span class="ylNb">-${floToStr(montHtRemise)}</span></td>' +
+                        '<td><span class="ylNb">${laTva}</span></td>' +
+                        '</tr>`);
+                    }
+                    // totaux TVA
+                    let valeur = soustraire(montHt, montHtRemise);
+                    if (ttTva.has(laTva)) {
+                        ttTva.set(laTva, additionner(ttTva.get(laTva), valeur))
+                    } else {
+                        ttTva.set(laTva, strToFloat(valeur));
+                    }
+
+                    // ajouter au HT global
+                    ht += strToFloat(valeur);
+                    if (laTva == '0') {
+                        ttc = ht;
+                    } else {
+                        tva = additionner(tva, multiplier(multiplier(strToFloat(laTva), montHt), 0.01));
+                        if (ob.fD_art_remise == null) {} else tva = soustraire(tva, multiplier(multiplier(strToFloat(laTva), montHtRemise), 0.01));
+                        ttc = additionner(ht, tva);
+                    }
+                }
+
+                // écouteur de suppression d'une ligne de commande (vérifier si remise)
+                $('#table-articles tr.suppLignArt').click(function() {
+                    // si remise ne rien faire
+                    if ($(this).find("td:eq(0)").text() == '') {} else {
+                        window.api.send('debut-chrg');
+                        // récupérer l'id article
+                        let id = docEdite.document.facDev_lignes[($(this).attr('id').replace("lArt", ""))].fD_art_id;
+                        // supprimer la ligne de la structure HTML
+                        docEdite.document.facDev_lignes.splice($(this).attr('id').replace("lArt", ""), 1);
+                        //  màj+stock
+                        let obj = {
+                            facDev_lignes: docEdite.document.facDev_lignes,
+                            id: id,
+                            qte: $(this).find("td:eq(2)").text(),
+                        };
+                        // màj ligne+stock en base 
+                        window.api.send('envoi-supp-ligne', obj);
+                    }
+                });
+
+                ht = Math.round(ht * 100) / 100;
+                tva = Math.round(tva * 100) / 100;
+                ttc = Math.round(additionner(ht, tva) * 100) / 100;
+
+                $('#doc-facDev-HT').text(floToStr(ht) + ' EUR')
+                docEdite.document.facDev_HT = floToStr(ht);
+                $('#doc-facDev-TVA').text(floToStr(tva) + ' EUR')
+                $('#doc-facDev-TTC').text(floToStr(ttc) + ' EUR');
+                docEdite.document.facDev_TTC = floToStr(ttc);
+
+                let ordered = [];
+                ttTva.forEach(function(value, key) {
+                    ordered.push(key)
+                });
+
+                // classement ascendant
+                ordered.sort((a, b) => strToFloat(a) - strToFloat(b));
+
+                // si pas de tva, pas de totaux tva
+                if (ordered.length == 1 && ordered[0] == '0,00') {} else {
+                    $('#detailTva').before(`<tr class='supTtTva'>
+                        <td colspan="3" class="table-separ"></td>
+                    </tr>
+                    <tr class='supTtTva'>
+                        <td class="MmLigne totauxTxt">Taux TVA</td>
+                        <td class="totauxTxtTva"><span class="ylNb">Base</span></td>
+                        <td class="totauxTxtTva"><span class="ylNb">Total TVA</span</td>                            
+                    </tr>`);
+                    for (let i = 0; i < ordered.length; i++) {
+                        $('#detailTva').before(`                
+                    <tr class="supTtTva">
+                        <td class="totauxTxt"><span class="ylNb">${ordered[i]} %</span></td>
+                        <td class="totauxTxtTva"><span class="ylNb">${floToStr(Math.round(ttTva.get(ordered[i]) * 100) / 100)} EUR</span></td>
+                        <td class="totauxTxtTva"><span class="ylNb">${floToStr(multiplier(multiplier(strToFloat(ordered[i]), ttTva.get(ordered[i])), 0.01))} EUR</span</td>                            
+                    </tr>                   
+                    `);
+                    }
+                    $('#leTTC').before(`
+                    <tr class='supTtTva'>
+                        <td colspan="3" class="table-separ"></td>
+                    </tr>`);
+                }
+
+                complet += 1;
+            }
+            // numéro de facture
+            docEdite.document.facDev_num == null ? $('#doc-facDev-num').text('') : $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
+        }
+        $('#doc-facDev-date').text(getDateDoc());
+
+        // Si complet afficher enregistrer
+        if (complet == 3) {
+            let enregIco = document.getElementById('enregistrer');
+            let p = enregIco.parentElement;
+            p.style.display = 'inline-block';
+            enregIco.classList.remove("clic");
+            enregIco.offsetWidth;
+            enregIco.classList.add("clic");
+        } else {
+            let enregIco = document.getElementById('enregistrer');
+            let p = enregIco.parentElement;
+            p.style.display = 'none';
+        }
+        // fin de chargement de la page
+        $(document).ready(function() {
+            window.api.send('fin-chrg');
+        });
+    }
+
+    function getDateDoc() {
+        this.mapMois = new Map([
+            [1, "janvier"],
+            [2, "février"],
+            [3, "mars"],
+            [4, "avril"],
+            [5, "mai"],
+            [6, "juin"],
+            [7, "juillet"],
+            [8, "août"],
+            [9, "septembre"],
+            [10, "octobre"],
+            [11, "novembre"],
+            [12, "décembre"]
+        ]);
+        let date = new Date();
+        return "Le " + (date.getUTCDate().toString() == 1 ? date.getUTCDate().toString() + 'er' : date.getUTCDate()) + " " + this.mapMois.get(date.getMonth() + 1) + " " + date.getFullYear();
+    };
+
+    function strToFloat(str) {
+        if (str.indexOf(',') > -1) {
+            return Math.round((Number(str.replace(",", "."))) * 100) / 100;;
+        } else return Math.round((Number(str)) * 100) / 100;;
+    }
+
+    function floToStr(flo) {
+        return flo.toFixed(2).replace('.', ',');
+    }
+
+    function additionner(num1, num2) {
+        var baseNum, baseNum1, baseNum2;
+        try {
+            baseNum1 = num1.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum1 = 0;
+        }
+        try {
+            baseNum2 = num2.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum2 = 0;
+        }
+        baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+        return (num1 * baseNum + num2 * baseNum) / baseNum;
+    };
+
+    function soustraire(num1, num2) {
+        var baseNum, baseNum1, baseNum2;
+        var precision;
+        try {
+            baseNum1 = num1.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum1 = 0;
+        }
+        try {
+            baseNum2 = num2.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum2 = 0;
+        }
+        baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+        precision = (baseNum1 >= baseNum2) ? baseNum1 : baseNum2;
+        return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision);
+    }
+
+    function diviser(num1, num2) {
+        var baseNum1 = 0,
+            baseNum2 = 0;
+        var baseNum3, baseNum4;
+        try {
+            baseNum1 = num1.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum1 = 0;
+        }
+        try {
+            baseNum2 = num2.toString().split(".")[1].length;
+        } catch (e) {
+            baseNum2 = 0;
+        }
+        baseNum3 = Number(num1.toString().replace(".", ""));
+        baseNum4 = Number(num2.toString().replace(".", ""));
+        return (baseNum3 / baseNum4) * (Math.pow(10, baseNum2 - baseNum1));
+    };
+
+    function multiplier(num1, num2) {
+        var baseNum = 0;
+        try {
+            baseNum += num1.toString().split(".")[1].length;
+        } catch (e) {}
+        try {
+            baseNum += num2.toString().split(".")[1].length;
+        } catch (e) {}
+        return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
+    };
+
+    function scroll(i) {
+        // JQuery
+        if (i == 1) {
+            $('html, body').animate({
+                scrollTop: document.documentElement.scrollHeight
+            }, 250);
+        } else {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 250);
+        }
+    }
+</script>
+
+
+
+</html>
