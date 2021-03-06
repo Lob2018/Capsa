@@ -1,0 +1,30 @@
+$primary: #0D9DBF;
+// DÉBUT CSP REMPLACEMENT SVG GÉNÉRÉS VIA URL
+$custom-select-indicator: url(./img/choisir.svg) !default;
+$input-btn-padding-x: .75rem !default;
+$input-padding-x: $input-btn-padding-x !default;
+$custom-select-padding-x: $input-padding-x !default;
+$custom-select-bg-size: 8px 10px !default; // In pixels because image dimensions
+$custom-select-background: escape-svg($custom-select-indicator) no-repeat right $custom-select-padding-x center / $custom-select-bg-size !default; // Used so we can have multiple background elements (e.g., arrow and feedback icon)
+// FORMS
+$form-feedback-icon-valid: url(./img/valide.svg) !default;
+$form-feedback-icon-invalid: url(./img/erreur.svg) !default;
+// BUTTONS
+$navbar-light-toggler-icon-bg: url(./img/menu.svg) !default;
+$navbar-light-color: rgba(#FFFFFF, .5) !default;
+$navbar-light-hover-color: rgba(#FFFFFF, .7) !default;
+$navbar-light-active-color: rgba(#FFFFFF, .9) !default;
+$navbar-light-disabled-color: rgba(#FFFFFF, .3) !default;
+$navbar-light-toggler-border-color: rgba(#FFFFFF, 0) !default;
+// FIN CSP REMPLACEMENT SVG GÉNÉRÉS VIA URL
+// ARRONDIR POUR RECHERCHER
+$rounded-pill: 50rem !default;
+.must-rounded-right {
+    border-top-right-radius: $rounded-pill !important;
+    border-bottom-right-radius: $rounded-pill !important;
+}
+
+.must-rounded-left {
+    border-top-left-radius: $rounded-pill !important;
+    border-bottom-left-radius: $rounded-pill !important;
+}
