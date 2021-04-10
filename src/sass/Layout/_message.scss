@@ -1,0 +1,50 @@
+.user-message {
+    &-primary,
+    &-secondary {
+        @extend %animLoading;
+        display: flex;
+        position: fixed;
+        bottom: 0px;
+        left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        z-index: 9998;
+    }
+    &-primary {
+        background-color: #f8d7da;
+    }
+    &-secondary {
+        background-color: #323639;
+    }
+    &__close {
+        position: absolute;
+        cursor: pointer;
+        top: 0.5em;
+        right: 0.5em;
+        width: 1.5em;
+        text-align: center;
+    }
+    &__close::after {
+        content: "✖";
+    }
+}
+
+.text--info {
+    max-width: 57em;
+    text-align: left;
+    z-index: 9999;
+    padding: .75em 2.5em .75em .75em;
+    color: white;
+    background-color: #323639;
+}
+
+.text--error {
+    max-width: 57em;
+    text-align: left;
+    z-index: 9999;
+    padding: .75em 2.5em .75em .75em;
+    color: #721c24;
+    background-color: #f8d7da;
+}

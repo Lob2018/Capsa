@@ -30,6 +30,7 @@ const YlSplash = require('./gestionnaire/outils/winsplash');
 const YlCharg = require('./gestionnaire/outils/winCharg');
 const YlChargEnCours = require('./gestionnaire/outils/winChargEnCours');
 const YlMsg = require('./gestionnaire/outils/message');
+const YlMsgInterface = require('./gestionnaire/outils/message-interface');
 const YlDate = require('./gestionnaire/outils/date');
 const YlRegion = require('./gestionnaire/outils/region');
 const YlDonnees = require('./gestionnaire/outils/donnees');
@@ -43,7 +44,7 @@ let msg = null;
 let date = new YlDate();
 let donnees = new YlDonnees();
 let docEdite = { societe: {}, client: {}, document: {} };
-
+const message = new YlMsgInterface; // peut remplacer msg sans saisie
 let urlUpdate = null;
 
 
@@ -133,27 +134,27 @@ async function createWindow() {
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
     // DEV
-    mainWindow.setAlwaysOnTop(true, 'screen');
-    mainWindow.show();
-    mainWindow.maximize();
-    mainWindow.setAlwaysOnTop(false, 'screen');
-    mainWindow.webContents.openDevTools();
-    // charger la vue principale
-    mainWindow.loadFile(__dirname + '/index.html');
-
-
-    // // PROD
-    // // splash screen
-    // let splash = new YlSplash(mainWindow);
+    // mainWindow.setAlwaysOnTop(true, 'screen');
+    // mainWindow.show();
+    // mainWindow.maximize();
+    // mainWindow.setAlwaysOnTop(false, 'screen');
+    // mainWindow.webContents.openDevTools();
     // // charger la vue principale
-    // setTimeout(function() {
-    //     splash.retirer();
-    //     mainWindow.loadFile(__dirname + '/index.html');
-    //     mainWindow.maximize();
-    //     mainWindow.setAlwaysOnTop(true, 'screen');
-    //     mainWindow.show();
-    //     mainWindow.setAlwaysOnTop(false, 'screen');
-    // }, 1234);
+    // mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // PROD
+    // splash screen
+    let splash = new YlSplash(mainWindow);
+    // charger la vue principale
+    setTimeout(function() {
+        splash.retirer();
+        mainWindow.loadFile(__dirname + '/index.html');
+        mainWindow.maximize();
+        mainWindow.setAlwaysOnTop(true, 'screen');
+        mainWindow.show();
+        mainWindow.setAlwaysOnTop(false, 'screen');
+    }, 1234);
 
 
     // indexer les descriptions d'articles
@@ -249,6 +250,7 @@ async function createWindow() {
             docEdite.document.facDev_HT = infos.ht;
             docEdite.document.facDev_TTC = infos.ttc;
             docEdite.document.facDev_FR_num = infos.facDev_FR_num;
+            docEdite.document.facDev_TVAs = infos.facDev_TVAs;
             let retourII = await majDocEnr();
             // msg si avertissement ou erreur
             if (retourII.val == 0) {
@@ -393,6 +395,16 @@ async function createWindow() {
             msg.warning(retour);
         }
     })
+
+    // facture/devis article - au moins un article
+    ipcMain.on('envoi-rech-articles-presents', async function(event) {
+        let retour = await trouverArticle();
+        // msg si avertissement ou erreur
+        if (retour.val == 1) {
+            msg.warning(retour.rep);
+        }
+        mainWindow.webContents.send('retour-rech-articles-presents', retour);
+    });
 
     // facture/devis article - chargement des articles et groupes
     ipcMain.on('envoi-chg-art+grp', async function(event) {
@@ -572,6 +584,17 @@ async function createWindow() {
         }
         mainWindow.webContents.send('retour-supp-ligne', retour);
     });
+
+    // facture/devis article - au moins une societe
+    ipcMain.on('envoi-rech-societes-presentes', async function(event) {
+        let retour = await trouverSociete();
+        // msg si avertissement ou erreur
+        if (retour.val == 1) {
+            msg.warning(retour.rep);
+        }
+        mainWindow.webContents.send('retour-rech-societes-presentes', retour);
+    });
+
     // facture/devis article - chargement des sociétés
     ipcMain.on('envoi-chg-societes', async function(event) {
         let retour = await lireSocietes();
@@ -590,6 +613,17 @@ async function createWindow() {
         }
         mainWindow.webContents.send('retour-chg-clients', retour);
     });
+
+    // facture/devis article - au moins un client
+    ipcMain.on('envoi-rech-clients-presents', async function(event) {
+        let retour = await trouverClient();
+        // msg si avertissement ou erreur
+        if (retour.val == 1) {
+            msg.warning(retour.rep);
+        }
+        mainWindow.webContents.send('retour-rech-clients-presents', retour);
+    });
+
     // facture/devis article - chargement des factures
     ipcMain.on('envoi-chg-fact', async function(event) {
         let retour = await lireFactures();
@@ -1095,7 +1129,7 @@ function majDocArtEx(facDev) {
 function majDocEnr() {
     return new Promise(function(retour) {
         db.update({ facDev_creation: true }, {
-            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false }
+            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_TVAs: docEdite.document.facDev_TVAs }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
                 retour({ val: 1, rep: e });
@@ -1106,6 +1140,20 @@ function majDocEnr() {
         });
     });
 }
+
+// facture/devis article - au moins un article
+function trouverArticle() {
+    return new Promise(function(retour) {
+        db.findOne({ art_descript: { $exists: true } }).exec(function(e, docs) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: docs });
+            }
+        });
+    });
+}
+
 
 // facture/devis article - maj du stock d'un article
 function majStock(id, qte) {
@@ -1380,11 +1428,35 @@ function lireArticlesNnGrpTrieDesc() {
         });
     });
 }
+// facture/devis article - au moins une société
+function trouverSociete() {
+    return new Promise(function(retour) {
+        db.findOne({ $or: [{ soc_type: 0 }, { soc_type: 1 }] }).exec(function(e, docs) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: docs });
+            }
+        });
+    });
+}
 // facture/devis article - récupérer les sociétés
 function lireSocietes() {
     return new Promise(function(retour) {
         db.find({ $or: [{ soc_type: 0 }, { soc_type: 1 }] }).sort({ updatedAt: -1 }).exec(function(e, docs) {
             // db.find({ soc_type: 0 }).sort({ updatedAt: -1 }).exec(function(e, docs) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: docs });
+            }
+        });
+    });
+}
+// facture/devis article - au moins un client
+function trouverClient() {
+    return new Promise(function(retour) {
+        db.findOne({ soc_type: -1 }).exec(function(e, docs) {
             if (e) {
                 retour({ val: 1, rep: e });
             } else {

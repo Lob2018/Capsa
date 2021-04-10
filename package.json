@@ -26,8 +26,7 @@
             "packagerConfig": {
                 "icon": "src/img/CAPSA.ico"
             },
-            "makers": [
-                {
+            "makers": [{
                     "name": "@electron-forge/maker-squirrel",
                     "config": {
                         "loadingGif": "src/img/spinner.gif",

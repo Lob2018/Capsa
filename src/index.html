@@ -164,55 +164,57 @@
                 <div class="container-fluid">
                     <div class="row h-0">
                         <div class="col-md-12 centVertCol">
-                            <div class="jumbotron">
+                            <div class="jumbotron jumbotron--fieldset">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Article existant</h4>
+                                    <h4 class="display-6">Chercher parmi vos articles</h4>
                                     <form id="article-existant">
-                                        <div class="form-row mt-1">
-                                            <div class="col-md-12" id="bloc-rech-art">
-                                                <div class="input-group mt-1 mb-1">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                        <fieldset id="article-existant-fieldset">
+                                            <div class="form-row mt-1">
+                                                <div class="col-md-12" id="bloc-rech-art">
+                                                    <div class="input-group mt-1 mb-1">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                        </div>
+                                                        <input required type="search" id="rechArt" class="form-control must-rounded-right" placeholder="Saisir le nom de l'article recherché" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
+                                                        <div class="invalid-feedback text-right" id="invalid-artRech"></div>
                                                     </div>
-                                                    <input required type="search" id="rechArt" class="form-control must-rounded-right" placeholder="Recherchez l'article existant" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
-                                                    <div class="invalid-feedback text-right" id="invalid-artRech"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-row mt-1">
-                                            <div class="col-md-4 text-right">
-                                                <label for="quantite-ex" class="font-weight-bold">Quantité *</label>
-                                                <input type="number" class="form-control text-right " id="quantite-ex" step="1" min="1" max="99999" placeholder="La quantité d'articles" required data-toggle="tooltip" title="La quantité d'articles fournis au client">
-                                                <div class="invalid-feedback">
-                                                    Veuillez saisir la quantité.
+                                            <div class="form-row mt-1">
+                                                <div class="col-md-4 text-right">
+                                                    <label for="quantite-ex" class="font-weight-bold">Quantité *</label>
+                                                    <input type="number" class="form-control text-right " id="quantite-ex" step="1" min="1" max="99999" placeholder="La quantité d'articles" required data-toggle="tooltip" title="La quantité d'articles fournis au client">
+                                                    <div class="invalid-feedback">
+                                                        Veuillez saisir la quantité.
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-right">
+                                                    <label for="quantite-ex">Stock restant</label>
+                                                    <input type="number" class="form-control text-right " id="stock-ex" step="1" min="0" max="99999" placeholder="La quantité en stock" data-toggle="tooltip" title="La quantité d'articles restants en stock (après le retrait du stock)">
+                                                    <div class="invalid-feedback">
+                                                        La quantité restante en stock.
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-right">
+                                                    <label for="remise-ex">Remise</label>
+                                                    <input type="number" class="form-control text-right" id="remise-ex" step="0.01" min="0.01" max="100" placeholder="Taux de réduction" data-toggle="tooltip" title="Le pourcentage de remise sur cet article, pour cette commande">
+                                                    <div class="invalid-feedback">
+                                                        Veuillez saisir la remise.
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 text-right">
-                                                <label for="quantite-ex">Stock restant</label>
-                                                <input type="number" class="form-control text-right " id="stock-ex" step="1" min="0" max="99999" placeholder="La quantité en stock" data-toggle="tooltip" title="La quantité d'articles restants en stock (après le retrait du stock)">
-                                                <div class="invalid-feedback">
-                                                    La quantité restante en stock.
-                                                </div>
+                                            <div class="text-center mt-3">
+                                                <button class="pull-right btn btn-primary submit" type="submit">Ajouter l'article</button>
+                                                <p class="pull-left font-weight-bold">* Champs requis</p>
                                             </div>
-                                            <div class="col-md-4 text-right">
-                                                <label for="remise-ex">Remise</label>
-                                                <input type="number" class="form-control text-right" id="remise-ex" step="0.01" min="0.01" max="100" placeholder="Taux de réduction" data-toggle="tooltip" title="Le pourcentage de remise sur cet article, pour cette commande">
-                                                <div class="invalid-feedback">
-                                                    Veuillez saisir la remise.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center mt-3">
-                                            <button class="pull-right btn btn-primary submit" type="submit">Ajouter l'article</button>
-                                            <p class="pull-left font-weight-bold">* Champs requis</p>
-                                        </div>
+                                        </fieldset>
                                     </form>
                                 </div>
                             </div>
                             <div class="jumbotron jumbotronFin">
                                 <div class="container">
-                                    <h4 class="display-6">Nouvel article</h4>
+                                    <h4 class="display-6">Créer un article</h4>
                                     <form id="nouvel-article">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12">
@@ -303,7 +305,7 @@
                             <div class="jumbotron jumbotron-rech">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Société existante</h4>
+                                    <h4 class="display-6">Chercher parmi vos sociétés</h4>
                                     <form id="societe-existante">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12" id="bloc-rech-soc">
@@ -311,7 +313,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input type="search" id="rechSoc" class="form-control must-rounded-right" placeholder="Recherchez la société existante" aria-label="Recherche de la société" data-toggle="tooltip" title='Saisissez le nom de la<br>société recherchée'>
+                                                    <input type="search" id="rechSoc" class="form-control must-rounded-right" placeholder="Saisir le nom de la société recherchée" aria-label="Recherche de la société" data-toggle="tooltip" title='Saisissez le nom de la<br>société recherchée'>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,7 +322,7 @@
                             </div>
                             <div class="jumbotron jumbotronFin">
                                 <div class="container">
-                                    <h4 class="display-6">Nouvelle société</h4>
+                                    <h4 class="display-6">Créer votre société</h4>
                                     <form id="nouvelle-societe">
                                         <div class="form-row mt-1">
                                             <div class="col-md-6">
@@ -469,7 +471,7 @@
                             <div class="jumbotron  jumbotron-rech">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Client existant</h4>
+                                    <h4 class="display-6">Chercher parmi vos clients</h4>
                                     <form id="client-existant">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12" id="bloc-rech-cl">
@@ -477,7 +479,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input type="search" id="rechCl" class="form-control must-rounded-right" placeholder="Recherchez le client existant" aria-label="Recherche du client" data-toggle="tooltip" title='Saisissez le nom du<br>client recherché'>
+                                                    <input type="search" id="rechCl" class="form-control must-rounded-right" placeholder="Saisir le nom de votre client" aria-label="Recherche du client" data-toggle="tooltip" title='Saisissez le nom du<br>client recherché'>
                                                 </div>
                                             </div>
                                         </div>
@@ -486,7 +488,7 @@
                             </div>
                             <div class="jumbotron jumbotronFin">
                                 <div class="container">
-                                    <h4 class="display-6">Nouveau client</h4>
+                                    <h4 class="display-6">Créer un client</h4>
                                     <form id="nouveau-client">
                                         <div class="form-row mt-1">
                                             <div class="col-md-6">
@@ -799,6 +801,110 @@
 <script nonce="inlMaj" src="./gestionnaire/vueMaj.js" charset="utf-8"></script>
 <!-- Stockage des données dans docEdite et màj du document -->
 <script nonce="inlEditDoc">
+    /**
+     * Give a message to the user
+     * type 0 for normal message and -1 for error
+     * Singleton design pattern
+     */
+    class Message {
+        static instance;
+        constructor() {
+            if (Message.instance) {
+                return Message.instance;
+            }
+            Message.instance = this;
+            this.messagesArray = [];
+        }
+
+        // Add the message to the waiting list
+        queue(type, duration, message, resolution) {
+            // Check the arguments values
+            if (this.checked(type, duration)) {
+                this.messagesArray.push({
+                    message: message,
+                    duration: duration,
+                    resolution: resolution,
+                    type: type
+                });
+                if (this.messagesArray.length === 1) this.rendered();
+            }
+        }
+
+        // Check the arguments
+        checked(type, duration) {
+            return ((type === 0 || type === -1) && (duration > 200))
+        }
+
+        // Render the first message, then the others by recursion 
+        rendered() {
+            let preservedThis = this;
+            preservedThis.bloc = preservedThis.createTheHtmlElement(preservedThis.messagesArray[0].type, preservedThis.messagesArray[0].message, preservedThis.messagesArray[0].resolution);
+            document.body.insertBefore(preservedThis.bloc, document.body.firstChild);
+            if (preservedThis.messagesArray[0].type === -1) {
+                document.getElementsByClassName('user-message-primary')[0].style.animationDuration = preservedThis.messagesArray[0].duration / 1000 + "s";
+            } else {
+                document.getElementsByClassName('user-message-secondary')[0].style.animationDuration = preservedThis.messagesArray[0].duration / 1000 + "s";
+            }
+
+            // Delay the next rendering
+            preservedThis.myTimer = setTimeout(function() {
+                preservedThis.stopRenderer(preservedThis);
+            }, preservedThis.messagesArray[0].duration);
+
+            // Stop the rendering when the message is closed
+            let closeButton = preservedThis.bloc.getElementsByClassName('user-message__close')[0];
+            closeButton.onclick = function() {
+                preservedThis.closeMessage(preservedThis)
+            };
+
+        }
+
+        stopRenderer(preservedThis) {
+            preservedThis.messagesArray.shift();
+            preservedThis.bloc.remove();
+            if (preservedThis.messagesArray.length > 0) preservedThis.rendered();
+        }
+
+        closeMessage(preservedThis) {
+            preservedThis.stopRenderer(preservedThis);
+            clearTimeout(preservedThis.myTimer);
+        }
+
+        // Create the HTML bloc
+        createTheHtmlElement(type, message, resolution) {
+            let bloc = document.createElement('div');
+            let element = document.createElement('p');
+            let elementMessage = document.createElement('span');
+            let elementResolution = document.createElement('span');
+            let elementBr = document.createElement('br');
+            let elementClose = document.createElement('span');
+            element.setAttribute("role", "alertdialog");
+            elementMessage.textContent = message;
+            element.appendChild(elementMessage);
+            elementClose.setAttribute("class", "user-message__close");
+            elementClose.setAttribute("aria-label", "Fermer ce message");
+            elementClose.setAttribute("title", "Fermer ce message");
+            element.appendChild(elementClose);
+            if (type == -1) {
+                element.setAttribute("aria-labelledby", "user-message-primary");
+                bloc.setAttribute("class", "user-message-primary");
+                element.setAttribute("class", "text--error");
+                elementResolution.textContent = " Vous pouvez : " + resolution;
+                element.appendChild(elementBr);
+                element.appendChild(elementResolution);
+            } else {
+                element.setAttribute("aria-labelledby", "user-message-secondary");
+                bloc.setAttribute("class", "user-message-secondary");
+                element.setAttribute("class", "text--info");
+            }
+            bloc.appendChild(element);
+            return bloc;
+        }
+    }
+
+    // initialiser les messages
+    const message = new Message();
+
     // l'objet en cours
     let docEdite = {
         societe: {},
@@ -835,6 +941,9 @@
         $('#doc-facDev-HT').text('0,00 EUR')
         $('#doc-facDev-TVA').text('0,00 EUR')
         $('#doc-facDev-TTC').text('0,00 EUR');
+
+        // initialiser les totaux de TVAs stockés
+        docEdite.document.facDev_TVAs = null;
 
         // société ?
         if (docEdite.societe == undefined || (Object.keys(docEdite.societe).length === 0 && docEdite.societe.constructor === Object)) {
@@ -1028,12 +1137,16 @@
                     <tr class='supTtTva'>
                         <td colspan="3" class="table-separ"></td>
                     </tr>`);
+                    // ajouter les taux et base au document
+                    docEdite.document.facDev_TVAs = Array.from(ttTva);
                 }
 
                 complet += 1;
             }
+
             // numéro de facture
             docEdite.document.facDev_num == null ? $('#doc-facDev-num').text('') : $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
+
         }
         $('#doc-facDev-date').text(getDateDoc());
 
@@ -1042,14 +1155,60 @@
             let enregIco = document.getElementById('enregistrer');
             let p = enregIco.parentElement;
             p.style.display = 'inline-block';
-            enregIco.classList.remove("clic");
+            enregIco.classList.remove("clic-min-long-retard-une");
             enregIco.offsetWidth;
-            enregIco.classList.add("clic");
+            enregIco.classList.add("clic-min-long-retard-une");
+
         } else {
             let enregIco = document.getElementById('enregistrer');
             let p = enregIco.parentElement;
             p.style.display = 'none';
         }
+
+        // Guider la saisie (société -> client -> type -> article)
+        // si pas de société
+        if (docEdite.societe == undefined || (Object.keys(docEdite.societe).length === 0 && docEdite.societe.constructor === Object)) {
+            $('#doc-soc-denom').removeClass("clic-min-long");
+            $('#doc-soc-denom').offset()
+            $('#doc-soc-denom').addClass("clic-min-long");
+            $('#doc-cl-denom').hide();
+            $('#ajoutArticle').hide();
+            $('#doc-facDev-type').hide();
+            message.queue(0, 6000, "Saisissez les coordonnées de votre société");
+        } else {
+            //si pas de client
+            if (docEdite.client == undefined || (Object.keys(docEdite.client).length === 0 && docEdite.client.constructor === Object)) {
+                $('#doc-cl-denom').show();
+                $('#doc-cl-denom').removeClass("clic-min-long");
+                $('#doc-cl-denom').offset()
+                $('#doc-cl-denom').addClass("clic-min-long");
+                $('#ajoutArticle').hide();
+                $('#doc-facDev-type').hide();
+                message.queue(0, 6000, "Saisissez les coordonnées de votre client");
+            } else {
+                // si c'est prêt
+                if (complet == 3) {
+                    //prêt
+                    $('#doc-cl-denom').show();
+                    $('#ajoutArticle').show();
+                    $('#doc-facDev-type').show();
+                    message.queue(0, 6000, "Vous pouvez maintenant enregistrer cette facture");
+                } else {
+                    $('#doc-cl-denom').show();
+                    $('#ajoutArticle').show();
+                    $('#ajoutArticle').removeClass("clic-min-long-retard-trois");
+                    $('#ajoutArticle').offset()
+                    $('#ajoutArticle').addClass("clic-min-long-retard-trois");
+                    $('#doc-facDev-type').show();
+                    $('#doc-facDev-type').removeClass("clic-min-long");
+                    $('#doc-facDev-type').offset()
+                    $('#doc-facDev-type').addClass("clic-min-long");
+                    message.queue(0, 3000, "Choisissez le type de document");
+                    message.queue(0, 5000, "Puis ajoutez un article");
+                }
+            }
+        }
+
         // fin de chargement de la page
         $(document).ready(function() {
             window.api.send('fin-chrg');

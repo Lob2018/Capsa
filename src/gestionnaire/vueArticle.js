@@ -16,6 +16,18 @@ $(document).ready(function() {
         $("#rechArt").removeClass('is-valid');
     });
 
+    // Afficher ou pas la recherche  
+    window.api.receive('retour-rech-articles-presents', (arg) => {
+        if (arg.rep == null) {
+            $('#article-existant-fieldset').attr("disabled", true);
+        } else $('#article-existant-fieldset').attr("disabled", false);
+    });
+    // Afficher ou pas la recherche
+    $('.modale-articles').on('show.bs.modal', function(e) {
+        // Vérifier s'il y a un article
+        window.api.send('envoi-rech-articles-presents');
+    });
+
     // envoi de la modale chargement des groupes
     $('#ajoutArticle').on('click', () => {
         viderFormArt();
@@ -35,7 +47,6 @@ $(document).ready(function() {
         o.grpes = arg.rep;
         // I CHOISIR ARTICLE et II CHOISR GRPE
         o.isGrpe = Array.isArray(o.grpes) && o.grpes.length > 0;
-
         // II
         if (o.isGrpe) {
             // vider les options
@@ -145,6 +156,7 @@ $(document).ready(function() {
                 // remplir avec la sélection
                 $('#rechArt').val(o.article.art_descript);
                 $("#rechArt").addClass('is-valid');
+                $("#rechArt").removeClass('is-invalid');
             });
 
         } else {
@@ -250,7 +262,7 @@ $(document).ready(function() {
         event.preventDefault();
         if (o.article == undefined) {
             $("#rechArt").val('');
-            $("#invalid-artRech").text('Vous devez sélectionner un article existant');
+            $("#invalid-artRech").text('Vous devez sélectionner un article existant ci-dessous');
             $("#rechArt").addClass('is-invalid');
         } else {
             // Basculer la modale + chargement en cours

@@ -13,6 +13,18 @@ $(document).ready(function() {
         $('.supp-res-rech').remove();
     });
 
+    // Afficher ou pas la recherche
+    window.api.receive('retour-rech-clients-presents', (arg) => {
+        if (arg.rep == null) {
+            $('#rechCl').attr("disabled", true);
+        } else $('#rechCl').attr("disabled", false);
+    });
+    // Afficher ou pas la recherche
+    $('.modale-client').on('show.bs.modal', function(e) {
+        // Vérifier s'il y a une société
+        window.api.send('envoi-rech-clients-presents');
+    });
+
     // vider en cas d'abandon
     $('.modale-client').on('hidden.bs.modal', function(e) {
         o.client = undefined;

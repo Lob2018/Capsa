@@ -131,7 +131,7 @@ $(document).ready(function() {
         elEnr.classList.remove("clic");
         elEnr.offsetWidth;
         elEnr.classList.add("clic");
-        window.api.send('envoi-numero', { ht: docEdite.document.facDev_HT, ttc: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num });
+        window.api.send('envoi-numero', { ht: docEdite.document.facDev_HT, ttc: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_TVAs: docEdite.document.facDev_TVAs });
     })
 
 

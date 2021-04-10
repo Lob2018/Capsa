@@ -13,6 +13,18 @@ $(document).ready(function() {
         $('.supp-res-rech').remove();
     });
 
+    // Afficher ou pas la recherche
+    window.api.receive('retour-rech-societes-presentes', (arg) => {
+        if (arg.rep == null) {
+            $('#rechSoc').attr("disabled", true);
+        } else $('#rechSoc').attr("disabled", false);
+    });
+    // Afficher ou pas la recherche
+    $('.modale-societe').on('show.bs.modal', function(e) {
+        // Vérifier s'il y a une société
+        window.api.send('envoi-rech-societes-presentes');
+    });
+
     // vider en cas d'abandon
     $('.modale-societe').on('hidden.bs.modal', function(e) {
         o.societe = undefined;
