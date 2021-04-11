@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="
   default-src 'none'; 
-  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc'; 
+  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc' 'nonce-inlMessage'; 
   connect-src 'self'; 
   img-src 'self'; 
   style-src 'self';
@@ -120,7 +120,7 @@
                 </tr>
             </thead>
             <tbody id="table-articles">
-                <tr data-toggle="tooltip" title="Choisir les articles à ajouter" id="tableLigne">
+                <tr data-toggle="tooltip" title="Ajouter un article" id="tableLigne">
                     <td colspan="6" class="text-center btn-perso" id="ajoutArticle" data-toggle="modal" data-target=".modale-articles"><i class="YlBtn1 YlBtn3 fa fa-pencil fa-3x"></i></td>
                 </tr>
             </tbody>
@@ -799,109 +799,9 @@
 <script nonce="inlBootBund" src="./bootstrap/js/bootstrap.bundle.min.js" charset="utf-8"></script>
 <script nonce="inlBoot" src="./bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
 <script nonce="inlMaj" src="./gestionnaire/vueMaj.js" charset="utf-8"></script>
+<script nonce="inlMessage" src="./gestionnaire/outils/message-vue.js" charset="utf-8"></script>
 <!-- Stockage des données dans docEdite et màj du document -->
 <script nonce="inlEditDoc">
-    /**
-     * Give a message to the user
-     * type 0 for normal message and -1 for error
-     * Singleton design pattern
-     */
-    class Message {
-        static instance;
-        constructor() {
-            if (Message.instance) {
-                return Message.instance;
-            }
-            Message.instance = this;
-            this.messagesArray = [];
-        }
-
-        // Add the message to the waiting list
-        queue(type, duration, message, resolution) {
-            // Check the arguments values
-            if (this.checked(type, duration)) {
-                this.messagesArray.push({
-                    message: message,
-                    duration: duration,
-                    resolution: resolution,
-                    type: type
-                });
-                if (this.messagesArray.length === 1) this.rendered();
-            }
-        }
-
-        // Check the arguments
-        checked(type, duration) {
-            return ((type === 0 || type === -1) && (duration > 200))
-        }
-
-        // Render the first message, then the others by recursion 
-        rendered() {
-            let preservedThis = this;
-            preservedThis.bloc = preservedThis.createTheHtmlElement(preservedThis.messagesArray[0].type, preservedThis.messagesArray[0].message, preservedThis.messagesArray[0].resolution);
-            document.body.insertBefore(preservedThis.bloc, document.body.firstChild);
-            if (preservedThis.messagesArray[0].type === -1) {
-                document.getElementsByClassName('user-message-primary')[0].style.animationDuration = preservedThis.messagesArray[0].duration / 1000 + "s";
-            } else {
-                document.getElementsByClassName('user-message-secondary')[0].style.animationDuration = preservedThis.messagesArray[0].duration / 1000 + "s";
-            }
-
-            // Delay the next rendering
-            preservedThis.myTimer = setTimeout(function() {
-                preservedThis.stopRenderer(preservedThis);
-            }, preservedThis.messagesArray[0].duration);
-
-            // Stop the rendering when the message is closed
-            let closeButton = preservedThis.bloc.getElementsByClassName('user-message__close')[0];
-            closeButton.onclick = function() {
-                preservedThis.closeMessage(preservedThis)
-            };
-
-        }
-
-        stopRenderer(preservedThis) {
-            preservedThis.messagesArray.shift();
-            preservedThis.bloc.remove();
-            if (preservedThis.messagesArray.length > 0) preservedThis.rendered();
-        }
-
-        closeMessage(preservedThis) {
-            preservedThis.stopRenderer(preservedThis);
-            clearTimeout(preservedThis.myTimer);
-        }
-
-        // Create the HTML bloc
-        createTheHtmlElement(type, message, resolution) {
-            let bloc = document.createElement('div');
-            let element = document.createElement('p');
-            let elementMessage = document.createElement('span');
-            let elementResolution = document.createElement('span');
-            let elementBr = document.createElement('br');
-            let elementClose = document.createElement('span');
-            element.setAttribute("role", "alertdialog");
-            elementMessage.textContent = message;
-            element.appendChild(elementMessage);
-            elementClose.setAttribute("class", "user-message__close");
-            elementClose.setAttribute("aria-label", "Fermer ce message");
-            elementClose.setAttribute("title", "Fermer ce message");
-            element.appendChild(elementClose);
-            if (type == -1) {
-                element.setAttribute("aria-labelledby", "user-message-primary");
-                bloc.setAttribute("class", "user-message-primary");
-                element.setAttribute("class", "text--error");
-                elementResolution.textContent = " Vous pouvez : " + resolution;
-                element.appendChild(elementBr);
-                element.appendChild(elementResolution);
-            } else {
-                element.setAttribute("aria-labelledby", "user-message-secondary");
-                bloc.setAttribute("class", "user-message-secondary");
-                element.setAttribute("class", "text--info");
-            }
-            bloc.appendChild(element);
-            return bloc;
-        }
-    }
-
     // initialiser les messages
     const message = new Message();
 
@@ -913,6 +813,9 @@
     };
     // les totaux des TVA
     ttTva = new Map();
+
+    // booléen guide
+    guider = true;
 
     function afficher() {
         let complet = 0;
@@ -1155,10 +1058,13 @@
             let enregIco = document.getElementById('enregistrer');
             let p = enregIco.parentElement;
             p.style.display = 'inline-block';
-            enregIco.classList.remove("clic-min-long-retard-une");
-            enregIco.offsetWidth;
-            enregIco.classList.add("clic-min-long-retard-une");
-
+            if (guider == false) {
+                enregIco.classList.remove("clic-min-long-retard-une");
+                enregIco.offsetWidth;
+                enregIco.classList.add("clic-min-long-retard-une");
+                message.queue(0, 6000, "Vous pouvez maintenant enregistrer cette facture");
+                guider = true;
+            }
         } else {
             let enregIco = document.getElementById('enregistrer');
             let p = enregIco.parentElement;
@@ -1167,7 +1073,8 @@
 
         // Guider la saisie (société -> client -> type -> article)
         // si pas de société
-        if (docEdite.societe == undefined || (Object.keys(docEdite.societe).length === 0 && docEdite.societe.constructor === Object)) {
+
+        if (complet == 0) {
             $('#doc-soc-denom').removeClass("clic-min-long");
             $('#doc-soc-denom').offset()
             $('#doc-soc-denom').addClass("clic-min-long");
@@ -1175,39 +1082,40 @@
             $('#ajoutArticle').hide();
             $('#doc-facDev-type').hide();
             message.queue(0, 6000, "Saisissez les coordonnées de votre société");
-        } else {
-            //si pas de client
-            if (docEdite.client == undefined || (Object.keys(docEdite.client).length === 0 && docEdite.client.constructor === Object)) {
-                $('#doc-cl-denom').show();
-                $('#doc-cl-denom').removeClass("clic-min-long");
-                $('#doc-cl-denom').offset()
-                $('#doc-cl-denom').addClass("clic-min-long");
-                $('#ajoutArticle').hide();
-                $('#doc-facDev-type').hide();
-                message.queue(0, 6000, "Saisissez les coordonnées de votre client");
+        } else if (complet == 1) {
+            $('#doc-cl-denom').show();
+            $('#doc-cl-denom').removeClass("clic-min-long");
+            $('#doc-cl-denom').offset()
+            $('#doc-cl-denom').addClass("clic-min-long");
+            $('#ajoutArticle').hide();
+            $('#doc-facDev-type').hide();
+            message.queue(0, 6000, "Saisissez les coordonnées de votre client");
+        } else if (complet == 2) {
+            $('#doc-cl-denom').show();
+            $('#ajoutArticle').show();
+            if (guider) {
+                $('#doc-facDev-type').show();
+                $('#doc-facDev-type').removeClass("clic-min-long");
+                $('#doc-facDev-type').offset()
+                $('#doc-facDev-type').addClass("clic-min-long");
+                message.queue(0, 3000, "Choisissez le type de document");
+                guider = false;
+                $('#ajoutArticle').removeClass("clic-min-long-retard-trois");
+                $('#ajoutArticle').offset()
+                $('#ajoutArticle').addClass("clic-min-long-retard-trois");
+                message.queue(0, 5000, "Puis ajoutez un article");
             } else {
-                // si c'est prêt
-                if (complet == 3) {
-                    //prêt
-                    $('#doc-cl-denom').show();
-                    $('#ajoutArticle').show();
-                    $('#doc-facDev-type').show();
-                    message.queue(0, 6000, "Vous pouvez maintenant enregistrer cette facture");
-                } else {
-                    $('#doc-cl-denom').show();
-                    $('#ajoutArticle').show();
-                    $('#ajoutArticle').removeClass("clic-min-long-retard-trois");
-                    $('#ajoutArticle').offset()
-                    $('#ajoutArticle').addClass("clic-min-long-retard-trois");
-                    $('#doc-facDev-type').show();
-                    $('#doc-facDev-type').removeClass("clic-min-long");
-                    $('#doc-facDev-type').offset()
-                    $('#doc-facDev-type').addClass("clic-min-long");
-                    message.queue(0, 3000, "Choisissez le type de document");
-                    message.queue(0, 5000, "Puis ajoutez un article");
-                }
+                $('#ajoutArticle').removeClass("clic-min-long-retard-une");
+                $('#ajoutArticle').offset()
+                $('#ajoutArticle').addClass("clic-min-long-retard-une");
+                message.queue(0, 5000, "Ajoutez un article");
             }
+        } else if (complet == 3) {
+            $('#doc-cl-denom').show();
+            $('#ajoutArticle').show();
+            $('#doc-facDev-type').show();
         }
+
 
         // fin de chargement de la page
         $(document).ready(function() {
