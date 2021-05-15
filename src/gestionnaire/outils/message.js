@@ -29,6 +29,14 @@ class YlMsg {
             message: 'Importer ou exporter les données ?',
             detail: '\nL\'import de données supprime toutes les données du logiciel !\nSauvegardez donc avant d\'importer de nouvelles données.\n\nL\'importation entrainera un redémarrage du logiciel.'
         }
+        this.questMoy = {
+            type: 'question',
+            buttons: ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire"],
+            defaultId: 0,
+            cancelId: -1,
+            title: 'Capsa - Moyen de paiement',
+            message: 'Choisir le moyen de paiement utilisé : ',
+        }
     }
 
     info() {
@@ -61,6 +69,14 @@ class YlMsg {
     questionImpExpDatas() {
         this.onTop();
         return dialog.showMessageBox(this.mainwindow, this.questImpExpD).then((data) => {
+            return data.response;
+        });
+    }
+
+
+    questionMoyen() {
+        this.onTop();
+        return dialog.showMessageBox(this.mainwindow, this.questMoy).then((data) => {
             return data.response;
         });
     }

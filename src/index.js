@@ -30,7 +30,6 @@ const YlSplash = require('./gestionnaire/outils/winsplash');
 const YlCharg = require('./gestionnaire/outils/winCharg');
 const YlChargEnCours = require('./gestionnaire/outils/winChargEnCours');
 const YlMsg = require('./gestionnaire/outils/message');
-const YlMsgInterface = require('./gestionnaire/outils/message-interface');
 const YlDate = require('./gestionnaire/outils/date');
 const YlRegion = require('./gestionnaire/outils/region');
 const YlDonnees = require('./gestionnaire/outils/donnees');
@@ -41,10 +40,9 @@ let mainWindow = null;
 let chargWindow = null;
 let chargWindowEnCours = null;
 let msg = null;
-let date = new YlDate();
-let donnees = new YlDonnees();
+const date = new YlDate();
+const donnees = new YlDonnees();
 let docEdite = { societe: {}, client: {}, document: {} };
-const message = new YlMsgInterface; // peut remplacer msg sans saisie
 let urlUpdate = null;
 
 
@@ -244,32 +242,39 @@ async function createWindow() {
 
     // enregistrer - numéro de facture
     ipcMain.on('envoi-numero', async function(event, infos) {
-        let retour = await numero();
-        // msg si avertissement ou erreur
-        if (retour.val == 0) {
-            docEdite.document.facDev_HT = infos.ht;
-            docEdite.document.facDev_TTC = infos.ttc;
-            docEdite.document.facDev_FR_num = infos.facDev_FR_num;
-            docEdite.document.facDev_TVAs = infos.facDev_TVAs;
-            let retourII = await majDocEnr();
+
+        let moyenP = null;
+        if (docEdite.document.facDev_type == 1) {} else moyenP = await moyen();
+
+        if (moyenP == -1) {} else {
+            let retour = await numero();
             // msg si avertissement ou erreur
-            if (retourII.val == 0) {
-                // passer la facture réctifiée en annulée
-                if (docEdite.document.facDev_FR_num == null) {} else {
-                    let retour = await majDocANN(docEdite.document.facDev_FR_num);
-                    // msg si avertissement ou erreur
-                    if (retour.val == 0) {} else {
-                        msg.warning(retour.rep);
+            if (retour.val == 0) {
+                docEdite.document.facDev_HT = infos.ht;
+                docEdite.document.facDev_TTC = infos.ttc;
+                docEdite.document.facDev_FR_num = infos.facDev_FR_num;
+                docEdite.document.facDev_TVAs = infos.facDev_TVAs;
+                docEdite.document.facDev_Paiement = moyenP;
+                let retourII = await majDocEnr();
+                // msg si avertissement ou erreur
+                if (retourII.val == 0) {
+                    // passer la facture réctifiée en annulée
+                    if (docEdite.document.facDev_FR_num == null) {} else {
+                        let retour = await majDocANN(docEdite.document.facDev_FR_num);
+                        // msg si avertissement ou erreur
+                        if (retour.val == 0) {} else {
+                            msg.warning(retour.rep);
+                        }
                     }
+                } else {
+                    msg.warning(retourII.rep);
                 }
             } else {
-                msg.warning(retourII.rep);
+                msg.warning(retour.rep);
             }
-        } else {
-            msg.warning(retour.rep);
+            retour.rep = docEdite;
+            mainWindow.webContents.send('retour-numero', retour);
         }
-        retour.rep = docEdite;
-        mainWindow.webContents.send('retour-numero', retour);
     });
     // enregistrer - redimensionner
     ipcMain.on('envoi-redimensionner', async function(event) {
@@ -709,6 +714,14 @@ async function createWindow() {
 
 
 };
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -849,6 +862,18 @@ function docVider() {
             }
         });
     });
+}
+
+// enregistrer - moyen de paiement
+function moyen() {
+    return new Promise(function(retour) {
+        // Importer ou exporter les données
+        msg.questionMoyen()
+            .then(function(reponse) {
+                retour(reponse);
+            });
+    });
+
 }
 
 // enregistrer - numéroter
@@ -1129,11 +1154,13 @@ function majDocArtEx(facDev) {
 function majDocEnr() {
     return new Promise(function(retour) {
         db.update({ facDev_creation: true }, {
-            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_TVAs: docEdite.document.facDev_TVAs }
+            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_Paiement: docEdite.document.facDev_Paiement, facDev_TVAs: docEdite.document.facDev_TVAs }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
+                docEdite.document.facDev_Paiement = null;
                 retour({ val: 1, rep: e });
             } else {
+                docEdite.document.facDev_Paiement = null;
                 docEdite.document.facDev_creation = false;
                 retour({ val: 0, rep: docEdite });
             };
