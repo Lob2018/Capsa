@@ -57,7 +57,7 @@
     "dependencies": {
         "@octokit/request": "^5.6.0",
         "electron-squirrel-startup": "^1.0.0",
-        "nedb": "git+https://github.com/Lob2018/nedb.git",
+        "nedb": "git+https://github.com/Lob2018/nedb2021.git",
         "v8-compile-cache": "^2.3.0"
     },
     "devDependencies": {
