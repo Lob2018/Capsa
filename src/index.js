@@ -12,7 +12,7 @@ const cle = { _Hatclic_id_Capsa_Yq3t6w9z: '4t7w!z%CmYq3t6w9SgVkYp3saNdRgUkXF-J@N
 process.setMaxListeners(0);
 
 // connexion et chargement auto 
-var Datastore = require('nedb'),
+var Datastore = require('nedb2021'),
     db = new Datastore({ filename: app.getPath('appData') + '/' + app.getName() + '/Capsa.db', autoload: true, timestampData: true });
 
 // clé d'authentification du fichier chargé
