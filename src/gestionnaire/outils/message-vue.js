@@ -91,5 +91,13 @@ class Message {
         return bloc;
     }
 
+    forceClose() {
+        const btnFermer = document.getElementsByClassName('user-message__close')[0];
+        if (btnFermer != undefined) {
+            btnFermer.click();
+            this.forceClose();
+        }
+    }
+
 
 }

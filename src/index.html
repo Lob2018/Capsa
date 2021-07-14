@@ -30,7 +30,7 @@
                 <!-- MENU -->
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-file-o fa-3x" id="nouveau" data-toggle="tooltip" title="Éditer un nouveau document,<br>en vidant tous les champs"></i><br>Nouveau </li>
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-save fa-3x" id="enregistrer" data-toggle="tooltip" title="Enregistrer ce document,<br>et le sauvegarder au format PDF"></i><br>Enregistrer </li>
-                <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-socCl-gest"><i class="YlBtn0 fa fa-address-book-o fa-3x" data-toggle="tooltip" id="societes-clients" title="Gestion des sociétés et clients"></i><br>Sociétés & clients </li>
+                <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-socCl-gest"><i class="YlBtn0 fa fa-address-book-o fa-3x" data-toggle="tooltip" id="societes-clients" title="Gestion des sociétés & clients"></i><br>Sociétés & clients </li>
                 <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-articles-gest"><i class="YlBtn0 fa fa-tags fa-3x" id="tous-articles" data-toggle="tooltip" title="Gestion des articles"></i><br>Articles </li>
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-book fa-3x" data-toggle="tooltip" id="ttes-factures" title="Gestion des factures et devis"></i><br>Factures & devis </li>
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-database fa-3x" data-toggle="tooltip" id="sauvegarde-bdd" title="Gestion des données de l'application"></i><br>Données </li>
@@ -167,7 +167,7 @@
                             <div class="jumbotron jumbotron--fieldset">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Chercher parmi vos articles</h4>
+                                    <h4 class="display-6">Rechercher un article</h4>
                                     <form id="article-existant">
                                         <fieldset id="article-existant-fieldset">
                                             <div class="form-row mt-1">
@@ -176,7 +176,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                         </div>
-                                                        <input required type="search" id="rechArt" class="form-control must-rounded-right" placeholder="Saisir le nom de l'article recherché" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
+                                                        <input required type="search" id="rechArt" class="form-control must-rounded-right" placeholder="Rechercher un article avec son nom" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisir la description<br>de l'article recherché">
                                                         <div class="invalid-feedback text-right" id="invalid-artRech"></div>
                                                     </div>
                                                 </div>
@@ -214,7 +214,7 @@
                             </div>
                             <div class="jumbotron jumbotronFin">
                                 <div class="container">
-                                    <h4 class="display-6">Créer un article</h4>
+                                    <h4 class="display-6">Nouvel article</h4>
                                     <form id="nouvel-article">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12">
@@ -227,7 +227,7 @@
                                         <div class="form-row mt-1">
                                             <div class="col-md-6 text-right">
                                                 <label for="code-nouv" class="font-weight-bold">Code de l'article *</label>
-                                                <input type="text" class="form-control text-right " id="code-nouv" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
+                                                <input type="text" class="form-control text-right " id="code-nouv" pattern="^.{1,20}$" placeholder="Saisir le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
                                                 <div class="invalid-feedback" id="invalid-code">
                                                 </div>
                                             </div>
@@ -277,7 +277,7 @@
                                                     </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" class="form-control" id="groupe-nouv" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                                <input type="text" class="form-control" id="groupe-nouv" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisir son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
                                             </div>
                                         </div>
                                         <div class="text-center mt-3">
@@ -305,7 +305,7 @@
                             <div class="jumbotron jumbotron-rech">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Chercher parmi vos sociétés</h4>
+                                    <h4 class="display-6">Rechercher une société</h4>
                                     <form id="societe-existante">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12" id="bloc-rech-soc">
@@ -313,7 +313,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input type="search" id="rechSoc" class="form-control must-rounded-right" placeholder="Saisir le nom de la société recherchée" aria-label="Recherche de la société" data-toggle="tooltip" title='Saisissez le nom de la<br>société recherchée'>
+                                                    <input type="search" id="rechSoc" class="form-control must-rounded-right" placeholder="Rechercher une société avec son nom" aria-label="Recherche de la société" data-toggle="tooltip" title='Saisir le nom de la<br>société recherchée'>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,12 +322,12 @@
                             </div>
                             <div class="jumbotron jumbotronFin">
                                 <div class="container">
-                                    <h4 class="display-6">Créer votre société</h4>
+                                    <h4 class="display-6">Nouvelle société</h4>
                                     <form id="nouvelle-societe">
                                         <div class="form-row mt-1">
                                             <div class="col-md-6">
                                                 <label for="denom-nouv-soc" class="font-weight-bold">Nom de votre société *</label>
-                                                <textarea rows="1" class="form-control " id="denom-nouv-soc" minlength="1" maxlength="100" placeholder="Saisissez le nom de votre société" required data-toggle="tooltip" title="Le nom de votre société est unique, il ne doit pas dépasser 100 caractères"></textarea>
+                                                <textarea rows="1" class="form-control " id="denom-nouv-soc" minlength="1" maxlength="100" placeholder="Saisir le nom de votre société" required data-toggle="tooltip" title="Le nom de votre société est unique, il ne doit pas dépasser 100 caractères"></textarea>
                                                 <div class="invalid-feedback" id="invalid-nom">
                                                 </div>
                                             </div>
@@ -389,7 +389,7 @@
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <label for="fax-nouv-soc">Numéro de fax</label>
-                                                <input type="text" class="form-control text-right " id="fax-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre société">
+                                                <input type="tel" class="form-control text-right " id="fax-nouv-soc" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre société">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
@@ -397,13 +397,13 @@
                                         <div class="form-row mt-1">
                                             <div class="col-md-6 text-right">
                                                 <label for="tel1-nouv-soc">Numéro de téléphone principal</label>
-                                                <input type="text" class="form-control text-right " id="tel1-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre société">
+                                                <input type="tel" class="form-control text-right " id="tel1-nouv-soc" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre société">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <label for="tel2-nouv-soc">Numéro de téléphone secondaire</label>
-                                                <input type="text" class="form-control text-right " id="tel2-nouv-soc" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre société">
+                                                <input type="tel" class="form-control text-right " id="tel2-nouv-soc" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre société">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
@@ -471,7 +471,7 @@
                             <div class="jumbotron  jumbotron-rech">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
-                                    <h4 class="display-6">Chercher parmi vos clients</h4>
+                                    <h4 class="display-6">Rechercher un client</h4>
                                     <form id="client-existant">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12" id="bloc-rech-cl">
@@ -479,7 +479,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input type="search" id="rechCl" class="form-control must-rounded-right" placeholder="Saisir le nom de votre client" aria-label="Recherche du client" data-toggle="tooltip" title='Saisissez le nom du<br>client recherché'>
+                                                    <input type="search" id="rechCl" class="form-control must-rounded-right" placeholder="Rechercher un client avec son nom" aria-label="Recherche du client" data-toggle="tooltip" title='Saisir le nom du<br>client recherché'>
                                                 </div>
                                             </div>
                                         </div>
@@ -493,7 +493,7 @@
                                         <div class="form-row mt-1">
                                             <div class="col-md-6">
                                                 <label for="denom-nouv-cl" class="font-weight-bold">Nom de votre client *</label>
-                                                <textarea rows="1" class="form-control " id="denom-nouv-cl" minlength="1" maxlength="100" placeholder="Saisissez le nom de votre client" required data-toggle="tooltip" title="Le nom de votre client est unique, il ne doit pas dépasser 100 caractères"></textarea>
+                                                <textarea rows="1" class="form-control " id="denom-nouv-cl" minlength="1" maxlength="100" placeholder="Saisir le nom de votre client" required data-toggle="tooltip" title="Le nom de votre client est unique, il ne doit pas dépasser 100 caractères"></textarea>
                                                 <div class="invalid-feedback" id="invalid-nom-cl">
                                                 </div>
                                             </div>
@@ -555,7 +555,7 @@
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <label for="fax-nouv-cl">Numéro de fax</label>
-                                                <input type="text" class="form-control text-right " id="fax-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre client">
+                                                <input type="tel" class="form-control text-right " id="fax-nouv-cl" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax<br> de votre client">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
@@ -563,13 +563,13 @@
                                         <div class="form-row mt-1">
                                             <div class="col-md-6 text-right">
                                                 <label for="tel1-nouv-cl">Numéro de téléphone principal</label>
-                                                <input type="text" class="form-control text-right " id="tel1-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre client">
+                                                <input type="tel" class="form-control text-right " id="tel1-nouv-cl" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal de votre client">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <label for="tel2-nouv-cl">Numéro de téléphone secondaire</label>
-                                                <input type="text" class="form-control text-right " id="tel2-nouv-cl" pattern="^.{1,32}$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre client">
+                                                <input type="tel" class="form-control text-right " id="tel2-nouv-cl" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire de votre client">
                                                 <div class="invalid-feedback">
                                                 </div>
                                             </div>
@@ -610,22 +610,17 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input required type="search" id="rechArtGest" class="form-control must-rounded-right" placeholder="Recherchez l'article *" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisissez la description<br>de l'article recherché">
+                                                    <input required type="search" id="rechArtGest" class="form-control must-rounded-right" placeholder="Rechercher un article avec sa description *" aria-label="Recherche de l'article" data-toggle="tooltip" title="Saisir la description<br>de l'article recherché">
                                                     <div class="invalid-feedback text-right" id="invalid-artRech-gest"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-row mt-1">
-                                        </div>
-                                        <div class="text-center mt-2">
-                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-art-supprimer">Supprimer  cet article</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <div class="jumbotron jumbotronFin jumbo-rounded-b">
                                 <div class="container">
-                                    <h5 class="display-6">Modifier l'article</h5>
+                                    <!-- <h5 class="display-6">Modification</h5> -->
                                     <form id="nouvel-article-gest">
                                         <div class="form-row mt-1">
                                             <div class="col-md-9">
@@ -645,7 +640,7 @@
                                         <div class="form-row mt-1">
                                             <div class="col-md-6 text-right">
                                                 <label for="code-nouvArt-gest" class="font-weight-bold">Code de l'article *</label>
-                                                <input type="text" class="form-control text-right " id="code-nouvArt-gest" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
+                                                <input type="text" class="form-control text-right " id="code-nouvArt-gest" pattern="^.{1,20}$" placeholder="Saisir le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
                                                 <div class="invalid-feedback" id="invalid-code-gest">
                                                 </div>
                                             </div>
@@ -672,11 +667,12 @@
                                                     </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" class="form-control" id="groupes-nouvArt-gest" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                                <input type="text" class="form-control" id="groupes-nouvArt-gest" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisir son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
                                             </div>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-art-modifier">Modifier cet article</button>
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-art-modifier">Modifier</button>
+                                            <button class="pull-right btn btn-primary submit mr-3" form="article-existant-gest" type="submit" id="gest-art-supprimer">Supprimer</button>
                                             <p class="pull-left font-weight-bold">* Champs requis</p>
                                         </div>
                                     </form>
@@ -709,75 +705,108 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
                                                     </div>
-                                                    <input required type="search" id="rechSocClGest" class="form-control must-rounded-right" placeholder="Recherchez la société ou le client *" aria-label="Recherche du client ou de la société" data-toggle="tooltip" title="Saisissez la description de la société<br> ou du client recherché">
+                                                    <input required type="search" id="rechSocClGest" class="form-control must-rounded-right" placeholder="Rechercher avec son nom *" aria-label="Recherche du client ou de la société" data-toggle="tooltip" title="Saisir le nom de la société<br> ou du client recherché">
                                                     <div class="invalid-feedback text-right" id="invalid-socClRech-gest"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-row mt-1">
-                                        </div>
-                                        <div class="text-center mt-2">
-                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-supprimer">Supprimer ce client ou cette société</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <div class="jumbotron jumbotronFin jumbo-rounded-b">
                                 <div class="container">
-                                    <h5 class="display-6">Modifier la société ou le client</h5>
-                                    <form id="nouvel-socCl-gest">
+                                    <form id="nouv-socCl-gest">
                                         <div class="form-row mt-1">
-                                            <div class="col-md-9">
-                                                <label for="descript-nouvSocCl-gest" class="font-weight-bold">Description de l'article *</label>
-                                                <input type="text" class="form-control " id="descript-nouvSocCl-gest" pattern="^.{1,40}$" placeholder="Décrivez l'article" required data-toggle="tooltip" title="La description de l'article est unique, et ne doit pas dépasser 40 caractères">
-                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                            <div class="col-md-6">
+                                                <label for="denom-nouv-socCl-gest" class="font-weight-bold">Nom *</label>
+                                                <textarea rows="1" class="form-control " id="denom-nouv-socCl-gest" minlength="1" maxlength="100" placeholder="Saisir le nom" required data-toggle="tooltip" title="Le nom de est unique, il ne doit pas dépasser 100 caractères"></textarea>
+                                                <div class="invalid-feedback" id="invalid-nom-gest">
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 text-right">
-                                                <label for="stock-nouvSocCl-gest">Stock</label>
-                                                <input type="number" class="form-control text-right " id="stock-nouvSocCl-gest" step="1" min="0" max="99999" placeholder="Quantité stockée" data-toggle="tooltip" title="La quantité d'articles<br>restants en stock">
-                                                <div class="invalid-feedback">
-                                                    Veuillez saisir la quantité en stock.
+                                            <div class="col-md-6">
+                                                <label for="descript-nouv-socCl-gest">L'activité exercée</label>
+                                                <textarea rows="1" class="form-control " id="descript-nouv-socCl-gest" minlength="1" maxlength="150" placeholder="Ex. : Salon de coiffure" data-toggle="tooltip" title="L'activité exercée (qui apparaîtra sous le nom)."></textarea>
+                                                <div class="invalid-feedback" id="invalid-description-gest">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-row mt-1">
-                                            <div class="col-md-6 text-right">
-                                                <label for="code-nouvSocCl-gest" class="font-weight-bold">Code de l'article *</label>
-                                                <input type="text" class="form-control text-right " id="code-nouvSocCl-gest" pattern="^.{1,20}$" placeholder="Saisissez le code de l'article" required data-toggle="tooltip" title="Le code article est unique, et ne doit pas dépasser 20 caractères">
-                                                <div class="invalid-feedback" id="invalid-code-gest">
+                                            <div class="col-md-6">
+                                                <label for="adrl1-nouv-socCl-gest" class="font-weight-bold">Numéro et libellé de la voie *</label>
+                                                <textarea rows="1" class="form-control " id="adrl1-nouv-socCl-gest" minlength="3" maxlength="200" placeholder="Ex. : 31 avenue du général Leclerc" required data-toggle="tooltip" title="Le numéro et le libellé<br>de la voie"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description-gest">
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 text-right">
-                                                <label for="prix-nouvSocCl-gest" class="font-weight-bold">Prix unitaire *</label>
-                                                <input type="number" class="form-control text-right" step="0.01" min="0.01" max="99999.99" id="prix-nouvSocCl-gest" pattern="^\d{1,5}(,\d{1,2})?$" placeholder="Prix unitaire" required data-toggle="tooltip" title="Prix unitaire de l'article">
-                                                <div class="invalid-feedback">
-                                                    Veuillez saisir le prix unitaire de l'article.
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 text-right">
-                                                <label for="prix-nouvSocCl-gest">TVA spéciale</label>
-                                                <input type="number" class="form-control text-right" id="tva-nouvSocCl-gest" step="0.01" min="0.00" max="100" placeholder="Taux applicable" data-toggle="tooltip" title="Le taux spécial pour cet article, sinon le taux de l'entreprise sera appliqué">
-                                                <div class="invalid-feedback">
+                                            <div class="col-md-6">
+                                                <label for="adrl2-nouv-socCl-gest">Mentions spéciales de distribution</label>
+                                                <textarea rows="1" class="form-control " id="adrl2-nouv-socCl-gest" maxlength="200" placeholder="Ex. : BP 14" data-toggle="tooltip" title="Les mentions spéciales de distribution<br>(Boite Postale, Tri Spécial)"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description-gest-gest">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-row mt-1">
                                             <div class="col-md-12">
-                                                <p class="mb-0">CLient ou société</label>
-                                            </div>
-                                            <div class="col-md-6" data-toggle="tooltip" title="Ajouter l'article à un groupe existant">
-                                                <select class="custom-select" id="groupe-socCl-gest" name="gest-grp-socCl">                                                                                                                                                             
-                                                    </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control" id="groupe-nouvSocCl-gest" pattern="^.{1,20}$" aria-label="Text input with dropdown button" placeholder="Ou saisissez son nouveau groupe" data-toggle="tooltip" title="Ajouter l'article à un nouveau groupe<br>(moins de 20 caractères)">
+                                                <label for="adrl3-nouv-socCl-gest" class="font-weight-bold">Code postal et bureau distributeur, ou code cedex et bureau distributeur *</label>
+                                                <textarea rows="1" class="form-control " id="adrl3-nouv-socCl-gest" minlength="3" maxlength="200" placeholder="Ex. : 92340 BOURG LA REINE" required data-toggle="tooltip" title="Le code postal et le bureau distributeur"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="jur-nouv-socCl-gest">Forme juridique et capital social</label>
+                                                <textarea rows="1" class="form-control " id="jur-nouv-socCl-gest" maxlength="50" placeholder="Ex. : SARL au capital de 10000€" data-toggle="tooltip" title="La forme juridique, et le<br>capital social"></textarea>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <label for="siret-nouv-socCl-gest">SIRET</label>
+                                                <input type="number" class="form-control text-right " id="siret-nouv-socCl-gest" step="1" min="1" max="99999999999999" placeholder="Ex. : 36252187900034" data-toggle="tooltip" title="Le SIRET.<br>Par défaut la valeur sera :<br><b>En cours d'attribution</b>">
+                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-right">
+                                                <label for="tva-nouv-socCl-gest">TVA</label>
+                                                <input type="number" class="form-control text-right" id="tva-nouv-socCl-gest" step="0.01" min="0.01" max="100" placeholder="Ex. : 20" data-toggle="tooltip" title="Le taux de TVA à appliquer.<br>Par défaut la valeur sera :<br><b>Pas de TVA</b>">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6">
+                                                <label for="courriel-nouv-socCl-gest">Adresse courriel</label>
+                                                <textarea rows="1" class="form-control " id="courriel-nouv-socCl-gest" maxlength="320" placeholder="Ex. : marcel.dupont@exemple.fr" data-toggle="tooltip" title="L'adresse courriel"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description-gest">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="fax-nouv-socCl-gest">Numéro de fax</label>
+                                                <input type="tel" class="form-control text-right " id="fax-nouv-socCl-gest" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de fax">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel1-nouv-socCl-gest">Numéro de téléphone principal</label>
+                                                <input type="tel" class="form-control text-right " id="tel1-nouv-socCl-gest" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>principal">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label for="tel2-nouv-socCl-gest">Numéro de téléphone secondaire</label>
+                                                <input type="tel" class="form-control text-right " id="tel2-nouv-socCl-gest" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" placeholder="Ex. : 12 34 56 78 90" data-toggle="tooltip" title="Le numéro de téléphone<br>secondaire">
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="text-center mt-3">
-                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-modifier">Modifier cette société ou ce client</button>
+                                            <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-modifier">Modifier</button>
+                                            <button class="pull-right btn btn-primary submit mr-3" form="socCl-existant-gest" type="submit" id="gest-socCl-supprimer">Supprimer</button>
                                             <p class="pull-left font-weight-bold">* Champs requis</p>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>
@@ -1081,7 +1110,7 @@
             $('#doc-cl-denom').hide();
             $('#ajoutArticle').hide();
             $('#doc-facDev-type').hide();
-            message.queue(0, 6000, "Saisissez les coordonnées de votre société");
+            message.queue(0, 6000, "Saisir les coordonnées de votre société");
         } else if (complet == 1) {
             $('#doc-cl-denom').show();
             $('#doc-cl-denom').removeClass("clic-min-long");
@@ -1089,7 +1118,7 @@
             $('#doc-cl-denom').addClass("clic-min-long");
             $('#ajoutArticle').hide();
             $('#doc-facDev-type').hide();
-            message.queue(0, 6000, "Saisissez les coordonnées de votre client");
+            message.queue(0, 6000, "Saisir les coordonnées de votre client");
         } else if (complet == 2) {
             $('#doc-cl-denom').show();
             $('#ajoutArticle').show();

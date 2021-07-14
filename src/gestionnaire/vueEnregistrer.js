@@ -127,6 +127,9 @@ $(document).ready(function() {
 
     // envoi enregistrer    
     $('#enregistrer').on('click', () => {
+        // Cacher messages
+        message.forceClose();
+
         let elEnr = document.getElementById('enregistrer');
         elEnr.classList.remove("clic");
         elEnr.offsetWidth;

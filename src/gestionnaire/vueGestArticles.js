@@ -42,7 +42,7 @@ $(document).ready(function() {
             // vider les options
             $('#groupe-art-gest').empty();
             // info options
-            $('#groupe-art-gest').append($('<option value="">Choisissez&nbsp;son&nbsp;groupe</option>'));
+            $('#groupe-art-gest').append($('<option value="">Sans&nbsp;groupe</option>'));
         } else {
             // vider les options
             $('#groupe-art-gest').empty();
@@ -74,7 +74,7 @@ $(document).ready(function() {
 
             $('#bloc-rech-art-gest').append(`
     <div class="table-responsive supp-res-rech mt-4">
-    <table class="table table-hover table-sm" id="table-art-res-rech-gest">
+    <table class="table table-hover table-sm" id="table-socCl-res-rech-gest">
         <thead>
             <tr>
                 <th class="th-sm table-noBorder-top">Nom</th>
@@ -118,8 +118,19 @@ $(document).ready(function() {
                     trigger: 'hover',
                 });
             });
+            $(function() {
+                $('[data-toggle="tooltip-inner"]').tooltip({
+                    delay: {
+                        show: 999,
+                        hide: 0
+                    },
+                    animation: true,
+                    html: true,
+                    trigger: 'hover',
+                });
+            });
             // écouteur de sélection d'un article
-            $('#table-art-res-rech-gest tr.tableRechArtGest').mousedown(function() {
+            $('#table-socCl-res-rech-gest tr.tableRechArtGest').mousedown(function() {
                 $("[data-toggle='tooltip']").tooltip('hide');
 
                 $("#rechArtGest").blur();
@@ -132,7 +143,7 @@ $(document).ready(function() {
                 }
             });
             // écouteur de fin de sélection d'un article
-            $('#table-art-res-rech-gest tr.tableRechArtGest').mouseup(function() {
+            $('#table-socCl-res-rech-gest tr.tableRechArtGest').mouseup(function() {
                 // vider les résultats et afficher le choix                        
                 $('.supp-res-rech').remove();
                 // remplir avec la sélection

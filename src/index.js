@@ -131,28 +131,28 @@ async function createWindow() {
     // début fenêtre chargement en cours
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
-    // // DEV
-    // mainWindow.setAlwaysOnTop(true, 'screen');
-    // mainWindow.show();
-    // mainWindow.maximize();
-    // mainWindow.setAlwaysOnTop(false, 'screen');
-    // mainWindow.webContents.openDevTools();
-    // // charger la vue principale
-    // mainWindow.loadFile(__dirname + '/index.html');
-
-
-    // PROD
-    // splash screen
-    let splash = new YlSplash(mainWindow);
+    // DEV
+    mainWindow.setAlwaysOnTop(true, 'screen');
+    mainWindow.show();
+    mainWindow.maximize();
+    mainWindow.setAlwaysOnTop(false, 'screen');
+    mainWindow.webContents.openDevTools();
     // charger la vue principale
-    setTimeout(function() {
-        splash.retirer();
-        mainWindow.loadFile(__dirname + '/index.html');
-        mainWindow.maximize();
-        mainWindow.setAlwaysOnTop(true, 'screen');
-        mainWindow.show();
-        mainWindow.setAlwaysOnTop(false, 'screen');
-    }, 1234);
+    mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // // PROD
+    // // splash screen
+    // let splash = new YlSplash(mainWindow);
+    // // charger la vue principale
+    // setTimeout(function() {
+    //     splash.retirer();
+    //     mainWindow.loadFile(__dirname + '/index.html');
+    //     mainWindow.maximize();
+    //     mainWindow.setAlwaysOnTop(true, 'screen');
+    //     mainWindow.show();
+    //     mainWindow.setAlwaysOnTop(false, 'screen');
+    // }, 1234);
 
 
     // indexer les descriptions d'articles
@@ -319,6 +319,56 @@ async function createWindow() {
         mainWindow.webContents.send('retour-imprimer-facture-pdf', retour);
     });
 
+    // gestion socCl - rechercher socCl par nom
+    ipcMain.on('envoi-rech-socCl-gest', async function(event, nom) {
+        let retour = await rechSocCl(nom);
+        // msg si avertissement ou erreur
+        if (retour.val == 2) {
+            msg.warning(retour.rep);
+        }
+        mainWindow.webContents.send('retour-rech-socCl-gest', retour);
+    });
+    // gestion socCl - supp socCl
+    ipcMain.on('envoi-gest-supp-socCl', async function(event, id) {
+        // vérifier s'il est utilisé
+        let retour = await socClUtilise(id);
+        // msg si avertissement ou erreur
+        if (retour.val == 0) {
+            // suppression
+            let retourII = await suppSocCl(id);
+            // msg si avertissement ou erreur
+            if (retourII.val == 0) {} else {
+                msg.warning(retourII.rep);
+            }
+        } else if (retour.val == 2) {
+            msg.warning(retour.rep);
+        } else {
+            msg.info("Non supprimé, car cette soicété ou ce client, est utilisé dans au moins une facture.");
+        }
+        mainWindow.webContents.send('retour-gest-supp-socCl', retour);
+    });
+
+    // gestion socCl - denom unique
+    ipcMain.on('envoi-nom-socCl', async function(event, denom) {
+        let retour = await nomUnique(denom);
+        // msg si avertissement ou erreur
+        if (retour.val == 2) {
+            msg.warning(retour.rep);
+        }
+        mainWindow.webContents.send('retour-nom-socCl', retour);
+    });
+
+    // gestion socCl - màj socCl
+    ipcMain.on('envoi-maj-socCl', async function(event, socCl) {
+        socCl.soc_tva = reg.virgule(socCl.soc_tva);
+        let retour = await majSocCL(socCl);
+        // msg si avertissement ou erreur
+        if (retour.val == 0) {} else {
+            msg.warning(retour.rep);
+        }
+        retour.rep = docEdite;
+        mainWindow.webContents.send('retour-maj-socCl', retour);
+    });
 
     // gestion articles - code d'article unique
     ipcMain.on('envoi-code-article-gest', async function(event, code) {
@@ -649,8 +699,8 @@ async function createWindow() {
         mainWindow.webContents.send('retour-chg-fact', retour);
     });
     // facture/devis article - nom de société unique
-    ipcMain.on('envoi-nom-societe', async function(event, description) {
-        let retour = await nomUnique(description);
+    ipcMain.on('envoi-nom-societe', async function(event, denom) {
+        let retour = await nomUnique(denom);
         // msg si avertissement ou erreur
         if (retour.val == 2) {
             msg.warning(retour.rep);
@@ -962,6 +1012,60 @@ function redimensionner() {
     });
 };
 
+// gestion socCl - utlisé ?
+function socClUtilise(id) {
+    return new Promise(function(retour) {
+        db.findOne({ $or: [{ facDev_id_soc: id }, { facDev_id_cl: id }] }).exec(function(e, doc) {
+            if (e) {
+                retour({ val: 2, rep: e });
+            } else if (doc == null) {
+                retour({ val: 0, rep: doc });
+            } else {
+                retour({ val: 1, rep: doc, last: date.getDateExistante(doc.updatedAt) });
+            }
+        });
+    });
+}
+// gestion socCl - supp socCl
+function suppSocCl(id) {
+    return new Promise(function(retour) {
+        db.remove({ _id: id }, {}, function(e, numRemoved) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: numRemoved });
+            }
+        });
+    });
+}
+// gestion socCl - màj socCl
+function majSocCL(socCl) {
+    return new Promise(function(retour) {
+        db.update({ _id: socCl._id }, {
+            $set: {
+                soc_denom: socCl.soc_denom,
+                soc_adr_l1: socCl.soc_adr_l1,
+                soc_adr_l2: socCl.soc_adr_l2,
+                soc_adr_l3: socCl.soc_adr_l3,
+                soc_courriel: socCl.soc_courriel,
+                soc_fax: socCl.soc_fax,
+                soc_tel1: socCl.soc_tel1,
+                soc_tel2: socCl.soc_tel2,
+                soc_siret: socCl.soc_siret,
+                soc_descript: socCl.soc_descript,
+                soc_form_jur: socCl.soc_form_jur,
+                soc_tva: socCl.soc_tva
+            }
+        }, { multi: false }, function(e, numRemoved) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: numRemoved });
+            };
+        });
+    });
+}
+
 // gestion articles - utlisé ?
 function artUtilise(id) {
     return new Promise(function(retour) {
@@ -1259,6 +1363,26 @@ function rechSoc(nom) {
             n = new RegExp('^' + nom);
             db.find({
                 soc_type: { $ne: -1 },
+                soc_denom: { $regex: n }
+            }, function(e, docs) {
+                if (e) {
+                    retour({ val: 2, rep: e });
+                } else if (Array.isArray(docs) && docs.length > 0) {
+                    retour({ val: 0, rep: docs });
+                } else {
+                    retour({ val: 1, rep: null });
+                }
+            });
+        }
+    });
+}
+// facture/devis socCL - rechercher société/client par nom
+function rechSocCl(nom) {
+    return new Promise(function(retour) {
+        if (nom == '') retour({ val: 1, rep: null });
+        else {
+            n = new RegExp('^' + nom);
+            db.find({
                 soc_denom: { $regex: n }
             }, function(e, docs) {
                 if (e) {

@@ -59,9 +59,9 @@ $(document).ready(function() {
                 <tr class="btn-perso tableRechCl" data-toggle="tooltip" title="Choisir ce client">
                     <td class="table-noBorder-top MmLigne">${rep[0].soc_denom}</td>
                     <td class="table-noBorder-top MmLigne">${rep[0].soc_adr_l1}</td>
-                    <td class="table-noBorder-top MmLigne"> ${rep[0].soc_adr_l2==null?'':rep[0].soc_adr_l2}</td>                      
+                    <td class="table-noBorder-top MmLigne">${rep[0].soc_adr_l2==null?'':rep[0].soc_adr_l2}</td>                      
                     <td class="table-noBorder-top MmLigne">${rep[0].soc_adr_l3}</td>
-                    <td class="table-noBorder-top MmLigne">${rep[0].soc_siret}</td>
+                    <td class="table-noBorder-top MmLigne">${/d/g.test(rep[0].soc_siret)?'':rep[0].soc_siret}</td>
                     <td class="table-noBorder-top MmLigne d-none">${rep[0]._id}</td>
                 </tr>    
         `);
@@ -70,9 +70,9 @@ $(document).ready(function() {
                     <tr class="btn-perso supp-res-rech tableRechCl" data-toggle="tooltip" title="Choisir ce client">
                         <td class="MmLigne">${rep[i].soc_denom}</td>
                         <td class="MmLigne">${rep[i].soc_adr_l1}</td>
-                        <td class="MmLigne"> ${rep[i].soc_adr_l2==null?'':rep[i].soc_adr_l2}</td>                      
+                        <td class="MmLigne">${rep[i].soc_adr_l2==null?'':rep[i].soc_adr_l2}</td>                      
                         <td class="MmLigne">${rep[i].soc_adr_l3}</td>
-                        <td class="MmLigne">${rep[i].soc_siret}</td>
+                        <td class="MmLigne">${/d/g.test(rep[i].soc_siret)?'':rep[i].soc_siret}</td>
                         <td class="MmLigne d-none">${rep[i]._id}</td>
                     </tr>                     
             `);
