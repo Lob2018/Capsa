@@ -44,7 +44,9 @@ $(document).ready(function() {
             // vider les options
             $('#lstDocs').empty();
             // info options
-            $('#lstDocs').append($('<option value="">Choisissez&nbsp;la&nbsp;facture&nbsp;à&nbsp;annuler</option>'));
+            // $('#lstDocs').append($('<option value="">Choisissez&nbsp;la&nbsp;facture&nbsp;à&nbsp;annuler</option>'));
+            $('#lstDocs').append($('<option value="">Rechercher&nbsp;la&nbsp;facture&nbsp;à&nbsp;annuler&nbsp;*</option>'));
+
             $('#annulFact').attr("disabled", false);
         } else {
             // vider les options
@@ -59,6 +61,7 @@ $(document).ready(function() {
                 // opt : date - denomClient - montant TTC
                 $('#lstDocs').append($("<option selected value=" + o.docs[i].facDev_num + ">" + getDateExistante(o.docs[i].updatedAt) + "&nbsp;-&nbsp;" + o.cl[i].soc_denom.split(' ').join('&nbsp;') + "&nbsp;-&nbsp;Montant&nbsp;TTC&nbsp;:&nbsp" + o.docs[i].facDev_TTC + " EUR&nbsp;-&nbsp;N°" + o.docs[i].facDev_num + "</option>"));
             }
+            $('#lstDocs').val('');
         }
     })
 

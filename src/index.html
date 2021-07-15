@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="
   default-src 'none'; 
-  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc' 'nonce-inlMessage'; 
+  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc' 'nonce-inlMessage' 'nonce-inlFacDevGest'; 
   connect-src 'self'; 
   img-src 'self'; 
   style-src 'self';
@@ -32,7 +32,7 @@
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-save fa-3x" id="enregistrer" data-toggle="tooltip" title="Enregistrer ce document,<br>et le sauvegarder au format PDF"></i><br>Enregistrer </li>
                 <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-socCl-gest"><i class="YlBtn0 fa fa-address-book-o fa-3x" data-toggle="tooltip" id="societes-clients" title="Gestion des sociétés & clients"></i><br>Sociétés & clients </li>
                 <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-articles-gest"><i class="YlBtn0 fa fa-tags fa-3x" id="tous-articles" data-toggle="tooltip" title="Gestion des articles"></i><br>Articles </li>
-                <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-book fa-3x" data-toggle="tooltip" id="ttes-factures" title="Gestion des factures et devis"></i><br>Factures & devis </li>
+                <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-facDev-gest"><i class="YlBtn0 fa fa-book fa-3x" data-toggle="tooltip" id="ttes-factures" title="Gestion des factures et devis"></i><br>Factures & devis </li>
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-database fa-3x" data-toggle="tooltip" id="sauvegarde-bdd" title="Gestion des données de l'application"></i><br>Données </li>
                 <li class="nav-item text-center ylMenu" id="pMaj"><i class="YlBtn0 fa fa-refresh fa-3x" id="maj" data-toggle="tooltip" title="Une nouvelle version est<br>disponible au téléchargement"></i><br>Mise à jour </li>
             </ul>
@@ -438,7 +438,7 @@
                                     <form id="docs-existant">
                                         <div class="form-row mt-1">
                                             <div class="col-md-12">
-                                                <label for="docs" class="font-weight-bold">Choix de la facture à annuler *</label>
+                                                <!-- <label for="docs" class="font-weight-bold">Choix de la facture à annuler *</label> -->
                                                 <div class="input-group" data-toggle="tooltip" title="La facture à annuler">
                                                     <select class="custom-select" id="lstDocs" required>
                                                     </select>
@@ -819,6 +819,53 @@
     </div>
     <!-- FIN MODALE GESTION SOCIETES ET CLIENTS -->
 
+    <!-- DEBUT MODALE GESTION FACTURES ET DEVIS -->
+    <div class="modal fade modale-facDev-gest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row h-0">
+                        <div class="col-md-12 centVertCol">
+                            <div class="jumbotron">
+                                <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
+                                <div class="container">
+                                    <h4 class="display-6">Gestion des factures et devis</h4>
+                                    <form id="FacDev-existant-gest">
+                                        <div class="form-row mt-1">
+
+                                            <div class="col-md-12" id="bloc-rech-FacDev-gest">
+                                                <div class="input-group mt-1 mb-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
+                                                    </div>
+                                                    <input required type="search" id="rechFacDevGest" class="form-control must-rounded-right" placeholder="Rechercher avec son nom *" aria-label="Recherche du client ou de la société" data-toggle="tooltip" title="Saisir le nom de la société<br> ou du client recherché">
+                                                    <div class="invalid-feedback text-right" id="invalid-FacDevRech-gest"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Début de la période</label>
+                                                <input type="date" name="debutPeriode" min="1000-01-01" max="3000-12-31" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Fin de période</label>
+                                                <input type="date" name="finPeriode" min="1000-01-01" max="3000-12-31" class="form-control">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="inlFacDevGest" src="./gestionnaire/vueGestionFacDev.js" charset="utf-8"></script>
+    </div>
+    <!-- FIN MODALE GESTION FACTURES ET DEVIS -->
+
+
+
 
 </body>
 
@@ -857,7 +904,7 @@
         $(function() {
             $('[data-toggle="tooltip"]').tooltip({
                 delay: {
-                    show: 999,
+                    show: 3000,
                     hide: 0
                 },
                 animation: true,

@@ -258,12 +258,31 @@ async function createWindow() {
                 let retourII = await majDocEnr();
                 // msg si avertissement ou erreur
                 if (retourII.val == 0) {
-                    // passer la facture réctifiée en annulée
                     if (docEdite.document.facDev_FR_num == null) {} else {
-                        let retour = await majDocANN(docEdite.document.facDev_FR_num);
+                        // récupérer la facture à annuler
+                        let retourIII = await trouverDocANN(docEdite.document.facDev_FR_num);
                         // msg si avertissement ou erreur
-                        if (retour.val == 0) {} else {
-                            msg.warning(retour.rep);
+                        if (retourIII.val == 0) {
+                            // Màj de la facture annulée (valeurs négatives)
+                            const old = retourIII.rep;
+                            for (const artPrix of old.facDev_lignes) {
+                                artPrix.fD_art_prix = '-' + artPrix.fD_art_prix;
+                                if (artPrix.fD_art_tva == null) {} else artPrix.fD_art_tva = '-' + artPrix.fD_art_tva;
+                            }
+                            old.facDev_HT = '-' + old.facDev_HT;
+                            old.facDev_TTC = '-' + old.facDev_TTC;
+                            for (const artTva of old.facDev_TVAs) {
+                                artTva[0] = '-' + artTva[0];
+                                artTva[1] = -Math.abs(artTva[1]);
+                            }
+                            // passer la facture réctifiée en annulée avec nouvelles valeurs
+                            let retourIV = await majDocANN(docEdite.document.facDev_FR_num, old);
+                            // msg si avertissement ou erreur
+                            if (retourIV.val == 0) {} else {
+                                msg.warning(retourIV.rep);
+                            }
+                        } else {
+                            msg.warning(retourIII.rep);
                         }
                     }
                 } else {
@@ -1471,11 +1490,33 @@ function majDocFR(numFR) {
         });
     }
 }
+
+// facture/devis article - récupérer le document annulé
+function trouverDocANN(id) {
+    return new Promise(function(retour) {
+        db.find({ facDev_num: id }).exec(function(e, docs) {
+            if (e) {
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: docs[0] });
+            }
+        });
+    });
+}
+
 // facture/devis société - maj du document réctifié en annulé
-function majDocANN(n) {
+function majDocANN(n, obj) {
     return new Promise(function(retour) {
         db.update({ facDev_num: n }, {
-            $set: { facDev_type: '-1', facDev_FR_num: docEdite.document.facDev_num, facDev_num: reTypeNumFact('FERR', n) }
+            $set: {
+                facDev_type: '-1',
+                facDev_FR_num: docEdite.document.facDev_num,
+                facDev_num: reTypeNumFact('FERR', n),
+                facDev_lignes: obj.facDev_lignes,
+                facDev_HT: obj.facDev_HT,
+                facDev_TTC: obj.facDev_TTC,
+                facDev_TVAs: obj.facDev_TVAs
+            }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
                 retour({ val: 1, rep: e });
