@@ -700,7 +700,8 @@ async function createWindow() {
 
     // facture/devis article - chargement des factures
     ipcMain.on('envoi-chg-fact', async function(event, obj) {
-        const dateDebRech = date.txtToDate(obj.date);
+        // forcer à la fin de la journée recherchée
+        const dateDebRech = date.txtToDate(obj.date + "T23:59:59");
         let retour = await lireFactures(obj.societe, obj.page, obj.longueur, dateDebRech);
         // msg si avertissement ou erreur
         if (retour.val == 1) {

@@ -8,6 +8,7 @@ $(document).ready(function() {
 
     const btnSuiv = document.getElementById('pagin__btn-suiv');
     const btnPrec = document.getElementById('pagin__btn-prec');
+    const dateDebut = document.getElementsByName('fact-ann-date-rech')[0];
 
     btnPrec.addEventListener("click", function() {
         if (btnPrec.classList.contains('disabled')) return
@@ -18,6 +19,13 @@ $(document).ready(function() {
         if (btnSuiv.classList.contains('disabled')) return;
         o.pagination.page += 1;
         window.api.send('envoi-chg-fact', o.pagination);
+    }, true);
+    dateDebut.addEventListener("input", function() {
+        if (this.value) {
+            o.pagination.date = this.value;
+            o.pagination.page = 0;
+            window.api.send('envoi-chg-fact', o.pagination);
+        }
     }, true);
 
 
@@ -43,7 +51,7 @@ $(document).ready(function() {
             $('.modale-docs').modal('toggle');
             // chargement des factures pouvant être annulées
             if (o.pagination === undefined) {
-                o.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value }; // 0 et 50
+                o.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
             }
             window.api.send('envoi-chg-fact', o.pagination);
         } else {
@@ -54,21 +62,20 @@ $(document).ready(function() {
     // retour de la modale pour choisir une facture pour cette société
     window.api.receive('retour-chg-fact', (arg) => {
 
+        // Cacher les tooltips Bootstrap
+        $('[data-toggle="tooltip"], .tooltip').tooltip("hide");
+
         window.api.send('fin-chrg');
 
         o.docs = arg.rep;
         o.cl = arg.rep0;
         o.isListeDocs = Array.isArray(o.docs) && o.docs.length > 0;
         if (o.isListeDocs) {
-
-            console.log(o.docs)
-                // console.log(o.cl)
-            console.log(o.pagination)
-
+            // console.log(o.docs)
+            // console.log(o.pagination)
 
             // vider le tableau
             document.getElementById('res-rech-fact-annulee').innerHTML = '';
-
             // Afficher bouton précédentes ? 
             if (o.pagination.page == 0) {
                 if (btnPrec.classList.contains('disabled')) {} else {
@@ -93,10 +100,8 @@ $(document).ready(function() {
                 }
             }
 
-
-
-            // Définir la date de début
-            document.getElementsByName('fact-ann-date-rech')[0].value = o.docs[0].date.annee + '-' + o.docs[0].date.mois + '-' + o.docs[0].date.jour;
+            // // Définir la date de début
+            // document.getElementsByName('fact-ann-date-rech')[0].value = o.docs[0].date.annee + '-' + o.docs[0].date.mois + '-' + o.docs[0].date.jour;
 
             // Màj du DOM
             let tBody = document.getElementById('res-rech-fact-annulee');
@@ -164,59 +169,12 @@ $(document).ready(function() {
                 });
             });
 
-            // tagsContainer = document.createElement("UL");
-            // tagsContainer.classList.add("tags-container");
-            // tagsContainer.setAttribute("role", "menubar");
-
-
-
-
-            // // vider les options
-            // $('#lstDocs').empty();
-            // // info options
-            // $('#lstDocs').append($('<option value="">Rechercher&nbsp;la&nbsp;facture&nbsp;à&nbsp;annuler&nbsp;*</option>'));
-            // $('#annulFact').attr("disabled", false);
-
-            // date
-            // desactiver bouton annuler
-            // pagination (précédent si o.debut>0, suivant si 51)
-
-            // Si sélection activer bouton annuler
-
-
-            // <tr class="btn-perso tableRechSocClGest" data-toggle="tooltip" title="" data-original-title="Choisir cet article">
-            //     <td class="table-noBorder-top MmLigne">31/12/9999</td>
-            //     <td class="table-noBorder-top MmLigne">FR-2021-07-9999</td>
-            //     <td class="table-noBorder-top MmLigne">Fact. rectifiée</td>
-            //     <td class="table-noBorder-top MmLigne">99000 CLICLAND</td>
-            //     <td class="table-noBorder-top MmLigne">99000 CLICLAND</td>
-            //     <td class="table-noBorder-top MmLigne text-right">99999.55€</td>
-            //     <td class="table-noBorder-top MmLigne text-right">99999.55€</td>
-            //     <td class="table-noBorder-top MmLigne d-none">0R1n77vD6xBYBMDI</td>
-            // </tr>
-
-
         } else {
-            // // vider les options
-            // $('#lstDocs').empty();
-            // // info options
-            // $('#lstDocs').append($('<option value="">Pas&nbsp;de&nbsp;factures&nbsp;disponibles</option>'));
-            // $('#annulFact').attr("disabled", true);
-
-            // griser date
-            // desactiver bouton annuler            
-            // vider et retirer le tableau, remplacer par messsage : Pas de factures disponibles pour cette société
-            // retirer pagination
+            document.getElementById('res-rech-fact-annulee').innerHTML = '';
+            btnPrec.classList.add('disabled');
+            btnSuiv.classList.add('disabled');
 
         }
-        // // affichage
-        // if (o.isListeDocs) {
-        //     for (let i = 0; i < o.docs.length; i++) {
-        //         // opt : date - denomClient - montant TTC
-        //         $('#lstDocs').append($("<option selected value=" + o.docs[i].facDev_num + ">" + getDateExistante(o.docs[i].updatedAt) + "&nbsp;-&nbsp;" + o.cl[i].soc_denom.split(' ').join('&nbsp;') + "&nbsp;-&nbsp;Montant&nbsp;TTC&nbsp;:&nbsp" + o.docs[i].facDev_TTC + " EUR&nbsp;-&nbsp;N°" + o.docs[i].facDev_num + "</option>"));
-        //     }
-        //     $('#lstDocs').val('');
-        // }
     })
 
 
