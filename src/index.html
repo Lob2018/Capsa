@@ -426,28 +426,47 @@
 
     <!-- DEBUT MODALE TYPE DOC -->
     <div class="modal fade modale-docs" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabelIII" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-table-yl">
             <div class="modal-content">
                 <div class="container-fluid">
                     <div class="row h-0">
                         <div class="col-md-12 centVertCol">
-                            <div class="jumbotron">
+                            <div class="jumbotron jumbotron-pagination">
                                 <button class="pull-right btn btn-primary btnFermer" data-dismiss="modal" data-toggle="tooltip" title="Fermer cette fenêtre"><i class="fa fa-times fa-1x" ></i></button>
                                 <div class="container">
                                     <h4 class="display-6">Facture à annuler</h4>
                                     <form id="docs-existant">
-                                        <div class="form-row mt-1">
-                                            <div class="col-md-12">
-                                                <!-- <label for="docs" class="font-weight-bold">Choix de la facture à annuler *</label> -->
-                                                <div class="input-group" data-toggle="tooltip" title="La facture à annuler">
-                                                    <select class="custom-select" id="lstDocs" required>
-                                                    </select>
-                                                </div>
-                                            </div>
+
+                                        <div class="form-group">
+                                            <label>La date de début de recherche</label>
+                                            <input type="date" name="fact-ann-date-rech" min="1000-01-01" max="3000-12-31" class="form-control">
                                         </div>
-                                        <div class="text-center mt-3">
-                                            <button class="pull-right btn btn-primary submit" id="annulFact" type="submit">Annuler cette facture</button>
-                                            <p class="pull-left font-weight-bold">* Champs requis</p>
+                                        <div class="table-responsive container-table-fact-ann mt-4">
+                                            <table class="table table-hover table-sm" id="table-fact-ann">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="th-sm table-noBorder-top">Date</th>
+                                                        <th class="th-sm table-noBorder-top">N°</th>
+                                                        <th class="th-sm table-noBorder-top">Type</th>
+                                                        <th class="th-sm table-noBorder-top">Client</th>
+                                                        <th class="th-sm table-noBorder-top text-right">HT</th>
+                                                        <th class="table-noBorder-top text-right">TTC</th>
+                                                        <th class="table-noBorder-top d-none">ID</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="res-rech-fact-annulee">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-center mt-3 bloc-pagination">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled" id="pagin__btn-prec">
+                                                    <a class="page-link" href="#" tabindex="-1">Précédentes</a>
+                                                </li>
+                                                <li class="page-item disabled" id="pagin__btn-suiv">
+                                                    <a class="page-link" href="#">Suivantes</a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </form>
                                 </div>
@@ -821,7 +840,7 @@
 
     <!-- DEBUT MODALE GESTION FACTURES ET DEVIS -->
     <div class="modal fade modale-facDev-gest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-table-yl">
             <div class="modal-content">
                 <div class="container-fluid">
                     <div class="row h-0">
@@ -833,24 +852,46 @@
                                     <form id="FacDev-existant-gest">
                                         <div class="form-row mt-1">
 
-                                            <div class="col-md-12" id="bloc-rech-FacDev-gest">
-                                                <div class="input-group mt-1 mb-1">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text must-rounded-left"><i class="fas fa-search fa "></i></span>
-                                                    </div>
-                                                    <input required type="search" id="rechFacDevGest" class="form-control must-rounded-right" placeholder="Rechercher avec son nom *" aria-label="Recherche du client ou de la société" data-toggle="tooltip" title="Saisir le nom de la société<br> ou du client recherché">
-                                                    <div class="invalid-feedback text-right" id="invalid-FacDevRech-gest"></div>
-                                                </div>
+
+                                            <div class="form-group col-md-12 mb-0">
+                                                <label>La date de début de recherche</label>
+                                                <input type="date" name="facDev-date-rech" min="1000-01-01" max="3000-12-31" class="form-control">
                                             </div>
 
-                                            <div class="form-group">
-                                                <label>Début de la période</label>
-                                                <input type="date" name="debutPeriode" min="1000-01-01" max="3000-12-31" class="form-control">
+
+
+                                            <div class="table-responsive container-table-gest-facDev mt-4">
+                                                <table class="table table-hover table-sm" id="table-gest-facDev">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="th-sm table-noBorder-top">Date</th>
+                                                            <th class="th-sm table-noBorder-top">N°</th>
+                                                            <th class="th-sm table-noBorder-top">Type</th>
+                                                            <th class="th-sm table-noBorder-top">Client</th>
+                                                            <th class="th-sm table-noBorder-top">HT</th>
+                                                            <th class="table-noBorder-top">TTC</th>
+                                                            <th class="table-noBorder-top d-none">ID</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="res-rech-tr-g">
+                                                        <tr class="btn-perso tableRechSocClGest" data-toggle="tooltip" title="" data-original-title="Choisir cet article">
+                                                            <td class="table-noBorder-top MmLigne">31/12/9999</td>
+                                                            <td class="table-noBorder-top MmLigne">FR-2021-07-9999</td>
+                                                            <td class="table-noBorder-top MmLigne">Fact. rectifiée</td>
+                                                            <td class="table-noBorder-top MmLigne">99000 CLICLAND</td>
+                                                            <td class="table-noBorder-top MmLigne">99000 CLICLAND</td>
+                                                            <td class="table-noBorder-top MmLigne">99999.55€</td>
+                                                            <td class="table-noBorder-top MmLigne">99999.55€</td>
+                                                            <td class="table-noBorder-top MmLigne d-none">0R1n77vD6xBYBMDI</td>
+                                                        </tr>
+                                                    </tbody>
+
+
+                                                </table>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Fin de période</label>
-                                                <input type="date" name="finPeriode" min="1000-01-01" max="3000-12-31" class="form-control">
-                                            </div>
+
+
                                         </div>
                                     </form>
                                 </div>

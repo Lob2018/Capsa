@@ -263,24 +263,24 @@ async function createWindow() {
                         let retourIII = await trouverDocANN(docEdite.document.facDev_FR_num);
                         // msg si avertissement ou erreur
                         if (retourIII.val == 0) {
-                            // Màj de la facture annulée (valeurs négatives)
+                            // // Màj de la facture annulée (valeurs négatives)
                             const old = retourIII.rep;
-                            for (const artPrix of old.facDev_lignes) {
-                                artPrix.fD_art_prix = '-' + artPrix.fD_art_prix;
-                                if (artPrix.fD_art_tva == null) {} else artPrix.fD_art_tva = '-' + artPrix.fD_art_tva;
-                            }
-                            old.facDev_HT = '-' + old.facDev_HT;
-                            old.facDev_TTC = '-' + old.facDev_TTC;
-                            for (const artTva of old.facDev_TVAs) {
-                                artTva[0] = '-' + artTva[0];
-                                artTva[1] = -Math.abs(artTva[1]);
-                            }
-                            // passer la facture réctifiée en annulée avec nouvelles valeurs
+                            // for (const artPrix of old.facDev_lignes) {
+                            //     artPrix.fD_art_prix = '-' + artPrix.fD_art_prix;
+                            //     if (artPrix.fD_art_tva == null) {} else artPrix.fD_art_tva = '-' + artPrix.fD_art_tva;
+                            // }
+                            // old.facDev_HT = '-' + old.facDev_HT;
+                            // old.facDev_TTC = '-' + old.facDev_TTC;
+                            // for (const artTva of old.facDev_TVAs) {
+                            //     artTva[0] = '-' + artTva[0];
+                            //     artTva[1] = -Math.abs(artTva[1]);
+                            // }
+                            // // passer la facture réctifiée en annulée avec nouvelles valeurs
                             let retourIV = await majDocANN(docEdite.document.facDev_FR_num, old);
-                            // msg si avertissement ou erreur
-                            if (retourIV.val == 0) {} else {
-                                msg.warning(retourIV.rep);
-                            }
+                            // // msg si avertissement ou erreur
+                            // if (retourIV.val == 0) {} else {
+                            //     msg.warning(retourIV.rep);
+                            // }
                         } else {
                             msg.warning(retourIII.rep);
                         }
@@ -699,8 +699,9 @@ async function createWindow() {
     });
 
     // facture/devis article - chargement des factures
-    ipcMain.on('envoi-chg-fact', async function(event) {
-        let retour = await lireFactures();
+    ipcMain.on('envoi-chg-fact', async function(event, obj) {
+        const dateDebRech = date.txtToDate(obj.date);
+        let retour = await lireFactures(obj.societe, obj.page, obj.longueur, dateDebRech);
         // msg si avertissement ou erreur
         if (retour.val == 1) {
             msg.warning(retour.rep);
@@ -708,6 +709,7 @@ async function createWindow() {
             // récupérer les clients
             retour.rep0 = [];
             for (let i = 0; i < retour.rep.length; i++) {
+                retour.rep[i].date = date.formatToDateInput(retour.rep[i].updatedAt);
                 let retourII = await lireClient(retour.rep[i].facDev_id_cl);
                 // msg si avertissement ou erreur
                 if (retourII.val == 1) {} else {
@@ -1508,15 +1510,16 @@ function trouverDocANN(id) {
 function majDocANN(n, obj) {
     return new Promise(function(retour) {
         db.update({ facDev_num: n }, {
-            $set: {
-                facDev_type: '-1',
-                facDev_FR_num: docEdite.document.facDev_num,
-                facDev_num: reTypeNumFact('FERR', n),
-                facDev_lignes: obj.facDev_lignes,
-                facDev_HT: obj.facDev_HT,
-                facDev_TTC: obj.facDev_TTC,
-                facDev_TVAs: obj.facDev_TVAs
-            }
+            $set: { facDev_type: '-1', facDev_FR_num: docEdite.document.facDev_num, facDev_num: reTypeNumFact('FERR', n) }
+            // $set: {
+            //     facDev_type: '-1',
+            //     facDev_FR_num: docEdite.document.facDev_num,
+            //     facDev_num: reTypeNumFact('FERR', n),
+            //     facDev_lignes: obj.facDev_lignes,
+            //     facDev_HT: obj.facDev_HT,
+            //     facDev_TTC: obj.facDev_TTC,
+            //     facDev_TVAs: obj.facDev_TVAs
+            // }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
                 retour({ val: 1, rep: e });
@@ -1681,17 +1684,29 @@ function lireClient(id) {
         });
     });
 }
-// facture/devis article - récupérer les factures
-function lireFactures() {
-    return new Promise(function(retour) {
-        db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '2' }], facDev_creation: false }).sort({ updatedAt: -1 }).exec(function(e, docs) {
-            if (e) {
-                retour({ val: 1, rep: e });
-            } else {
-                retour({ val: 0, rep: docs });
-            }
+// facture/devis article - récupérer les factures (débute à la page, a pour longueur +1, à partir d'une date de recherche)
+function lireFactures(societe, page, longueur, dateDebRech) {
+    if (isNaN(dateDebRech)) {
+        return new Promise(function(retour) {
+            db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
+                if (e) {
+                    retour({ val: 1, rep: e });
+                } else {
+                    retour({ val: 0, rep: docs });
+                }
+            });
         });
-    });
+    } else {
+        return new Promise(function(retour) {
+            db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe, updatedAt: { $lte: dateDebRech } }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
+                if (e) {
+                    retour({ val: 1, rep: e });
+                } else {
+                    retour({ val: 0, rep: docs });
+                }
+            });
+        });
+    }
 }
 
 // changer le type du numéro de facture F FERR FR

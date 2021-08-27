@@ -5021,13 +5021,6 @@ input[type=button].btn-block {
     color: #6c757d;
 }
 
-.pagination {
-    display: flex;
-    padding-left: 0;
-    list-style: none;
-    border-radius: 0.25rem;
-}
-
 .page-link {
     position: relative;
     display: block;
@@ -6100,7 +6093,7 @@ a.close.disabled {
 
 @media (min-width: 576px) {
     .modal-dialog {
-        max-width: 500px;
+        max-width: 90%;
         margin: 1.75rem auto;
     }
     .modal-dialog-scrollable {
@@ -6117,14 +6110,22 @@ a.close.disabled {
         height: min-content;
     }
     .modal-sm {
-        max-width: 300px;
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-md {
+        max-width: 90%;
     }
 }
 
 @media (min-width: 992px) {
-    .modal-lg,
-    .modal-xl {
-        max-width: 800px;
+    .modal-lg {
+        max-width: 900px;
+    }
+    .modal-table-yl {
+        max-width: 1000px;
     }
 }
 
@@ -10260,6 +10261,56 @@ label {
     overflow: auto;
 }
 
+.container-table-fact-ann,
+.container-table-gest-facDev {
+    max-height: 50vh;
+    min-height: 50vh;
+    overflow: auto;
+}
+
+.container-table-fact-ann thead th,
+.container-table-gest-facDev thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #e9ecef;
+}
+
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+    margin: 0 0 1.13rem 0;
+}
+
+#annulFact {
+    margin: 0 0 1.13rem 0;
+}
+
+.bloc-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.page-link {
+    color: #fff;
+    background-color: #0D9DBF;
+    border-color: #0D9DBF;
+    font-size: 1rem;
+    padding: 6px 12px;
+    line-height: 1.5;
+    min-width: 119px;
+    border: 1px solid transparent;
+}
+
+.page-link:hover {
+    color: #fff;
+    background-color: #0b809b;
+    border-color: #0a768f;
+}
+
 .suppLignArt:hover {
     background-color: rgba(192, 33, 91, 0.075) !important;
 }
@@ -10461,6 +10512,11 @@ svg rect {
 #article-existant-fieldset[disabled=disabled] p,
 #article-existant-fieldset[disabled=disabled] label {
     color: #e9ecef;
+}
+
+.jumbotron-pagination {
+    padding: 0.5rem 1rem 0rem 1rem !important;
+    margin-bottom: 0.5rem;
 }
 
 .jumbotron-rech {
