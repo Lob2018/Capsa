@@ -74,6 +74,7 @@ $(document).ready(function() {
             // console.log(o.docs)
             // console.log(o.pagination)
 
+
             // vider le tableau
             document.getElementById('res-rech-fact-annulee').innerHTML = '';
             // Afficher bouton précédentes ? 
@@ -105,7 +106,7 @@ $(document).ready(function() {
 
             // Màj du DOM
             let tBody = document.getElementById('res-rech-fact-annulee');
-            for (let i = 0; i < o.docs.length - 1; i++) {
+            for (let i = 0; i < o.docs.length; i++) {
                 const ligne = o.docs[i];
                 let ligneEl = tBody.insertRow(i);
                 ligneEl.classList.add('suppLignArt');
@@ -173,7 +174,6 @@ $(document).ready(function() {
             document.getElementById('res-rech-fact-annulee').innerHTML = '';
             btnPrec.classList.add('disabled');
             btnSuiv.classList.add('disabled');
-
         }
     })
 

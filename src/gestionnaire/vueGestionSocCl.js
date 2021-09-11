@@ -182,13 +182,28 @@ $(document).ready(function() {
         }
     });
 
-    // retour du formulaire modifier
-    window.api.receive('retour-maj-socCl', (arg) => {
+
+    /**
+     * Mettre à jour le document en cours
+     */
+    // retour afficher le document
+    window.api.receive('retour-afficher-doc', (arg) => {
         if (arg.val == 0) {
-            //ok
+            docEdite = arg.rep
             afficher();
         }
     });
+    // retour du formulaire modifier
+    window.api.receive('retour-maj-socCl', (arg) => {
+        if (arg.val == 0) {
+            // afficher document (en création ou vide)
+            window.api.send('envoi-afficher-doc');
+        }
+    });
+    /**
+     * Fin mettre à jour le document en cours
+     */
+
     // envoi du formulaire -> modifier
     $("#nouv-socCl-gest").submit(function(event) {
         if (o.uniqueNomSocCl) {
