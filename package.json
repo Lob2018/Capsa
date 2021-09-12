@@ -26,8 +26,7 @@
             "packagerConfig": {
                 "icon": "src/img/CAPSA.ico"
             },
-            "makers": [
-                {
+            "makers": [{
                     "name": "@electron-forge/maker-squirrel",
                     "config": {
                         "loadingGif": "src/img/spinner.gif",
@@ -55,18 +54,18 @@
         }
     },
     "dependencies": {
-        "@octokit/request": "^5.6.0",
+        "@octokit/request": "^5.6.1",
         "electron-squirrel-startup": "^1.0.0",
         "nedb2021": "git+https://github.com/Lob2018/nedb2021.git",
         "v8-compile-cache": "^2.3.0"
     },
     "devDependencies": {
-        "@electron-forge/cli": "^6.0.0-beta.57",
-        "@electron-forge/maker-deb": "^6.0.0-beta.57",
-        "@electron-forge/maker-rpm": "^6.0.0-beta.57",
-        "@electron-forge/maker-squirrel": "^6.0.0-beta.57",
-        "@electron-forge/maker-zip": "^6.0.0-beta.57",
-        "electron": "^13.1.6",
+        "@electron-forge/cli": "^6.0.0-beta.61",
+        "@electron-forge/maker-deb": "^6.0.0-beta.61",
+        "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+        "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+        "@electron-forge/maker-zip": "^6.0.0-beta.61",
+        "electron": "^14.0.0",
         "spectron": "^15.0.0"
     }
 }
