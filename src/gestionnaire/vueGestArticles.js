@@ -186,7 +186,7 @@ $(document).ready(function() {
     });
 
     // retour description unique
-    window.api.receive('retour-desc-art-gest', (arg) => {
+    window.api.receive('retour-description-article-gest', (arg) => {
         if ((o.articleGest.art_descript == $('#descript-nouvArt-gest').val().trim().toUpperCase()) || arg.val == 0) {
             o.uniqueDescArt = true;
             $("#descript-nouvArt-gest").removeClass('is-invalid');
@@ -202,7 +202,7 @@ $(document).ready(function() {
     });
 
     // retour code d'article unique
-    window.api.receive('retour-code-art-gest', (arg) => {
+    window.api.receive('retour-code-article-gest', (arg) => {
         if ((o.articleGest.art_code == $('#code-nouvArt-gest').val().trim().toUpperCase()) || arg.val == 0) {
             o.uniqueCodeArt = true;
             $("#code-nouvArt-gest").removeClass('is-invalid');
@@ -272,6 +272,14 @@ $(document).ready(function() {
                 art_groupe: grp == null ? null : grp,
                 art_stock: $('#stock-nouvArt-gest').val() == '' ? null : $('#stock-nouvArt-gest').val()
             };
+            // présent dans le document ?
+            for (ligne of docEdite.document.facDev_lignes) {
+                // trouvé 
+                if (o.articleGest._id == ligne.fD_art_id) {
+                    article = undefined;
+                    break;
+                }
+            }
             window.api.send('envoi-maj-art', article);
             // Basculer la modale
             $('.modale-articles-gest').modal('toggle');

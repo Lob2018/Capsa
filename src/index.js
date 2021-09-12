@@ -396,7 +396,7 @@ async function createWindow() {
         if (retour.val == 2) {
             msg.warning(retour.rep);
         }
-        mainWindow.webContents.send('retour-code-art-gest', retour);
+        mainWindow.webContents.send('retour-code-article-gest', retour);
     });
     // gestion articles - description d'article unique
     ipcMain.on('envoi-description-article-gest', async function(event, description) {
@@ -405,7 +405,7 @@ async function createWindow() {
         if (retour.val == 2) {
             msg.warning(retour.rep);
         }
-        mainWindow.webContents.send('retour-desc-art-gest', retour);
+        mainWindow.webContents.send('retour-description-article-gest', retour);
     });
     // gestion articles - rechercher article par nom
     ipcMain.on('envoi-rech-article-gest', async function(event, nom) {
@@ -446,16 +446,26 @@ async function createWindow() {
     });
     // gestion articles - màj article
     ipcMain.on('envoi-maj-art', async function(event, article) {
-        article.art_prix = reg.virgule(article.art_prix);
-        article.art_tva = reg.virgule(article.art_tva);
+        // Pas de màj si l'article est présent dans la facture
+        if (article == undefined) {
+            msg.info("L'article n'a pas été modifié, car il est utilisé dans ce document.");
+            let retour = {
+                "val": 0,
+                "rep": docEdite
+            };
+            mainWindow.webContents.send('retour-maj-art', retour);
+        } else {
+            article.art_prix = reg.virgule(article.art_prix);
+            article.art_tva = reg.virgule(article.art_tva);
 
-        let retour = await majArticle(article);
-        // msg si avertissement ou erreur
-        if (retour.val == 0) {} else {
-            msg.warning(retour.rep);
+            let retour = await majArticle(article);
+            // msg si avertissement ou erreur
+            if (retour.val == 0) {} else {
+                msg.warning(retour.rep);
+            }
+            retour.rep = docEdite;
+            mainWindow.webContents.send('retour-maj-art', retour);
         }
-        retour.rep = docEdite;
-        mainWindow.webContents.send('retour-maj-art', retour);
     });
 
 
