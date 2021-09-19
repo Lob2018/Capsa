@@ -114,7 +114,8 @@ async function createWindow() {
             nodeIntegration: false, // is default value after Electron v5
             contextIsolation: true, // protect against prototype pollution
             enableRemoteModule: false, // turn off remote
-            preload: path.join(__dirname, "preload.js") // use a preload script
+            preload: path.join(__dirname, "preload.js"), // use a preload script
+            nativeWindowOpen: true
         },
         icon: __dirname + '/img/CAPSA.ico',
         backgroundColor: '#343a40',

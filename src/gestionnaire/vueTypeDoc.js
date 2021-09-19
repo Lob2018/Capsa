@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     // Rendu <-> Main
 
-    let docs, isListeDocs;
+    let isListeDocs;
     isListeDocs = false;
     let o = this;
 

@@ -10471,7 +10471,7 @@ svg rect {
         -webkit-transform: scale(1);
     }
     30% {
-        -webkit-transform: scale(1.3);
+        -webkit-transform: scale(1);
     }
     60% {
         -webkit-transform: scale(0.7);
@@ -10679,8 +10679,7 @@ table#table-cl-res-rech {
     vertical-align: middle;
     border-radius: 30px;
     line-height: 28.5px;
-    background-color: #323639;
-    color: #FFFFFF;
+    color: #323639;
 }
 
 .YlBtn2 {
@@ -10718,8 +10717,8 @@ table#table-cl-res-rech {
 }
 
 .suppArticle:hover {
-    background-color: #40454a!important;
-    color: #fff!important;
+    background-color: #C62C58!important;
+    color: #FFE8F6!important;
     animation: none;
 }
 
@@ -10727,6 +10726,8 @@ table#table-cl-res-rech {
 .YlBtn1:hover {
     border-radius: 30px;
     outline: 0;
+    background-color: #C62C58!important;
+    color: #FFE8F6!important;
 }
 
 
