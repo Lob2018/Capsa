@@ -6,6 +6,7 @@ $(document).ready(function() {
             // RAZ si document en lecture seule (pb date)
             if (arg.rep.debut == 1 && arg.rep.document.facDev_num) {
                 $('#nouveau').click();
+                afficher();
             } else {
                 docEdite = arg.rep;
                 afficher();

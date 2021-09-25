@@ -999,7 +999,7 @@ function moyen() {
 
 }
 
-// enregistrer - numéroter
+// enregistrer - numéroter (pour chaque société)
 function numero() {
     let t = am = '';
     am = date.getAnMo();
@@ -1008,7 +1008,11 @@ function numero() {
     if (docEdite.document.facDev_type == '1') {
         t = 'D-';
         return new Promise(function(retour) {
-            db.find({ facDev_type: '1', facDev_creation: false }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
+            db.find({
+                facDev_id_soc: docEdite.document.facDev_id_soc,
+                facDev_type: '1',
+                facDev_creation: false
+            }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
                 if (e) {
                     retour({ val: 1, rep: e });
                 } else {
@@ -1024,7 +1028,11 @@ function numero() {
     } else {
         if (docEdite.document.facDev_type == '-1') { t = 'FERR-' } else if (docEdite.document.facDev_type == '0') { t = 'F-' } else t = 'FR-';
         return new Promise(function(retour) {
-            db.find({ $or: [{ facDev_type: '-1' }, { facDev_type: '0' }, { facDev_type: '2' }], facDev_creation: false }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
+            db.find({
+                facDev_id_soc: docEdite.document.facDev_id_soc,
+                $or: [{ facDev_type: '-1' }, { facDev_type: '0' }, { facDev_type: '2' }],
+                facDev_creation: false
+            }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
                 if (e) {
                     retour({ val: 1, rep: e });
                 } else {
