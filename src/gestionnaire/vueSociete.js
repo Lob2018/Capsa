@@ -21,6 +21,11 @@ $(document).ready(function() {
     });
     // Afficher ou pas la recherche
     $('.modale-societe').on('show.bs.modal', function(e) {
+        // Bloquer si besoin pour facture rectifiée
+        // if ($('#doc-facDev-type-rectif').text().startsWith('Annule')) {
+        //     setTimeout(function() { $('.modale-societe .btnFermer').click(); }, 333);
+        // } else {          
+        // } 
         // Vérifier s'il y a une société
         window.api.send('envoi-rech-societes-presentes');
     });

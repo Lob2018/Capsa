@@ -181,9 +181,12 @@ async function createWindow() {
     })
 
     // nouveau + autres màj - afficher le document (init.)
-    ipcMain.on('envoi-afficher-doc', async function(event) {
+    ipcMain.on('envoi-afficher-doc', async function(event, debut) {
         // récupérer le document encours
         let retour = await docEnCours();
+        // RAZ si document en lecture seule (pb date)
+        if (debut == 1) { retour.rep.debut = 1 } else retour.rep.debut = 0;
+
         // msg si avertissement ou erreur
         if (retour.val == 0) {
             let ok = true;
@@ -709,7 +712,7 @@ async function createWindow() {
         mainWindow.webContents.send('retour-rech-clients-presents', retour);
     });
 
-    // facture/devis article - chargement des factures
+    // factures à annuler - chargement des factures
     ipcMain.on('envoi-chg-fact', async function(event, obj) {
         // forcer à la fin de la journée recherchée
         const dateDebRech = date.txtToDate(obj.date + "T23:59:59");
@@ -731,6 +734,31 @@ async function createWindow() {
         }
         mainWindow.webContents.send('retour-chg-fact', retour);
     });
+
+    // factures, factures à annuler, devis, à réafficher - chargement 
+    ipcMain.on('envoi-chg-fact-devis', async function(event, obj) {
+        // forcer à la fin de la journée recherchée
+        const dateDebRech = date.txtToDate(obj.date + "T23:59:59");
+        let retour = await lireFacturesDevis(obj.societe, obj.page, obj.longueur, dateDebRech);
+        // msg si avertissement ou erreur
+        if (retour.val == 1) {
+            msg.warning(retour.rep);
+        } else {
+            // récupérer les clients
+            retour.rep0 = [];
+            for (let i = 0; i < retour.rep.length; i++) {
+                retour.rep[i].date = date.formatToDateInput(retour.rep[i].updatedAt);
+                let retourII = await lireClient(retour.rep[i].facDev_id_cl);
+                // msg si avertissement ou erreur
+                if (retourII.val == 1) {} else {
+                    retour.rep0.push(retourII.rep);
+                }
+            }
+        }
+        mainWindow.webContents.send('retour-chg-fact-devis', retour);
+    });
+
+
     // facture/devis article - nom de société unique
     ipcMain.on('envoi-nom-societe', async function(event, denom) {
         let retour = await nomUnique(denom);
@@ -766,6 +794,18 @@ async function createWindow() {
             msg.warning(retour.rep);
         }
         mainWindow.webContents.send('retour-rech-article', retour);
+    });
+
+    // Enregistrer document en cours 
+    ipcMain.on('envoi-majDocEnCours', async function(event, doc) {
+        docEdite.document = doc;
+        let retour = await majDocEnCours();
+        // msg si avertissement ou erreur
+        if (retour.val == 0) {} else {
+            msg.warning(retour.rep);
+        }
+        retour.rep = docEdite;
+        mainWindow.webContents.send('retour-majDocEnCours', retour);
     });
 
 
@@ -1305,6 +1345,35 @@ function majDocEnr() {
     });
 }
 
+// facture/devis facture & devis - maj du document en cours
+function majDocEnCours() {
+    return new Promise(function(retour) {
+        db.update({ facDev_creation: true }, {
+            $set: {
+                facDev_type: docEdite.document.facDev_type,
+                facDev_num: docEdite.document.facDev_num,
+                facDev_id_soc: docEdite.document.facDev_id_soc,
+                facDev_id_cl: docEdite.document.facDev_id_cl,
+                facDev_lignes: docEdite.document.facDev_lignes,
+                facDev_HT: docEdite.document.facDev_HT,
+                facDev_TTC: docEdite.document.facDev_TTC,
+                facDev_FR_num: docEdite.document.facDev_FR_num,
+                facDev_TVAs: docEdite.document.facDev_TVAs,
+                facDev_Paiement: docEdite.document.facDev_Paiement,
+                createdAt: docEdite.document.createdAt,
+                updatedAt: docEdite.document.updatedAt
+            }
+        }, { multi: true }, function(e, numRemoved) {
+            if (e) {
+                docEdite.document.facDev_Paiement = null;
+                retour({ val: 1, rep: e });
+            } else {
+                retour({ val: 0, rep: docEdite });
+            };
+        });
+    });
+}
+
 // facture/devis article - au moins un article
 function trouverArticle() {
     return new Promise(function(retour) {
@@ -1696,7 +1765,7 @@ function lireClient(id) {
         });
     });
 }
-// facture/devis article - récupérer les factures (débute à la page, a pour longueur +1, à partir d'une date de recherche)
+// factures article - récupérer les factures (débute à la page, a pour longueur +1, à partir d'une date de recherche)
 function lireFactures(societe, page, longueur, dateDebRech) {
     if (isNaN(dateDebRech)) {
         return new Promise(function(retour) {
@@ -1711,6 +1780,31 @@ function lireFactures(societe, page, longueur, dateDebRech) {
     } else {
         return new Promise(function(retour) {
             db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe, updatedAt: { $lte: dateDebRech } }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
+                if (e) {
+                    retour({ val: 1, rep: e });
+                } else {
+                    retour({ val: 0, rep: docs });
+                }
+            });
+        });
+    }
+}
+
+// factures/devis article - récupérer les factures/devis/factures annulées (débute à la page, a pour longueur +1, à partir d'une date de recherche)
+function lireFacturesDevis(societe, page, longueur, dateDebRech) {
+    if (isNaN(dateDebRech)) {
+        return new Promise(function(retour) {
+            db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '1' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
+                if (e) {
+                    retour({ val: 1, rep: e });
+                } else {
+                    retour({ val: 0, rep: docs });
+                }
+            });
+        });
+    } else {
+        return new Promise(function(retour) {
+            db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '1' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe, updatedAt: { $lte: dateDebRech } }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
                 if (e) {
                     retour({ val: 1, rep: e });
                 } else {

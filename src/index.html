@@ -1163,7 +1163,12 @@
             docEdite.document.facDev_num == null ? $('#doc-facDev-num').text('') : $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
 
         }
-        $('#doc-facDev-date').text(getDateDoc());
+
+
+        // Date présente (réimpression)
+        if (docEdite.document.updatedAt && docEdite.document.facDev_num) {
+            $('#doc-facDev-date').text(getDateDoc(docEdite.document.updatedAt));
+        } else $('#doc-facDev-date').text(getDateDoc());
 
         // Si complet afficher enregistrer
         if (complet == 3) {
@@ -1235,7 +1240,7 @@
         });
     }
 
-    function getDateDoc() {
+    function getDateDoc(old) {
         this.mapMois = new Map([
             [1, "janvier"],
             [2, "février"],
@@ -1250,7 +1255,8 @@
             [11, "novembre"],
             [12, "décembre"]
         ]);
-        let date = new Date();
+        // console.log(old)
+        let date = old ? new Date(old) : new Date();
         return "Le " + (date.getUTCDate().toString() == 1 ? date.getUTCDate().toString() + 'er' : date.getUTCDate()) + " " + this.mapMois.get(date.getMonth() + 1) + " " + date.getFullYear();
     };
 

@@ -21,7 +21,12 @@ $(document).ready(function() {
     });
     // Afficher ou pas la recherche
     $('.modale-client').on('show.bs.modal', function(e) {
-        // Vérifier s'il y a une société
+        // Bloquer si besoin pour facture rectifiée
+        // if ($('#doc-facDev-type-rectif').text().startsWith('Annule')) {
+        //     setTimeout(function() { $('.modale-client .btnFermer').click(); }, 333);
+        // } else {            
+        // }
+        // Vérifier s'il y a un client
         window.api.send('envoi-rech-clients-presents');
     });
 

@@ -3,8 +3,13 @@ $(document).ready(function() {
     // retour afficher le document
     window.api.receive('retour-afficher-doc', (arg) => {
         if (arg.val == 0) {
-            docEdite = arg.rep
-            afficher();
+            // RAZ si document en lecture seule (pb date)
+            if (arg.rep.debut == 1 && arg.rep.document.facDev_num) {
+                $('#nouveau').click();
+            } else {
+                docEdite = arg.rep;
+                afficher();
+            }
         } else {
             viderLesChamps();
         }
@@ -13,8 +18,9 @@ $(document).ready(function() {
     let enregIco = document.getElementById('enregistrer');
     let p = enregIco.parentElement;
     p.style.display = 'none';
-    // afficher document (en création ou vide)
-    window.api.send('envoi-afficher-doc');
+    // RAZ si document en lecture seule (pb date)
+    let debut = 1;
+    window.api.send('envoi-afficher-doc', debut);
 
 
     // retour nouveau
@@ -49,7 +55,9 @@ $(document).ready(function() {
                 facDev_lignes: [],
                 facDev_HT: '0,00',
                 facDev_TTC: '0,00',
-                facDev_FR_num: null
+                facDev_FR_num: null,
+                createdAt: null,
+                updatedAt: null
             }
         };
 

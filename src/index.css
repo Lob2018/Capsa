@@ -10240,7 +10240,8 @@ label {
 }
 
 .btn-perso,
-.suppLignArt {
+.suppLignArt,
+.modifierLigneFacDev {
     cursor: pointer;
 }
 
@@ -10320,7 +10321,8 @@ label {
 .tableRechCl:hover,
 .tableRechArt:hover,
 .tableRechArtGest:hover,
-.tableRechSocClGest:hover {
+.tableRechSocClGest:hover,
+.modifierLigneFacDev:hover {
     background-color: rgba(33, 191, 44, 0.075) !important;
 }
 
