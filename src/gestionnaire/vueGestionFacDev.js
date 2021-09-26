@@ -179,7 +179,7 @@ $(document).ready(function() {
         if (arg.val == 0) {
             // màj date dernière modification et TVA sauvegardée
             docEdite.document.updatedAt = o1.updatedAt;
-            docEdite.societe.soc_tva = o1.tva;
+            if (docEdite.document.facDev_num) docEdite.societe.soc_tva = o1.tva;
 
             afficher();
         }
@@ -191,7 +191,7 @@ $(document).ready(function() {
             docEdite = arg.rep;
             // Sauvegarder la dernière date de modification et la TVA utilisée
             o1.updatedAt = docEdite.document.updatedAt;
-            o1.tva = docEdite.document.facDev_TVA;
+            if (docEdite.document.facDev_num) o1.tva = docEdite.document.facDev_TVA;
             window.api.send('envoi-afficher-doc');
         }
     });
