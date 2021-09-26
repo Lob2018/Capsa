@@ -408,6 +408,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="mention-nouv-soc" class="font-weight-bold">Mention particulière à inscrire sur la facture</label>
+                                                <textarea rows="1" class="form-control " id="mention-nouv-soc" minlength="3" maxlength="200" placeholder="Ex. : TVA non applicable, art. 293 B du Code général des impôts" required data-toggle="tooltip" title="Mention particulière devant être inscrite sur la facture"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <figure class="col-md-12 mt-1">
+                                                <figcaption class="blockquote-footer">
+                                                    <span class="label label-default font-weight-bold">Modèles (voir aussi la mention de l'assurance souscrite au titre de l'activité, pour les artisans ou micro-entrepreneurs) :</span>
+                                                    <div class="label label-default">TVA non applicable, art. 293 B du Code général des impôts</div>
+                                                    <div class="label label-default">Membre d'une association agréée, le règlement par chèque et par carte bancaire est accepté</div>
+                                                    <div class="label label-default">Auto-liquidation de la TVA, montant hors taxe</div>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
                                         <div class="text-center mt-3">
                                             <button class="pull-right btn btn-primary submit" type="submit">Créer et ajouter la société</button>
                                             <p class="pull-left font-weight-bold">* Champs requis</p>
@@ -819,7 +835,22 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="form-row mt-1">
+                                            <div class="col-md-12">
+                                                <label for="mention-nouv-soc-gest" class="font-weight-bold">Mention particulière à inscrire sur la facture</label>
+                                                <textarea rows="1" class="form-control " id="mention-nouv-soc-gest" minlength="3" maxlength="200" placeholder="Ex. : TVA non applicable, art. 293 B du Code général des impôts" required data-toggle="tooltip" title="Mention particulière devant être inscrite sur la facture"></textarea>
+                                                <div class="invalid-feedback" id="invalid-description">
+                                                </div>
+                                            </div>
+                                            <figure class="col-md-12 mt-1">
+                                                <figcaption class="blockquote-footer">
+                                                    <span class="label label-default font-weight-bold">Modèles (voir aussi la mention de l'assurance souscrite au titre de l'activité, pour les artisans ou micro-entrepreneurs) :</span>
+                                                    <div class="label label-default">TVA non applicable, art. 293 B du Code général des impôts</div>
+                                                    <div class="label label-default">Membre d'une association agréée, le règlement par chèque et par carte bancaire est accepté</div>
+                                                    <div class="label label-default">Auto-liquidation de la TVA, montant hors taxe</div>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
                                         <div class="text-center mt-3">
                                             <button class="pull-right btn btn-primary submit" type="submit" id="gest-socCl-modifier">Modifier</button>
                                             <button class="pull-right btn btn-primary submit mr-3" form="socCl-existant-gest" type="submit" id="gest-socCl-supprimer">Supprimer</button>
@@ -985,10 +1016,23 @@
             docEdite.societe.soc_tel2 == null ? $('#doc-soc-tel2').text('') : $('#doc-soc-tel2').text('Tél : ' + docEdite.societe.soc_tel2)
             docEdite.societe.soc_tel1 == null ? $('#doc-soc-tel1').text('') : $('#doc-soc-tel1').text('Tél : ' + docEdite.societe.soc_tel1)
             docEdite.societe.soc_fax == null ? $('#doc-soc-fax').text('') : $('#doc-soc-fax').text('Fax : ' + docEdite.societe.soc_fax);
-            // mention spéciale TVA
-            if ($('#table-ssTva')[0].childNodes[0].innerText == 'TVA non applicable, article 293B du CGI') {} else if (docEdite.societe.soc_tva == null) {
-                $('#table-ssTva').prepend(`<tr><td>TVA non applicable, article 293B du CGI</td></tr>`);
+
+            // Init. mention
+            if (!$('#mentionParticuliere').length) {
+                const td = document.createElement('td');
+                td.id = 'mentionParticuliere';
+                const tr = document.createElement('tr');
+                tr.appendChild(td);
+                $('#table-ssTva').prepend(tr);
             }
+
+            // Si facture/devis existant afficher mention sauvegardée, sinon celle de la société
+            if (docEdite.document.facDev_num) {
+                $('#mentionParticuliere').html(docEdite.document.facDev_mention)
+            } else {
+                $('#mentionParticuliere').html(docEdite.societe.soc_mention)
+            }
+
             complet += 1;
         }
         // client ?
@@ -1160,7 +1204,13 @@
             }
 
             // numéro de facture
-            docEdite.document.facDev_num == null ? $('#doc-facDev-num').text('') : $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
+            if (docEdite.document.facDev_num == null) {
+                $('#doc-facDev-num').text('')
+            } else if (docEdite.document.facDev_num.startsWith("D")) {
+                $('#doc-facDev-num').html('Devis numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
+            } else {
+                $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
+            }
 
         }
 

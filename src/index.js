@@ -254,6 +254,7 @@ async function createWindow() {
             let retour = await numero();
             // msg si avertissement ou erreur
             if (retour.val == 0) {
+                docEdite.document.facDev_mention = infos.facDev_mention;
                 docEdite.document.facDev_HT = infos.ht;
                 docEdite.document.facDev_TTC = infos.ttc;
                 docEdite.document.facDev_FR_num = infos.facDev_FR_num;
@@ -1135,7 +1136,8 @@ function majSocCL(socCl) {
                 soc_siret: socCl.soc_siret,
                 soc_descript: socCl.soc_descript,
                 soc_form_jur: socCl.soc_form_jur,
-                soc_tva: socCl.soc_tva
+                soc_tva: socCl.soc_tva,
+                soc_mention: socCl.soc_mention
             }
         }, { multi: false }, function(e, numRemoved) {
             if (e) {
@@ -1339,7 +1341,7 @@ function majDocArtEx(facDev) {
 function majDocEnr() {
     return new Promise(function(retour) {
         db.update({ facDev_creation: true }, {
-            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_Paiement: docEdite.document.facDev_Paiement, facDev_TVAs: docEdite.document.facDev_TVAs }
+            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_Paiement: docEdite.document.facDev_Paiement, facDev_TVAs: docEdite.document.facDev_TVAs, facDev_mention: docEdite.document.facDev_mention }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
                 docEdite.document.facDev_Paiement = null;
@@ -1369,7 +1371,8 @@ function majDocEnCours() {
                 facDev_TVAs: docEdite.document.facDev_TVAs,
                 facDev_Paiement: docEdite.document.facDev_Paiement,
                 createdAt: docEdite.document.createdAt,
-                updatedAt: docEdite.document.updatedAt
+                updatedAt: docEdite.document.updatedAt,
+                facDev_mention: docEdite.document.facDev_mention
             }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {

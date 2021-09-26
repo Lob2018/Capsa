@@ -96,7 +96,7 @@ $(document).ready(function() {
                 ligneEl.classList.add('modifierLigneFacDev');
                 ligneEl.setAttribute("data-toggle", "tooltip");
                 ligneEl.setAttribute("title", "");
-                ligneEl.setAttribute("data-original-title", "Afficher cette facture");
+                ligneEl.setAttribute("data-original-title", "Afficher ce document");
                 let dateEl = ligneEl.insertCell(0);
                 dateEl.classList.add('table-noBorder-top', 'MmLigne');
                 dateEl.innerHTML = ligne.date.jour + '-' + ligne.date.mois + '-' + ligne.date.annee;
@@ -145,6 +145,7 @@ $(document).ready(function() {
                     }
                     // toggle modale
                     $('.modale-facDev-gest').modal('toggle');
+                    window.api.send('debut-chrg');
                 })
             }
 

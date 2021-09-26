@@ -203,6 +203,7 @@ $(document).ready(function() {
                 soc_descript: $('#descript-nouv-soc').val() == '' ? null : $('#descript-nouv-soc').val(),
                 soc_form_jur: $('#jur-nouv-soc').val() == '' ? null : $('#jur-nouv-soc').val(),
                 soc_tva: $('#tva-nouv-soc').val() == '' ? null : $('#tva-nouv-soc').val(),
+                soc_mention: $('#mention-nouv-soc').val() == '' ? null : $('#mention-nouv-soc').val(),
             };
             window.api.send('envoi-enreg-nouv-soc', societe);
         } else event.preventDefault();

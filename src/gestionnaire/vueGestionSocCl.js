@@ -220,7 +220,8 @@ $(document).ready(function() {
                 soc_siret: $('#siret-nouv-socCl-gest').val() == '' ? "En cours d'attribution" : $('#siret-nouv-socCl-gest').val(),
                 soc_descript: $('#descript-nouv-socCl-gest').val() == '' ? null : $('#descript-nouv-socCl-gest').val(),
                 soc_form_jur: $('#jur-nouv-socCl-gest').val() == '' ? null : $('#jur-nouv-socCl-gest').val(),
-                soc_tva: $('#tva-nouv-socCl-gest').val() == '' ? null : $('#tva-nouv-socCl-gest').val()
+                soc_tva: $('#tva-nouv-socCl-gest').val() == '' ? null : $('#tva-nouv-socCl-gest').val(),
+                soc_mention: $('#mention-nouv-soc-gest').val() == '' ? null : $('#mention-nouv-soc-gest').val()
             };
             window.api.send('envoi-maj-socCl', socCL);
             // Basculer la modale
@@ -263,14 +264,19 @@ $(document).ready(function() {
             // siret absent ?
             o.socClGest.soc_siret == "En cours d'attribution" ? $('#siret-nouv-socCl-gest').val('') :
                 $('#siret-nouv-socCl-gest').val(o.socClGest.soc_siret);
-            // client pas TVA
+            // client pas TVA ni mention
             if (o.socClGest.soc_tva == null) {
                 $('#tva-nouv-socCl-gest').val(o.socClGest.soc_tva);
+                $('#mention-nouv-soc-gest').val(o.socClGest.soc_mention);
             } else {
                 $('#tva-nouv-socCl-gest').val(strToFloat(o.socClGest.soc_tva));
+                $('#mention-nouv-soc-gest').val(o.socClGest.soc_mention);
             }
 
-            if (o.socClGest.soc_type == -1) $('#tva-nouv-socCl-gest').attr("disabled", true);
+            if (o.socClGest.soc_type == -1) {
+                $('#tva-nouv-socCl-gest').attr("disabled", true);
+                $('#mention-nouv-soc-gest').attr("disabled", true);
+            }
 
             $('#courriel-nouv-socCl-gest').val(o.socClGest.soc_courriel);
             $('#fax-nouv-socCl-gest').val(o.socClGest.soc_fax);
