@@ -254,6 +254,7 @@ async function createWindow() {
             let retour = await numero();
             // msg si avertissement ou erreur
             if (retour.val == 0) {
+                docEdite.document.facDev_TVA = infos.facDev_TVA;
                 docEdite.document.facDev_mention = infos.facDev_mention;
                 docEdite.document.facDev_HT = infos.ht;
                 docEdite.document.facDev_TTC = infos.ttc;
@@ -1341,7 +1342,7 @@ function majDocArtEx(facDev) {
 function majDocEnr() {
     return new Promise(function(retour) {
         db.update({ facDev_creation: true }, {
-            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_Paiement: docEdite.document.facDev_Paiement, facDev_TVAs: docEdite.document.facDev_TVAs, facDev_mention: docEdite.document.facDev_mention }
+            $set: { facDev_num: docEdite.document.facDev_num, facDev_HT: docEdite.document.facDev_HT, facDev_TTC: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_creation: false, facDev_Paiement: docEdite.document.facDev_Paiement, facDev_TVAs: docEdite.document.facDev_TVAs, facDev_mention: docEdite.document.facDev_mention, facDev_TVA: docEdite.document.facDev_TVA }
         }, { multi: true }, function(e, numRemoved) {
             if (e) {
                 docEdite.document.facDev_Paiement = null;
