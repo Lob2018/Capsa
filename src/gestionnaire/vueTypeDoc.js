@@ -41,22 +41,28 @@ $(document).ready(function() {
 
     // basculer de : 0 Facture > 1 Devis > 2 Facture rectificative
     $('#doc-facDev-type').mousedown(function(event) {
-        window.api.send('debut-chrg');
-        message.forceClose();
-        if (docEdite.document.facDev_type == 0) {
-            // maj document en cours vers devis
-            window.api.send('envoi-document-rect-fact', '1');
-        } else if (docEdite.document.facDev_type == 1) {
-            // toggle modale
-            $('.modale-docs').modal('toggle');
-            // chargement des factures pouvant être annulées
-            if (o.pagination === undefined) {
-                o.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
-            }
-            window.api.send('envoi-chg-fact', o.pagination);
+        // Bloquer l'édition si document existant
+        if (docEdite.document.facDev_num) {
+            $('#nouveau').click();
+            setTimeout(function() { $('.modale-docs .btnFermer').click(); }, 333);
         } else {
-            // maj document en cours vers facture
-            window.api.send('envoi-document-rect-fact', '0');
+            window.api.send('debut-chrg');
+            message.forceClose();
+            if (docEdite.document.facDev_type == 0) {
+                // maj document en cours vers devis
+                window.api.send('envoi-document-rect-fact', '1');
+            } else if (docEdite.document.facDev_type == 1) {
+                // toggle modale
+                $('.modale-docs').modal('toggle');
+                // chargement des factures pouvant être annulées
+                if (o.pagination === undefined) {
+                    o.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
+                }
+                window.api.send('envoi-chg-fact', o.pagination);
+            } else {
+                // maj document en cours vers facture
+                window.api.send('envoi-document-rect-fact', '0');
+            }
         }
     });
     // retour de la modale pour choisir une facture pour cette société

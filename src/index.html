@@ -1137,21 +1137,27 @@
 
                 // écouteur de suppression d'une ligne de commande (vérifier si remise)
                 $('#table-articles tr.suppLignArt').click(function() {
-                    // si remise ne rien faire
-                    if ($(this).find("td:eq(0)").text() == '') {} else {
-                        window.api.send('debut-chrg');
-                        // récupérer l'id article
-                        let id = docEdite.document.facDev_lignes[($(this).attr('id').replace("lArt", ""))].fD_art_id;
-                        // supprimer la ligne de la structure HTML
-                        docEdite.document.facDev_lignes.splice($(this).attr('id').replace("lArt", ""), 1);
-                        //  màj+stock
-                        let obj = {
-                            facDev_lignes: docEdite.document.facDev_lignes,
-                            id: id,
-                            qte: $(this).find("td:eq(2)").text(),
-                        };
-                        // màj ligne+stock en base 
-                        window.api.send('envoi-supp-ligne', obj);
+
+                    // Bloquer l'édition si document existant
+                    if (docEdite.document.facDev_num) {
+                        $('#nouveau').click();
+                    } else {
+                        // si remise ne rien faire
+                        if ($(this).find("td:eq(0)").text() == '') {} else {
+                            window.api.send('debut-chrg');
+                            // récupérer l'id article
+                            let id = docEdite.document.facDev_lignes[($(this).attr('id').replace("lArt", ""))].fD_art_id;
+                            // supprimer la ligne de la structure HTML
+                            docEdite.document.facDev_lignes.splice($(this).attr('id').replace("lArt", ""), 1);
+                            //  màj+stock
+                            let obj = {
+                                facDev_lignes: docEdite.document.facDev_lignes,
+                                id: id,
+                                qte: $(this).find("td:eq(2)").text(),
+                            };
+                            // màj ligne+stock en base 
+                            window.api.send('envoi-supp-ligne', obj);
+                        }
                     }
                 });
 
@@ -1212,6 +1218,14 @@
                 $('#doc-facDev-num').html('Facture numéro :<br><b>' + docEdite.document.facDev_num + '</b>');
             }
 
+            // Bloquer l'édition si document existant
+            if (docEdite.document.facDev_num) {
+                $('.YlBtn1').hide();
+                $('#enregistrer').attr("data-original-title", "Sauvegarder au format PDF");
+            } else {
+                $('.YlBtn1').show();
+                $('#enregistrer').attr("data-original-title", "Enregistrer ce document,<br>et le sauvegarder au format PDF");
+            }
         }
 
 
@@ -1240,7 +1254,6 @@
 
         // Guider la saisie (société -> client -> type -> article)
         // si pas de société
-
         if (complet == 0) {
             $('#doc-soc-denom').removeClass("clic-min-long");
             $('#doc-soc-denom').offset()

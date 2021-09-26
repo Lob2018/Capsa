@@ -261,6 +261,9 @@ async function createWindow() {
                 docEdite.document.facDev_FR_num = infos.facDev_FR_num;
                 docEdite.document.facDev_TVAs = infos.facDev_TVAs;
                 docEdite.document.facDev_Paiement = moyenP;
+                // sauvegarder le moyen de paiement pour l'afficher sur la facture
+                const mP = ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire"]
+                retour.moyenP = mP[moyenP];
                 let retourII = await majDocEnr();
                 // msg si avertissement ou erreur
                 if (retourII.val == 0) {

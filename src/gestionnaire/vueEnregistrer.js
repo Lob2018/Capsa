@@ -115,6 +115,8 @@ $(document).ready(function() {
         if (arg.val == 0) {
             docEdite = arg.rep
             afficher();
+            // màj moyen de paiement
+            $('#doc-facDev-type-regl').html(arg.moyenP);
             // les mesures se font sur une ligne
             $('#factures-devis-articles').css("white-space", "nowrap");
             // redimenssionner la fenêtre pendant l'impression
