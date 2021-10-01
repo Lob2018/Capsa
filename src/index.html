@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="
   default-src 'none'; 
-  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlSauvegarder' 'nonce-inlEditDoc' 'nonce-inlMessage' 'nonce-inlFacDevGest'; 
+  script-src 'nonce-inlJquery' 'nonce-inlChrg' 'nonce-inlBootBund' 'nonce-inlPop' 'nonce-inlBoot' 'nonce-inlArticle' 'nonce-inlArticleGest' 'nonce-inlSocClGest' 'nonce-inlSociete' 'nonce-inlClient' 'nonce-inlNouveau' 'nonce-inlEnregistrer' 'nonce-inlMaj' 'nonce-inlAide' 'nonce-inlSauvegarder' 'nonce-inlEditDoc' 'nonce-inlMessage' 'nonce-inlFacDevGest'; 
   connect-src 'self'; 
   img-src 'self'; 
   style-src 'self';
@@ -35,6 +35,7 @@
                 <li class="nav-item text-center ylMenu" data-toggle="modal" data-target=".modale-facDev-gest"><i class="YlBtn0 fa fa-book fa-3x" data-toggle="tooltip" id="ttes-factures" title="Gestion des factures et devis"></i><br>Factures & devis </li>
                 <li class="nav-item text-center ylMenu"><i class="YlBtn0 fa fa-database fa-3x" data-toggle="tooltip" id="sauvegarde-bdd" title="Gestion des données de l'application"></i><br>Données </li>
                 <li class="nav-item text-center ylMenu" id="pMaj"><i class="YlBtn0 fa fa-refresh fa-3x" id="maj" data-toggle="tooltip" title="Une nouvelle version de<br>Capsa est disponible<br>au téléchargement"></i><br>Mise à jour </li>
+                <li class="nav-item text-center ylMenu ml-2"><i class="YlBtn0 fa fa-question fa-3x" id="aide" data-toggle="tooltip" title="Voir la documentation en ligne"></i><br>Aide </li>
             </ul>
         </div>
     </nav>
@@ -941,6 +942,7 @@
 <script nonce="inlPop" src="./bootstrap/js/popper.min.js" charset="utf-8"></script>
 <script nonce="inlBootBund" src="./bootstrap/js/bootstrap.bundle.min.js" charset="utf-8"></script>
 <script nonce="inlBoot" src="./bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+<script nonce="inlAide" src="./gestionnaire/vueAide.js" charset="utf-8"></script>
 <script nonce="inlMaj" src="./gestionnaire/vueMaj.js" charset="utf-8"></script>
 <script nonce="inlMessage" src="./gestionnaire/outils/message-vue.js" charset="utf-8"></script>
 <!-- Stockage des données dans docEdite et màj du document -->
@@ -1221,10 +1223,17 @@
             // Bloquer l'édition si document existant
             if (docEdite.document.facDev_num) {
                 $('.YlBtn1').hide();
-                $('#enregistrer').attr("data-original-title", "Sauvegarder au format PDF");
+                $('#enregistrer').attr("data-original-title", "Enregistrer au format PDF");
+                $('#enregistrer').addClass('fa-file-pdf-o');
+                $('#enregistrer').removeClass('fa-save');
+                // Afficher le mode de règlement
+                const mP = ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire"]
+                $('#doc-facDev-type-regl').text(mP[docEdite.document.facDev_Paiement])
             } else {
                 $('.YlBtn1').show();
                 $('#enregistrer').attr("data-original-title", "Enregistrer ce document,<br>et le sauvegarder au format PDF");
+                $('#enregistrer').removeClass('fa-file-pdf-o');
+                $('#enregistrer').addClass('fa-save');
             }
         }
 

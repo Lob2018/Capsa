@@ -817,7 +817,13 @@ async function createWindow() {
 
     /// Début mise à jour Github
     ipcMain.on('envoi-maj', function() {
-        if (urlUpdate.startsWith('https://github.com/Lob2018/Capsa/releases/download/')) shell.openExternal(urlUpdate);
+        if (urlUpdate.startsWith('https://github.com/Lob2018/Capsa/releases/download/')) {
+            try {
+                shell.openExternal(urlUpdate);
+            } catch (e) {
+
+            }
+        }
     });
     // maj disponible ?
     ipcMain.on('envoi-maj-dispo', async function(event) {
@@ -839,6 +845,12 @@ async function createWindow() {
         }
     });
     /// Fin mise à jour Github
+
+    // Affichage du Wiki Github
+    ipcMain.on('envoi-aide', function() {
+        const urlReadMe = 'https://github.com/Lob2018/Capsa/wiki/CAPSA';
+        if (urlReadMe.startsWith('https://github.com/Lob2018/Capsa/wiki/CAPSA')) shell.openExternal(urlReadMe);
+    });
 
 
 };
@@ -1256,8 +1268,8 @@ function backupBDD() {
                             try {
                                 fs.writeFileSync(result.filePath, data, 'utf-8');
                                 let path = app.getPath('appData').replace(/\\/g, '\/');
-                                msg.info('Même après une désinstallation complète de Capsa, toutes vos données resteront accessibles dans le dossier du logiciel :\n\n' +
-                                    path + '/' + app.getName());
+                                msg.info('Même après une désinstallation complète de Capsa, et par sécurité,\ntoutes vos données resteront disponibles dans ce fichier :\n\n' +
+                                    path + '/' + app.getName() + '/Capsa.db\n\n(affichez les fichiers, dossiers cachés dans l\'explorateur de fichiers Windows)');
                             } catch (e) {
                                 // Erreur ou abandon
                                 if (e.code == 'ENOENT') {
