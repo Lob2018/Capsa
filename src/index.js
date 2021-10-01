@@ -233,9 +233,12 @@ async function createWindow() {
         mainWindow.webContents.send('retour-supprimer-doc', retour);
     })
 
-    ipcMain.on('envoi-creer-doc', async function(event) {
-        // recréer le document en cours d'édition en base
-        let retour = await docCreerEnCours();
+    ipcMain.on('envoi-creer-doc', async function(event, existe) {
+        // Si besoin recréer le document en cours d'édition en base
+        let retour;
+        if (existe) {
+            retour = await docVider();
+        } else retour = await docCreerEnCours();
         // msg si avertissement ou erreur
         if (retour.val == 0) {} else {
             msg.warning(retour.rep);
@@ -246,7 +249,6 @@ async function createWindow() {
 
     // enregistrer - numéro de facture
     ipcMain.on('envoi-numero', async function(event, infos) {
-
         let moyenP = null;
         if (docEdite.document.facDev_type == 1) {} else moyenP = await moyen();
 
@@ -1821,7 +1823,7 @@ function lireFactures(societe, page, longueur, dateDebRech) {
 function lireFacturesDevis(societe, page, longueur, dateDebRech) {
     if (isNaN(dateDebRech)) {
         return new Promise(function(retour) {
-            db.find({ $or: [{ facDev_type: '0' }, { facDev_type: '1' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
+            db.find({ $or: [{ facDev_type: '-1' }, { facDev_type: '0' }, { facDev_type: '1' }, { facDev_type: '2' }], facDev_creation: false, facDev_id_soc: societe }).sort({ updatedAt: -1 }).skip(page * longueur).limit(longueur + 1).exec(function(e, docs) {
                 if (e) {
                     retour({ val: 1, rep: e });
                 } else {

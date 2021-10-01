@@ -38,7 +38,7 @@ $(document).ready(function() {
         $('.modale-facDev-gest').modal('toggle');
         // chargement des factures pouvant être annulées
         if (o1.pagination === undefined) {
-            o1.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
+            o1.pagination = { societe: docEdite.societe._id, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
         }
         /**
          * ici
