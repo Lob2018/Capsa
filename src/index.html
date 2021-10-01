@@ -1069,6 +1069,18 @@
             } else if (docEdite.document.facDev_type == 1) {
                 $('#doc-facDev-type').html('Devis<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
                 $('#doc-facDev-type-regl').text('À réception de la facture');
+            } else if (docEdite.document.facDev_type == -1) {
+                $('#doc-facDev-type').html('Facture annulée<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
+                $('#doc-facDev-type-rectif').html('Annulée et remplacée par<br>N°' + docEdite.document.facDev_FR_num)
+                $('#doc-facDev-type-regl').text('Comptant')
+
+                setTimeout(function() {
+                    let elFR = document.getElementById('doc-facDev-type-rectif');
+                    let elT = document.getElementById('doc-facDev-type');
+                    elFR.classList.remove("clic-min");
+                    elFR.offsetWidth;
+                    elFR.classList.add("clic-min");
+                }, 250);
             } else {
                 $('#doc-facDev-type').html('Facture<i class="YlBtn1 fa fa-pencil fa-3x" id="facDev"></i>')
                 $('#doc-facDev-type-rectif').html('Annule et remplace la facture<br>N°' + docEdite.document.facDev_FR_num)

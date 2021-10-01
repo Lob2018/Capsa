@@ -18,7 +18,7 @@ class YlMsg {
             cancelId: -1,
             title: 'Capsa - Courriel',
             message: 'Préparer votre courriel au client ?',
-            detail: 'Les champs du courriel seront prépremplis.\nMais vous devrez insérer la facture en pièce jointe.'
+            detail: '/!\\ Vous devrez insérer le document en pièce jointe.'
         }
         this.questImpExpD = {
             type: 'warning',

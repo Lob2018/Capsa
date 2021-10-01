@@ -56,7 +56,7 @@ $(document).ready(function() {
                 $('.modale-docs').modal('toggle');
                 // chargement des factures pouvant être annulées
                 if (o.pagination === undefined) {
-                    o.pagination = { societe: docEdite.document.facDev_id_soc, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
+                    o.pagination = { societe: docEdite.societe._id, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
                 }
                 window.api.send('envoi-chg-fact', o.pagination);
             } else {

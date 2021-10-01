@@ -29,8 +29,12 @@ $(document).ready(function() {
         $("i").show();
         $("#switchFacDev").show();
         // Suppression du document en cours dans la base
+        if (this.existe) {
+            $('#nouveau').click();
+        } else {
+            window.api.send('envoi-creer-doc');
+        }
 
-        window.api.send('envoi-creer-doc');
     });
     // retour redimensionner
     window.api.receive('retour-redimensionner', (arg) => {
@@ -96,6 +100,12 @@ $(document).ready(function() {
             co = "%0D%0A%0D%0A  Madame, Monsieur, " +
                 "%0D%0A%0D%0A%09  Suite à notre dernière conversation du " + d + ", nous vous adressons ci-joint votre devis N°" + n + ", d'un montant de " + $('#doc-facDev-TTC').text() +
                 ".%0D%0A%0D%0A  Merci d'avoir choisi " + so + ", et à très bientôt.%0D%0A%0D%0A";
+        } else if (docEdite.document.facDev_type == '-1') {
+            ob = so + ' - ' + 'Votre facture annulée'
+            co = "%0D%0A%0D%0A  Madame, Monsieur, " +
+                "%0D%0A%0D%0A%09    Après vérifications le " + d + ", nous vous adressons ci-joint votre facture annulée N°" + n + ", d'un montant de " + $('#doc-facDev-TTC').text() + ", qui est annulée et remplacée par la facture N°" + fr +
+                ".%0D%0A%0D%0A%09  Nous vous prions de bien vouloir nous excuser pour la gêne occasionnée, et restons à votre disposition pour toute information complémentaire qui pourrait vous être nécessaire" +
+                ".%0D%0A%0D%0A  Merci d'avoir choisi " + so + ", et à très bientôt.%0D%0A%0D%0A";
         } else {
             ob = so + ' - ' + 'Votre facture rectificative'
             co = "%0D%0A%0D%0A  Madame, Monsieur, " +
@@ -132,11 +142,20 @@ $(document).ready(function() {
         // Cacher messages
         message.forceClose();
 
-        let elEnr = document.getElementById('enregistrer');
-        elEnr.classList.remove("clic");
-        elEnr.offsetWidth;
-        elEnr.classList.add("clic");
-        window.api.send('envoi-numero', { ht: docEdite.document.facDev_HT, ttc: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_TVAs: docEdite.document.facDev_TVAs, facDev_mention: docEdite.societe.soc_mention, facDev_TVA: docEdite.societe.soc_tva });
+        if (docEdite.document.facDev_num) {
+            this.existe = true;
+            // les mesures se font sur une ligne
+            $('#factures-devis-articles').css("white-space", "nowrap");
+            // redimenssionner la fenêtre pendant l'impression
+            window.api.send('envoi-redimensionner');
+        } else {
+            this.existe = false;
+            let elEnr = document.getElementById('enregistrer');
+            elEnr.classList.remove("clic");
+            elEnr.offsetWidth;
+            elEnr.classList.add("clic");
+            window.api.send('envoi-numero', { ht: docEdite.document.facDev_HT, ttc: docEdite.document.facDev_TTC, facDev_FR_num: docEdite.document.facDev_FR_num, facDev_TVAs: docEdite.document.facDev_TVAs, facDev_mention: docEdite.societe.soc_mention, facDev_TVA: docEdite.societe.soc_tva });
+        }
     })
 
 
