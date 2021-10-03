@@ -22,6 +22,17 @@ Ce fichier n'a pas de certificat de signature de code (service payant), Microsof
 
 <sub>[Cet autre logiciel peut vous être utile pour vérifier l'intégrité du fichier téléchargé (voir les empreintes de la version).](https://www.clubic.com/telecharger-fiche56914-hashtab.html)</sub>
 
+### Données
+
+Même après une désinstallation complète de Capsa, et par sécurité, toutes vos données resteront disponibles dans le fichier **Capsa.db**, disponible à cet emplacement :
+
+C:/Users/**Nom de votre compte utilisateur**/AppData/Roaming/Capsa/Capsa.db
+
+Vous devrez afficher les fichiers, et dossiers cachés dans l'explorateur de fichiers Windows :
+Onglet affichage > Afficher/Masquer > Éléments masqués.
+
+**Si vous souhaitez supprimer toutes vos données, supprimez le fichier Capsa.db.**
+
 ## Construit avec
 
 * Electron - Pour le projet complet
