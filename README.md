@@ -28,8 +28,9 @@ Même après une désinstallation complète de Capsa, et par sécurité, toutes 
 
 C:/Users/**Nom de votre compte utilisateur**/AppData/Roaming/Capsa/Capsa.db
 
-Vous devrez afficher les fichiers, et dossiers cachés dans l'explorateur de fichiers Windows :
-Onglet affichage > Afficher/Masquer > Éléments masqués.
+Pour y accéder, vous devrez afficher les fichiers, et dossiers cachés dans l'explorateur de fichiers Windows :
+
+Onglet Affichage > Afficher/Masquer > Éléments masqués.
 
 **Si vous souhaitez supprimer toutes vos données, supprimez le fichier Capsa.db, et redémarrez Capsa.**
 
