@@ -24,7 +24,7 @@ Ce fichier n'a pas de certificat de signature de code (service payant), Microsof
 
 ### Données
 
-Même après une désinstallation complète de Capsa, et par sécurité, toutes vos données resteront disponibles dans le fichier **Capsa.db**, disponible à cet emplacement :
+Même après une désinstallation complète de Capsa, et par sécurité, toutes vos données resteront disponibles dans le fichier **Capsa.db**, à cet emplacement :
 
 C:/Users/**Nom de votre compte utilisateur**/AppData/Roaming/Capsa/Capsa.db
 
