@@ -462,7 +462,7 @@
                                             <table class="table table-hover table-sm" id="table-fact-ann">
                                                 <thead>
                                                     <tr>
-                                                        <th class="th-sm table-noBorder-top">Date</th>
+                                                        <th class="th-sm table-noBorder-top">Date (UTC)</th>
                                                         <th class="th-sm table-noBorder-top">N°</th>
                                                         <th class="th-sm table-noBorder-top">Type</th>
                                                         <th class="th-sm table-noBorder-top">Client</th>
@@ -893,7 +893,7 @@
                                             <table class="table table-hover table-sm" id="table-gest-facDev">
                                                 <thead>
                                                     <tr>
-                                                        <th class="th-sm table-noBorder-top">Date</th>
+                                                        <th class="th-sm table-noBorder-top">Date (UTC)</th>
                                                         <th class="th-sm table-noBorder-top">N°</th>
                                                         <th class="th-sm table-noBorder-top">Type</th>
                                                         <th class="th-sm table-noBorder-top">Client</th>
@@ -1338,14 +1338,12 @@
         ]);
         // console.log(old)
         let date;
-        let jour;
         if (old) {
             date = new Date(old);
-            jour = date.getUTCDate().toString();
         } else {
             date = new Date();
-            jour = date.getDate().toString();
         }
+        const jour = date.getDate().toString();
         return "Le " + (jour == 1 ? jour + 'er' : jour) + " " + this.mapMois.get(date.getMonth() + 1) + " " + date.getFullYear();
 
     };
