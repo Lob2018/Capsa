@@ -1340,8 +1340,17 @@
             [12, "décembre"]
         ]);
         // console.log(old)
-        let date = old ? new Date(old) : new Date();
-        return "Le " + (date.getUTCDate().toString() == 1 ? date.getUTCDate().toString() + 'er' : date.getUTCDate()) + " " + this.mapMois.get(date.getMonth() + 1) + " " + date.getFullYear();
+        let date;
+        let jour;
+        if (old) {
+            date = new Date(old);
+            jour = date.getUTCDate().toString();
+        } else {
+            date = new Date();
+            jour = date.getDate().toString();
+        }
+        return "Le " + (jour == 1 ? jour + 'er' : jour) + " " + this.mapMois.get(date.getMonth() + 1) + " " + date.getFullYear();
+
     };
 
     function strToFloat(str) {
