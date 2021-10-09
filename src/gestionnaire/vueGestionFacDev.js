@@ -12,19 +12,19 @@ $(document).ready(function() {
 
     btnPrec1.addEventListener("click", function() {
         if (btnPrec1.classList.contains('disabled')) return
-        o1.pagination.page -= 1;
-        window.api.send('envoi-chg-fact-dev', o1.pagination);
+        o1.pagination1.page -= 1;
+        window.api.send('envoi-chg-fact-devis', o1.pagination1);
     }, true);
     btnSuiv1.addEventListener("click", function() {
         if (btnSuiv1.classList.contains('disabled')) return;
-        o1.pagination.page += 1;
-        window.api.send('envoi-chg-fact-dev', o1.pagination);
+        o1.pagination1.page += 1;
+        window.api.send('envoi-chg-fact-devis', o1.pagination1);
     }, true);
     dateDebut.addEventListener("input", function() {
         if (this.value) {
-            o1.pagination.date = this.value;
-            o1.pagination.page = 0;
-            window.api.send('envoi-chg-fact-dev', o1.pagination);
+            o1.pagination1.date = this.value;
+            o1.pagination1.page = 0;
+            window.api.send('envoi-chg-fact-devis', o1.pagination1);
         }
     }, true);
 
@@ -36,15 +36,18 @@ $(document).ready(function() {
         message.forceClose();
         // toggle modale
         $('.modale-facDev-gest').modal('toggle');
+
         // chargement des factures pouvant être annulées
-        if (o1.pagination === undefined) {
-            o1.pagination = { societe: docEdite.societe._id, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
+        if (o1.pagination1 === undefined) {
+            o1.pagination1 = { societe: docEdite.societe._id, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
         }
+        o1.pagination1.societe = docEdite.societe._id;
+        o1.pagination1.page = 0;
         /**
          * ici
          * Récupérer ttes factures+devis, et gérer affichage factures réctifiées, ajouter les devis 
          */
-        window.api.send('envoi-chg-fact-devis', o1.pagination);
+        window.api.send('envoi-chg-fact-devis', o1.pagination1);
 
     });
     // retour de la modale pour choisir une facture pour cette société
@@ -62,7 +65,7 @@ $(document).ready(function() {
             // vider le tableau
             document.getElementById('res-rech-facDev').innerHTML = '';
             // Afficher bouton précédentes ? 
-            if (o1.pagination.page == 0) {
+            if (o1.pagination1.page == 0) {
                 if (btnPrec1.classList.contains('disabled')) {} else {
                     btnPrec1.classList.add('disabled');
                 }
@@ -73,8 +76,8 @@ $(document).ready(function() {
             }
             // Afficher bouton suivantes ?
             if (o1.docs.length > (
-                    o1.pagination.page == 0 ? o1.pagination.longueur * 1 :
-                    o1.pagination.longueur * o1.pagination.page
+                    o1.pagination1.page == 0 ? o1.pagination1.longueur * 1 :
+                    o1.pagination1.longueur * o1.pagination1.page
                 )) {
                 if (btnSuiv1.classList.contains('disabled')) {
                     btnSuiv1.classList.remove('disabled');
@@ -130,7 +133,7 @@ $(document).ready(function() {
                 ttcEl.innerHTML = (ligne.facDev_TTC + '€');
 
                 // Click sur la ligne
-                ligneEl.id = 'fact-' + i + o1.pagination.page;
+                ligneEl.id = 'fact-' + i + o1.pagination1.page;
                 $('#' + ligneEl.id).click(function() {
                     try { chargWindow.cacher(); } catch (e) {}
                     // Client

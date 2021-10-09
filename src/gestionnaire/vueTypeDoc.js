@@ -58,6 +58,8 @@ $(document).ready(function() {
                 if (o.pagination === undefined) {
                     o.pagination = { societe: docEdite.societe._id, page: 0, longueur: 20, date: document.getElementsByName('fact-ann-date-rech')[0].value };
                 }
+                o.pagination.societe = docEdite.societe._id;
+                o.pagination.page = 0;
                 window.api.send('envoi-chg-fact', o.pagination);
             } else {
                 // maj document en cours vers facture
