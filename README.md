@@ -1,4 +1,4 @@
-# [![alt HATCLIC-Capsa](https://raw.githubusercontent.com/Lob2018/Capsa/master/capsa.jpg)](https://github.com/Lob2018/Capsa/releases/latest) Bienvenue sur le projet Capsa ! [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lob2018/Capsa?color=%232c974b&logo=Github&style=plastic)](https://github.com/Lob2018/Capsa/releases/latest)
+# [![alt HATCLIC-Capsa](https://raw.githubusercontent.com/Lob2018/Capsa/master/capsa.jpg)](https://github.com/Lob2018/Capsa/releases/latest) Bienvenue sur le projet Capsa (en cours de développement) ! [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Lob2018/Capsa?color=%232c974b&logo=Github&style=plastic)](https://github.com/Lob2018/Capsa/releases/latest)
 
 
 # [![alt HATCLIC-Capsa](https://raw.githubusercontent.com/Lob2018/Capsa/master/Capsa-visuel.jpg)](https://github.com/Lob2018/Capsa/releases/latest)

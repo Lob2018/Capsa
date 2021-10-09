@@ -49,7 +49,7 @@
         <div class="row h-0">
             <div class="col-md-8">
                 <div class="col-md-12 p-0 btn-perso btn-perso-sm" data-toggle="tooltip" title="Choisir votre société">
-                    <h3 class="wdW" id="doc-soc-denom" data-toggle="modal" data-target=".modale-societe"></h3>
+                    <h3 class="wdW" id="doc-soc-denom"></h3>
                 </div>
                 <p class="wdW" id="doc-soc-descript"></p>
             </div>
@@ -88,7 +88,7 @@
             </div>
             <div class="col-md-5">
                 <div class="col-md-12 p-0 btn-perso btn-perso-sm" data-toggle="tooltip" title="Choisir votre client">
-                    <h6 class="wdW" id="doc-cl-denom" data-toggle="modal" data-target=".modale-client"></h6>
+                    <h6 class="wdW" id="doc-cl-denom" data-toggle="modal"></h6>
                 </div>
                 <p>
                     <span class="wdW" id="doc-cl-adr-l1"></span><br>
@@ -122,7 +122,7 @@
             </thead>
             <tbody id="table-articles">
                 <tr data-toggle="tooltip" title="Ajouter un article" id="tableLigne">
-                    <td colspan="6" class="text-center btn-perso" id="ajoutArticle" data-toggle="modal" data-target=".modale-articles"><i class="YlBtn1 YlBtn3 fa fa-pencil fa-3x"></i></td>
+                    <td colspan="6" class="text-center btn-perso" id="ajoutArticle"><i class="YlBtn1 YlBtn3 fa fa-pencil fa-3x"></i></td>
                 </tr>
             </tbody>
         </table>
@@ -1149,13 +1149,10 @@
                     }
                 }
 
-                // écouteur de suppression d'une ligne de commande (vérifier si remise)
-                $('#table-articles tr.suppLignArt').click(function() {
-
-                    // Bloquer l'édition si document existant
-                    if (docEdite.document.facDev_num) {
-                        $('#nouveau').click();
-                    } else {
+                // Bloquer l'édition si document existant
+                if (docEdite.document.facDev_num) {} else {
+                    // écouteur de suppression d'une ligne de commande (vérifier si remise)
+                    $('#table-articles tr.suppLignArt').click(function() {
                         // si remise ne rien faire
                         if ($(this).find("td:eq(0)").text() == '') {} else {
                             window.api.send('debut-chrg');
@@ -1172,8 +1169,8 @@
                             // màj ligne+stock en base 
                             window.api.send('envoi-supp-ligne', obj);
                         }
-                    }
-                });
+                    });
+                }
 
                 ht = Math.round(ht * 100) / 100;
                 tva = Math.round(tva * 100) / 100;

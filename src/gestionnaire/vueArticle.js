@@ -22,13 +22,13 @@ $(document).ready(function() {
             $('#article-existant-fieldset').attr("disabled", true);
         } else $('#article-existant-fieldset').attr("disabled", false);
     });
+
     // Afficher ou pas la recherche
-    $('.modale-articles').on('show.bs.modal', function(e) {
+    $('#ajoutArticle').mousedown(function(event) {
         // Bloquer l'édition si document existant
-        if (docEdite.document.facDev_num) {
-            $('#nouveau').click();
-            setTimeout(function() { $('.modale-articles .btnFermer').click(); }, 333);
-        } else {
+        if (docEdite.document.facDev_num) {} else {
+            // toggle modale
+            $('.modale-articles').modal('toggle');
             // Vérifier s'il y a un article
             window.api.send('envoi-rech-articles-presents');
         }

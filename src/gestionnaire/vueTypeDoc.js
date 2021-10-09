@@ -43,7 +43,7 @@ $(document).ready(function() {
     $('#doc-facDev-type').mousedown(function(event) {
         // Bloquer l'édition si document existant
         if (docEdite.document.facDev_num) {
-            $('#nouveau').click();
+            // $('#nouveau').click();
             setTimeout(function() { $('.modale-docs .btnFermer').click(); }, 333);
         } else {
             window.api.send('debut-chrg');
