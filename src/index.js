@@ -132,28 +132,28 @@ async function createWindow() {
     // début fenêtre chargement en cours
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
-    // // DEV
-    // mainWindow.setAlwaysOnTop(true, 'screen');
-    // mainWindow.show();
-    // mainWindow.maximize();
-    // mainWindow.setAlwaysOnTop(false, 'screen');
-    // mainWindow.webContents.openDevTools();
-    // // charger la vue principale
-    // mainWindow.loadFile(__dirname + '/index.html');
-
-
-    // PROD
-    // splash screen
-    let splash = new YlSplash(mainWindow);
+    // DEV
+    mainWindow.setAlwaysOnTop(true, 'screen');
+    mainWindow.show();
+    mainWindow.maximize();
+    mainWindow.setAlwaysOnTop(false, 'screen');
+    mainWindow.webContents.openDevTools();
     // charger la vue principale
-    setTimeout(function() {
-        splash.retirer();
-        mainWindow.loadFile(__dirname + '/index.html');
-        mainWindow.maximize();
-        mainWindow.setAlwaysOnTop(true, 'screen');
-        mainWindow.show();
-        mainWindow.setAlwaysOnTop(false, 'screen');
-    }, 1234);
+    mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // // PROD
+    // // splash screen
+    // let splash = new YlSplash(mainWindow);
+    // // charger la vue principale
+    // setTimeout(function() {
+    //     splash.retirer();
+    //     mainWindow.loadFile(__dirname + '/index.html');
+    //     mainWindow.maximize();
+    //     mainWindow.setAlwaysOnTop(true, 'screen');
+    //     mainWindow.show();
+    //     mainWindow.setAlwaysOnTop(false, 'screen');
+    // }, 1234);
 
 
     // indexer les descriptions d'articles

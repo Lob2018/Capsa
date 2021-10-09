@@ -19,13 +19,14 @@ $(document).ready(function() {
             $('#rechSoc').attr("disabled", true);
         } else $('#rechSoc').attr("disabled", false);
     });
+
+
     // Afficher ou pas la recherche
-    $('.modale-societe').on('show.bs.modal', function(e) {
+    $('#doc-soc-denom').mousedown(function(event) {
         // Bloquer l'édition si document existant
-        if (docEdite.document.facDev_num) {
-            $('#nouveau').click();
-            setTimeout(function() { $('.modale-societe .btnFermer').click(); }, 333);
-        } else {
+        if (docEdite.document.facDev_num) {} else {
+            // toggle modale
+            $('.modale-societe').modal('toggle');
             // Vérifier s'il y a une société
             window.api.send('envoi-rech-societes-presentes');
         }

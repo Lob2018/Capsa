@@ -19,13 +19,14 @@ $(document).ready(function() {
             $('#rechCl').attr("disabled", true);
         } else $('#rechCl').attr("disabled", false);
     });
+
+
     // Afficher ou pas la recherche
-    $('.modale-client').on('show.bs.modal', function(e) {
+    $('#doc-cl-denom').mousedown(function(event) {
         // Bloquer l'édition si document existant
-        if (docEdite.document.facDev_num) {
-            $('#nouveau').click();
-            setTimeout(function() { $('.modale-client .btnFermer').click(); }, 333);
-        } else {
+        if (docEdite.document.facDev_num) {} else {
+            // toggle modale
+            $('.modale-client').modal('toggle');
             // Vérifier s'il y a un client
             window.api.send('envoi-rech-clients-presents');
         }
