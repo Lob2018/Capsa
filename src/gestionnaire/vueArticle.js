@@ -25,6 +25,7 @@ $(document).ready(function() {
 
     // Afficher ou pas la recherche
     $('#ajoutArticle').mousedown(function(event) {
+        viderFormArt();
         // Bloquer l'édition si document existant
         if (docEdite.document.facDev_num) {} else {
             // toggle modale
@@ -344,6 +345,9 @@ $(document).ready(function() {
         $("#descript-nouv").removeClass('is-invalid');
         $("#code-nouv").removeClass('is-invalid');
         $('#rechArt').val('');
+        $('#quantite-ex').val('');
+        $('#stock-ex').val('');
+        $('#remise-ex').val('');
         $('.supp-res-rech').remove();
         $('#article-existant')[0].reset();
         $('#nouvel-article')[0].reset();

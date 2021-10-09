@@ -132,28 +132,28 @@ async function createWindow() {
     // début fenêtre chargement en cours
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
-    // DEV
-    mainWindow.setAlwaysOnTop(true, 'screen');
-    mainWindow.show();
-    mainWindow.maximize();
-    mainWindow.setAlwaysOnTop(false, 'screen');
-    mainWindow.webContents.openDevTools();
-    // charger la vue principale
-    mainWindow.loadFile(__dirname + '/index.html');
-
-
-    // // PROD
-    // // splash screen
-    // let splash = new YlSplash(mainWindow);
+    // // DEV
+    // mainWindow.setAlwaysOnTop(true, 'screen');
+    // mainWindow.show();
+    // mainWindow.maximize();
+    // mainWindow.setAlwaysOnTop(false, 'screen');
+    // mainWindow.webContents.openDevTools();
     // // charger la vue principale
-    // setTimeout(function() {
-    //     splash.retirer();
-    //     mainWindow.loadFile(__dirname + '/index.html');
-    //     mainWindow.maximize();
-    //     mainWindow.setAlwaysOnTop(true, 'screen');
-    //     mainWindow.show();
-    //     mainWindow.setAlwaysOnTop(false, 'screen');
-    // }, 1234);
+    // mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // PROD
+    // splash screen
+    let splash = new YlSplash(mainWindow);
+    // charger la vue principale
+    setTimeout(function() {
+        splash.retirer();
+        mainWindow.loadFile(__dirname + '/index.html');
+        mainWindow.maximize();
+        mainWindow.setAlwaysOnTop(true, 'screen');
+        mainWindow.show();
+        mainWindow.setAlwaysOnTop(false, 'screen');
+    }, 1234);
 
 
     // indexer les descriptions d'articles
@@ -1028,7 +1028,7 @@ function numero() {
         t = 'D-';
         return new Promise(function(retour) {
             db.find({
-                facDev_id_soc: docEdite.document.facDev_id_soc,
+                facDev_id_soc: docEdite.societe._id,
                 facDev_type: '1',
                 facDev_creation: false
             }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
@@ -1048,7 +1048,7 @@ function numero() {
         if (docEdite.document.facDev_type == '-1') { t = 'FERR-' } else if (docEdite.document.facDev_type == '0') { t = 'F-' } else t = 'FR-';
         return new Promise(function(retour) {
             db.find({
-                facDev_id_soc: docEdite.document.facDev_id_soc,
+                facDev_id_soc: docEdite.societe._id,
                 $or: [{ facDev_type: '-1' }, { facDev_type: '0' }, { facDev_type: '2' }],
                 facDev_creation: false
             }).sort({ createdAt: -1 }).limit(1).exec(function(e, docs) {
