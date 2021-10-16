@@ -29,8 +29,6 @@ $(document).ready(function() {
     }, true);
 
 
-
-
     $('#ttes-factures').mousedown(function(event) {
         window.api.send('debut-chrg');
         message.forceClose();
@@ -50,6 +48,7 @@ $(document).ready(function() {
         window.api.send('envoi-chg-fact-devis', o1.pagination1);
 
     });
+
     // retour de la modale pour choisir une facture pour cette société
     window.api.receive('retour-chg-fact-devis', (arg) => {
         // Cacher les tooltips Bootstrap
@@ -143,7 +142,7 @@ $(document).ready(function() {
                     if (client && ligne) {
                         docEdite.document = ligne;
                         docEdite.client = client;
-                        // créer document (
+                        // créer document 
                         window.api.send('envoi-majDocEnCours', ligne);
                     }
                     // toggle modale
