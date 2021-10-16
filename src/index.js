@@ -132,28 +132,28 @@ async function createWindow() {
     // début fenêtre chargement en cours
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
-    // // DEV
-    // mainWindow.setAlwaysOnTop(true, 'screen');
-    // mainWindow.show();
-    // mainWindow.maximize();
-    // mainWindow.setAlwaysOnTop(false, 'screen');
-    // mainWindow.webContents.openDevTools();
-    // // charger la vue principale
-    // mainWindow.loadFile(__dirname + '/index.html');
-
-
-    // PROD
-    // splash screen
-    let splash = new YlSplash(mainWindow);
+    // DEV
+    mainWindow.setAlwaysOnTop(true, 'screen');
+    mainWindow.show();
+    mainWindow.maximize();
+    mainWindow.setAlwaysOnTop(false, 'screen');
+    mainWindow.webContents.openDevTools();
     // charger la vue principale
-    setTimeout(function() {
-        splash.retirer();
-        mainWindow.loadFile(__dirname + '/index.html');
-        mainWindow.maximize();
-        mainWindow.setAlwaysOnTop(true, 'screen');
-        mainWindow.show();
-        mainWindow.setAlwaysOnTop(false, 'screen');
-    }, 1234);
+    mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // // PROD
+    // // splash screen
+    // let splash = new YlSplash(mainWindow);
+    // // charger la vue principale
+    // setTimeout(function() {
+    //     splash.retirer();
+    //     mainWindow.loadFile(__dirname + '/index.html');
+    //     mainWindow.maximize();
+    //     mainWindow.setAlwaysOnTop(true, 'screen');
+    //     mainWindow.show();
+    //     mainWindow.setAlwaysOnTop(false, 'screen');
+    // }, 1234);
 
 
     // indexer les descriptions d'articles
@@ -225,6 +225,28 @@ async function createWindow() {
     });
     // nouveau - supprimer document
     ipcMain.on('envoi-supprimer-doc', async function(event) {
+        /**
+         * MAJ STOCK
+         */
+        if (!docEdite.document.facDev_num) {
+            for (let i = 0; i < docEdite.document.facDev_lignes.length; i++) {
+                const id = docEdite.document.facDev_lignes[i].fD_art_id;
+                const qte = docEdite.document.facDev_lignes[i].fD_art_qte;
+                // màj du stock (lecture)
+                let retourII = await lireStock(id);
+                // msg si avertissement ou erreur
+                if (retourII.val == 0) {
+                    // stock récupéré
+                    let stock = (Number(retourII.rep) + Number(qte)) + '';
+                    let retourIII = await majStock(id, stock);
+                    if (retourIII.val == 0) { /*stock màj*/ } else {
+                        msg.warning(retourIII.rep);
+                    }
+                } else {
+                    msg.warning(retourII.rep);
+                }
+            }
+        }
         let retour = await docVider();
         // msg si avertissement ou erreur
         if (retour.val == 0) {} else {
@@ -805,6 +827,28 @@ async function createWindow() {
 
     // Enregistrer document en cours 
     ipcMain.on('envoi-majDocEnCours', async function(event, doc) {
+        /**
+         * MAJ STOCK
+         */
+        if (!docEdite.document.facDev_num) {
+            for (let i = 0; i < docEdite.document.facDev_lignes.length; i++) {
+                const id = docEdite.document.facDev_lignes[i].fD_art_id;
+                const qte = docEdite.document.facDev_lignes[i].fD_art_qte;
+                // màj du stock (lecture)
+                let retourII = await lireStock(id);
+                // msg si avertissement ou erreur
+                if (retourII.val == 0) {
+                    // stock récupéré
+                    let stock = (Number(retourII.rep) + Number(qte)) + '';
+                    let retourIII = await majStock(id, stock);
+                    if (retourIII.val == 0) { /*stock màj*/ } else {
+                        msg.warning(retourIII.rep);
+                    }
+                } else {
+                    msg.warning(retourII.rep);
+                }
+            }
+        }
         docEdite.document = doc;
         let retour = await majDocEnCours();
         // msg si avertissement ou erreur

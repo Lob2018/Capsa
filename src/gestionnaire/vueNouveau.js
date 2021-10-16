@@ -40,9 +40,6 @@ $(document).ready(function() {
         elEnr.classList.remove("clic");
         elEnr.offsetWidth;
         elEnr.classList.add("clic");
-        /**
-         * PREVOIR MAJ STOCK !
-         */
         // Suppression du document en cours dans la base
         window.api.send('envoi-supprimer-doc');
     });
