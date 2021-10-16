@@ -38,7 +38,7 @@ Onglet Affichage > Afficher/Masquer > Éléments masqués.
 
 * Electron - Pour le projet complet
 * NeDB - Pour la base de données (projet forké, et mis à jour)
-* Bootstrap v4.5.3 (jQuery v3.6.0)
+* Bootstrap v5.1.3 (jQuery v3.6.0)
 * [Font Awesome](https://fontawesome.com/v4.7.0/) - Pour les icônes
 * [Google Fonts](https://fonts.google.com/) - Pour les polices
 
