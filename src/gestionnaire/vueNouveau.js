@@ -36,6 +36,7 @@ $(document).ready(function() {
     });
     // envoi nouveau    
     $('#nouveau').on('click', () => {
+        message.forceClose();
         let elEnr = document.getElementById('nouveau');
         elEnr.classList.remove("clic");
         elEnr.offsetWidth;

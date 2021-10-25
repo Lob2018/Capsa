@@ -1,7 +1,7 @@
 {
     "name": "capsa",
     "productName": "Capsa",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "description": "Logiciel de facturation",
     "homepage": "https://github.com/Lob2018/Capsa#readme",
     "repository": "github:Lob2018/Capsa",
@@ -65,7 +65,7 @@
         "@electron-forge/maker-rpm": "^6.0.0-beta.61",
         "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
         "@electron-forge/maker-zip": "^6.0.0-beta.61",
-        "electron": "^15.2.0",
+        "electron": "^15.3.0",
         "spectron": "^15.0.0"
     }
 }

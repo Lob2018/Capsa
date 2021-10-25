@@ -31,7 +31,7 @@ class YlMsg {
         }
         this.questMoy = {
             type: 'question',
-            buttons: ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire"],
+            buttons: ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire", "Comptant"],
             defaultId: 0,
             cancelId: -1,
             title: 'Capsa - Moyen de paiement',
