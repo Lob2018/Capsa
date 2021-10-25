@@ -91,6 +91,13 @@ class Message {
         return bloc;
     }
 
+    isVisible(phrase) {
+        const resultat = this.messagesArray.filter(function(currentElement) {
+            return (currentElement.message == phrase)
+        });
+        return resultat.length > 0;
+    }
+
     forceClose() {
         const btnFermer = document.getElementsByClassName('user-message__close')[0];
         if (btnFermer != undefined) {

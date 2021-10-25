@@ -87,6 +87,11 @@ $(document).ready(function() {
                 }
             }
 
+            // Message d'information
+            if ((o1.docs.length > 0) && !message.isVisible("Ces documents ne sont plus modifiables")) {
+                message.queue(0, 3000, "Ces documents ne sont plus modifiables");
+            }
+
             // // Définir la date de début
             // document.getElementsByName('fact-ann-date-rech')[0].value = o1.docs[0].date.annee + '-' + o1.docs[0].date.mois + '-' + o1.docs[0].date.jour;
 
@@ -182,7 +187,6 @@ $(document).ready(function() {
             // màj date dernière modification et TVA sauvegardée
             docEdite.document.updatedAt = o1.updatedAt;
             if (docEdite.document.facDev_num) docEdite.societe.soc_tva = o1.tva;
-
             afficher();
         }
     });

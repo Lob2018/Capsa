@@ -132,28 +132,29 @@ async function createWindow() {
     // début fenêtre chargement en cours
     chargWindowEnCours = new YlChargEnCours(mainWindow);
 
-    // DEV
-    mainWindow.setAlwaysOnTop(true, 'screen');
-    mainWindow.show();
-    mainWindow.maximize();
-    mainWindow.setAlwaysOnTop(false, 'screen');
-    mainWindow.webContents.openDevTools();
-    // charger la vue principale
-    mainWindow.loadFile(__dirname + '/index.html');
 
-
-    // // PROD
-    // // splash screen
-    // let splash = new YlSplash(mainWindow);
+    // // DEV
+    // mainWindow.setAlwaysOnTop(true, 'screen');
+    // mainWindow.show();
+    // mainWindow.maximize();
+    // mainWindow.setAlwaysOnTop(false, 'screen');
+    // mainWindow.webContents.openDevTools();
     // // charger la vue principale
-    // setTimeout(function() {
-    //     splash.retirer();
-    //     mainWindow.loadFile(__dirname + '/index.html');
-    //     mainWindow.maximize();
-    //     mainWindow.setAlwaysOnTop(true, 'screen');
-    //     mainWindow.show();
-    //     mainWindow.setAlwaysOnTop(false, 'screen');
-    // }, 1234);
+    // mainWindow.loadFile(__dirname + '/index.html');
+
+
+    // PROD
+    // splash screen
+    let splash = new YlSplash(mainWindow);
+    // charger la vue principale
+    setTimeout(function() {
+        splash.retirer();
+        mainWindow.loadFile(__dirname + '/index.html');
+        mainWindow.maximize();
+        mainWindow.setAlwaysOnTop(true, 'screen');
+        mainWindow.show();
+        mainWindow.setAlwaysOnTop(false, 'screen');
+    }, 1234);
 
 
     // indexer les descriptions d'articles
@@ -286,7 +287,7 @@ async function createWindow() {
                 docEdite.document.facDev_TVAs = infos.facDev_TVAs;
                 docEdite.document.facDev_Paiement = moyenP;
                 // sauvegarder le moyen de paiement pour l'afficher sur la facture
-                const mP = ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire"]
+                const mP = ["Carte bancaire", "Espèces", "Chèque", "Virement bancaire", "Comptant"]
                 retour.moyenP = mP[moyenP];
                 let retourII = await majDocEnr();
                 // msg si avertissement ou erreur
@@ -1116,8 +1117,8 @@ function imprimerFact() {
         // imprime fenetre en pdf
         mainWindow.webContents.printToPDF({}).then(data => {
             dialog.showSaveDialog({
-                // chemin et nom fichier
-                defaultPath: app.getPath('desktop') + '/' + docEdite.document.facDev_num + '.pdf',
+                // Nom du fichier par défaut
+                defaultPath: docEdite.document.facDev_num + '.pdf',
             }).then((result) => {
                 // ecriture
                 let ret = 1;
