@@ -1,6 +1,3 @@
-// optimiser avec le cache via l'API de V8
-require('v8-compile-cache');
-
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const { request } = require("@octokit/request");
