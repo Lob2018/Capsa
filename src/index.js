@@ -107,6 +107,7 @@ async function createWindow() {
     mainWindow = new BrowserWindow({
         show: false,
         webPreferences: {
+            sandbox: true,
             worldSafeExecuteJavaScript: true,
             nodeIntegration: false, // is default value after Electron v5
             contextIsolation: true, // protect against prototype pollution
@@ -142,16 +143,16 @@ async function createWindow() {
 
     // PROD
     // splash screen
-    let splash = new YlSplash(mainWindow);
+    // let splash = new YlSplash(mainWindow);
     // charger la vue principale
-    setTimeout(function() {
-        splash.retirer();
+    // setTimeout(function() {
+        // splash.retirer();
         mainWindow.loadFile(__dirname + '/index.html');
         mainWindow.maximize();
         mainWindow.setAlwaysOnTop(true, 'screen');
         mainWindow.show();
         mainWindow.setAlwaysOnTop(false, 'screen');
-    }, 1234);
+    // }, 1234);
 
 
     // indexer les descriptions d'articles
